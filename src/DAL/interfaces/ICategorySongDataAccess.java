@@ -9,6 +9,6 @@ public interface ICategorySongDataAccess {
     CategorySong getCategorySong(int idCategory);
     List<CategorySong> getALlCategorySong();
     CategorySong createCategorySong(CategorySong category);
-    void updateCategorySong(int idCategory);
-    void deleteCategorySong(int idCategory);
+    void updateCategorySong(CategorySong categorySong);
+    void deleteCategorySong(CategorySong categorySong);
 }
