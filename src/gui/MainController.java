@@ -20,6 +20,7 @@ public class MainController implements Initializable {
     public static void main(String[] args) {
 
     }
+
     public void test() {
 
     }
@@ -37,7 +38,7 @@ public class MainController implements Initializable {
         Media media = new Media(getClass().getResource("/finalBoss.mp3").toString());
         // media.getSource();
         MediaPlayer mediaPlayer = new MediaPlayer(media);
-        System.out.println("Duration:"+mediaPlayer.totalDurationProperty());
+        System.out.println("Duration:" + mediaPlayer.totalDurationProperty());
         //Mediaplayer mediaPlayer = new MediaPlayer(media);
         //mediaPlayer.setAutoPlay(true);
 
@@ -57,8 +58,10 @@ public class MainController implements Initializable {
                 mediaPlayer.play();
             }
         });*/
-        mediaPlayer.setOnReady(()-> {
-            System.out.println(media.getDuration().toMinutes()); mediaPlayer.play();});
+        mediaPlayer.setOnReady(() -> {
+            System.out.println(media.getDuration().toMinutes());
+            mediaPlayer.play();
+        });
     }
 
     public void enterFile(ActionEvent actionEvent) throws IOException {
@@ -69,11 +72,11 @@ public class MainController implements Initializable {
         System.out.println(file);
         System.out.println(getClass().getResource("/").getHost());
         Path src = Paths.get(file.getAbsolutePath());
-        Path dest = Paths.get("C:/Users/EASV/Desktop/SCO/MyTunes/resources/"+file.getName().toString());
-       //
+        Path dest = Paths.get("C:/Users/EASV/Desktop/SCO/MyTunes/resources/" + file.getName().toString());
+        //
         // Path dest = Paths.get(Objects.requireNonNull(getClass().getResource("/")).getPath()+file.getName().toString());
         //Path dest = Paths.get("/"+file.getName().toString());
-       System.out.println("src:"+src+"  dest:"+dest);
-        Files.copy(src,dest);
+        System.out.println("src:" + src + "  dest:" + dest);
+        Files.copy(src, dest);
     }
 }
