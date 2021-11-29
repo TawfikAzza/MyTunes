@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="598.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainController">
+<AnchorPane prefHeight="600.0" prefWidth="743.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainController">
    <children>
-      <VBox layoutX="-8.0" layoutY="-16.0" prefHeight="600.0" prefWidth="667.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="-8.0" layoutY="1.0" prefHeight="599.0" prefWidth="851.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="660.0">
                <children>
@@ -21,7 +21,7 @@
                      <children>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Button" />
+                              <Button fx:id="goBack" mnemonicParsing="false" text="Button" />
                               <Button mnemonicParsing="false" text="Button" />
                               <Button mnemonicParsing="false" text="Button" />
                            </children>
@@ -53,30 +53,65 @@
                      </HBox.margin>
                   </HBox>
                </children>
+               <VBox.margin>
+                  <Insets left="30.0" right="30.0" top="30.0" />
+               </VBox.margin>
             </HBox>
-            <HBox prefHeight="512.0" prefWidth="660.0">
+            <HBox prefHeight="512.0" prefWidth="778.0">
                <children>
                   <VBox prefHeight="512.0" prefWidth="188.0">
                      <children>
                         <Label text="Playlists" />
-                        <ListView prefHeight="430.0" prefWidth="188.0" />
+                        <ListView prefHeight="430.0" prefWidth="188.0">
+                           <VBox.margin>
+                              <Insets bottom="15.0" top="15.0" />
+                           </VBox.margin></ListView>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Button" />
-                              <Region prefHeight="20.0" prefWidth="20.0" />
-                              <Button mnemonicParsing="false" text="Button" />
-                              <Region prefHeight="20.0" prefWidth="20.0" />
-                              <Button mnemonicParsing="false" text="Button" />
+                              <Button mnemonicParsing="false" text="New" textOverrun="CLIP" />
+                              <Region prefHeight="20.0" prefWidth="25.0" />
+                              <Button mnemonicParsing="false" text="Edit" />
+                              <Region prefHeight="20.0" prefWidth="25.0" />
+                              <Button mnemonicParsing="false" text="Delete" />
                            </children>
                         </HBox>
                      </children>
                   </VBox>
+                  <Region prefHeight="200.0" prefWidth="15.0" />
                   <VBox prefHeight="512.0" prefWidth="163.0">
                      <children>
                         <Label text="Label" />
-                        <ListView prefHeight="430.0" prefWidth="163.0" />
+                        <ListView prefHeight="430.0" prefWidth="163.0">
+                           <VBox.margin>
+                              <Insets bottom="15.0" top="15.0" />
+                           </VBox.margin></ListView>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
+                              <Button mnemonicParsing="false" text="Button" />
+                              <Button mnemonicParsing="false" text="Button" />
+                              <Button mnemonicParsing="false" text="Delete" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Region prefHeight="200.0" prefWidth="15.0" />
+                  <Button mnemonicParsing="false" text="Button">
+                     <HBox.margin>
+                        <Insets top="32.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Region prefHeight="200.0" prefWidth="15.0" />
+                  <VBox prefHeight="346.0" prefWidth="258.0">
+                     <children>
+                        <Label text="Songs" />
+                        <ListView prefHeight="430.0" prefWidth="258.0">
+                           <VBox.margin>
+                              <Insets bottom="15.0" top="15.0" />
+                           </VBox.margin>
+                        </ListView>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Button" />
                               <Button mnemonicParsing="false" text="Button" />
                               <Button mnemonicParsing="false" text="Button" />
                               <Button mnemonicParsing="false" text="Button" />
@@ -85,6 +120,9 @@
                      </children>
                   </VBox>
                </children>
+               <VBox.margin>
+                  <Insets left="30.0" right="30.0" top="15.0" />
+               </VBox.margin>
             </HBox>
          </children>
       </VBox>

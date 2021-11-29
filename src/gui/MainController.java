@@ -1,13 +1,17 @@
 package gui;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.scene.image.ImageView;
 
+import javax.swing.text.Element;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -17,17 +21,14 @@ import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
-    public static void main(String[] args) {
-
-    }
-
-    public void test() {
-
-    }
+    @FXML
+    Button goBack;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //System.out.println(getClass().getResource("../../../../").getPath());
+        ImageView imageView = new ImageView(getClass().getResource("").toExternalForm());
+        goBack.setGraphic(imageView);
 
     }
 
