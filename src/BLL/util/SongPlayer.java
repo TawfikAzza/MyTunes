@@ -1,6 +1,7 @@
 package BLL.util;
 
 import BE.Song;
+import BLL.exception.SongPlayerException;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -16,11 +17,17 @@ public class SongPlayer {
         volume = MAX_VOLUME/2;
     }
 
-    public void playAudio()
-    {
-        Media media = currentSong.getSongFile();
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
+    public void playAudio() throws SongPlayerException {
+        try
+        {
+            Media media = currentSong.getSongFile();
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
+        }
+        catch (NullPointerException e)
+        {
+            throw new SongPlayerException("No song is selected!");
+        }
     }
 
     public void setCurrentSong(Song song)
