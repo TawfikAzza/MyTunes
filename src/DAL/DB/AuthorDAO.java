@@ -1,6 +1,7 @@
-package DAL;
+package DAL.DB;
 
 import BE.Author;
+import DAL.ConnectionManager;
 import DAL.interfaces.IAuthorDataAccess;
 
 import java.io.IOException;

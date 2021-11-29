@@ -1,8 +1,8 @@
 package BLL;
 
 import BLL.util.SongPlayer;
-import DAL.AuthorDAO;
-import DAL.CategoryDAO;
+import DAL.DB.AuthorDAO;
+import DAL.DB.CategoryDAO;
 
 import java.io.IOException;
 

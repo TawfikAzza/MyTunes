@@ -1,9 +1,9 @@
-package DAL;
+package DAL.DB;
 
 import BE.Author;
 import BE.CategorySong;
-import BE.PlayList;
 import BE.Song;
+import DAL.ConnectionManager;
 import DAL.interfaces.ISongDataAccess;
 
 import java.io.IOException;
