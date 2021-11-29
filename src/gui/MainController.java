@@ -22,13 +22,26 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     @FXML
-    Button goBack;
+    Button goBack, goForward, play;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //System.out.println(getClass().getResource("../../../../").getPath());
-        ImageView imageView = new ImageView(getClass().getResource("").toExternalForm());
-        goBack.setGraphic(imageView);
+        ImageView goBackImage = new ImageView(getClass().getResource("/back.png").toExternalForm());
+        goBackImage.setFitHeight(30);
+        goBackImage.setFitWidth(30);
+        goBack.setGraphic(goBackImage);
+
+        ImageView goForwardImage = new ImageView(getClass().getResource("/forward.png").toExternalForm());
+        goForwardImage.setFitHeight(30);
+        goForwardImage.setFitWidth(30);
+        goForward.setGraphic(goForwardImage);
+
+        ImageView playImage = new ImageView(getClass().getResource("/play.png").toExternalForm());
+        playImage.setFitHeight(40);
+        playImage.setFitWidth(40);
+        play.setGraphic(playImage);
+
 
     }
 

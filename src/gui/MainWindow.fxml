@@ -19,11 +19,11 @@
                <children>
                   <VBox prefHeight="79.0" prefWidth="128.0">
                      <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="goBack" mnemonicParsing="false" text="Button" />
-                              <Button mnemonicParsing="false" text="Button" />
-                              <Button mnemonicParsing="false" text="Button" />
+                              <Button fx:id="goBack" mnemonicParsing="false" style="-fx-background-color: transparent;" />
+                              <Button fx:id="play" mnemonicParsing="false" style="-fx-background-color: transparent;" />
+                              <Button fx:id="goForward" mnemonicParsing="false" style="-fx-background-color: transparent;" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
