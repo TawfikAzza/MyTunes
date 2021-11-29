@@ -1,16 +1,13 @@
-package DAL;
+package DAL.DB;
 
 import BE.Author;
 import BE.CategorySong;
-import BE.PlayList;
 import BE.Song;
+import DAL.ConnectionManager;
 import DAL.interfaces.ISongDataAccess;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,17 +74,58 @@ public class SongDAO implements ISongDataAccess {
 
     @Override
     public Song createSong(Song song) {
-        return null;
+        Song songCreated = null;
+        try (Connection con = cm.getConnection()) {
+            String sqlcommandInsert = "INSERT INTO SONG VALUE(?,?,?);";
+            PreparedStatement pstmtInsert = con.prepareStatement(sqlcommandInsert, Statement.RETURN_GENERATED_KEYS);
+            pstmtInsert.setString(1,song.getName());
+            pstmtInsert.setInt(2,song.getAuthor().getId());
+            pstmtInsert.setInt(3,song.getCategory().getId());
+            pstmtInsert.executeQuery();
+            ResultSet rs = pstmtInsert.getGeneratedKeys();
+            while(rs.next())
+            {
+                songCreated = new Song(
+                                rs.getInt(1),
+                                song.getName(),
+                                song.getAuthor(),
+                                song.getCategory()
+                    );
+            }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return songCreated;
     }
 
     @Override
-    public void updateSong(int idSong) {
+    public void updateSong(Song song) {
+        try (Connection con = cm.getConnection()) {
+            String sqlcommandUpdate = "UPDATE SONG SET name=?, authorID=?,categoryID=? WHERE id = ?;";
+            PreparedStatement pstmtUpdate = con.prepareStatement(sqlcommandUpdate);
+            pstmtUpdate.setString(1,song.getName());
+            pstmtUpdate.setInt(2,song.getAuthor().getId());
+            pstmtUpdate.setInt(3,song.getCategory().getId());
+            pstmtUpdate.setInt(4,song.getId());
+            pstmtUpdate.executeUpdate();
 
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
-    public void deleteSong(int idSong) {
-
+    public void deleteSong(Song song) {
+        try (Connection con = cm.getConnection()) {
+            String sqlcommandDelete = "DELETE FROM  SONG WHERE id = ?;";
+            PreparedStatement pstmtDelete = con.prepareStatement(sqlcommandDelete);
+            pstmtDelete.setInt(1,song.getId());
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private HashMap<Integer,Author> getMapAuthor() throws IOException {

@@ -1,5 +1,5 @@
 import BE.Author;
-import DAL.AuthorDAO;
+import DAL.DB.AuthorDAO;
 
 import java.io.IOException;
 import java.util.List;

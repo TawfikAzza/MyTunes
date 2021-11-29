@@ -1,6 +1,7 @@
-package DAL;
+package DAL.DB;
 
 import BE.Author;
+import DAL.ConnectionManager;
 import DAL.interfaces.IAuthorDataAccess;
 
 import java.io.IOException;
@@ -107,10 +108,10 @@ public class AuthorDAO implements IAuthorDataAccess {
     public void updateAuthor(Author author) {
         try (Connection con = cm.getConnection()) {
             String sqlcommandUpdate = "UPDATE AUTHOR SET name = ? WHERE id = ?;";
-            PreparedStatement pstmtSelect = con.prepareStatement(sqlcommandUpdate);
-            pstmtSelect.setString(1,author.getName());
-            pstmtSelect.setInt(2,author.getId());
-            pstmtSelect.executeUpdate();
+            PreparedStatement pstmtUpdate = con.prepareStatement(sqlcommandUpdate);
+            pstmtUpdate.setString(1,author.getName());
+            pstmtUpdate.setInt(2,author.getId());
+            pstmtUpdate.executeUpdate();
 
         }
         catch (SQLException ex) {
@@ -127,9 +128,9 @@ public class AuthorDAO implements IAuthorDataAccess {
     public void deleteAuthor(Author author) {
         try (Connection con = cm.getConnection()) {
             String sqlcommandDelete = "DELETE FROM AUTHOR WHERE id=?;";
-            PreparedStatement pstmtSelect = con.prepareStatement(sqlcommandDelete);
-            pstmtSelect.setInt(1,author.getId());
-            pstmtSelect.execute();
+            PreparedStatement pstmtDelete = con.prepareStatement(sqlcommandDelete);
+            pstmtDelete.setInt(1,author.getId());
+            pstmtDelete.execute();
 
         }
         catch (SQLException ex) {
