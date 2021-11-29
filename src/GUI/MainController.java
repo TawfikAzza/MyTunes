@@ -1,9 +1,10 @@
-package gui;
+package GUI;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
@@ -11,7 +12,6 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.scene.image.ImageView;
 
-import javax.swing.text.Element;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -22,10 +22,18 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     @FXML
-    Button goBack, goForward, play;
+    Button goBack, goForward, play, leftButton, searchButton;
+    @FXML
+    ImageView volumeImage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Image image = new Image("/volume.png");
+        volumeImage.setImage(image);
+        volumeImage.setFitWidth(20);
+
+
+
         //System.out.println(getClass().getResource("../../../../").getPath());
         ImageView goBackImage = new ImageView(getClass().getResource("/back.png").toExternalForm());
         goBackImage.setFitHeight(30);
@@ -42,6 +50,15 @@ public class MainController implements Initializable {
         playImage.setFitWidth(40);
         play.setGraphic(playImage);
 
+        ImageView leftButtonImage = new ImageView(getClass().getResource("/left.png").toExternalForm());
+        leftButtonImage.setFitWidth(25);
+        leftButtonImage.setFitHeight(25);
+        leftButton.setGraphic(leftButtonImage);
+
+        ImageView searchImage = new ImageView(getClass().getResource("/search.png").toExternalForm());
+        searchImage.setFitHeight(25);
+        searchImage.setFitWidth(25);
+        searchButton.setGraphic(searchImage);
 
     }
 

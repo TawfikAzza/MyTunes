@@ -6,14 +6,16 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="743.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainController">
+<AnchorPane prefHeight="600.0" prefWidth="877.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MainController">
    <children>
-      <VBox layoutX="-8.0" layoutY="1.0" prefHeight="599.0" prefWidth="851.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="-8.0" layoutY="1.0" prefHeight="600.0" prefWidth="877.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="660.0">
                <children>
@@ -28,7 +30,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label text="Vol" />
+                              <ImageView fx:id="volumeImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
                               <Slider blockIncrement="2.0" prefHeight="16.0" prefWidth="85.0" value="30.0" />
                            </children>
                            <opaqueInsets>
@@ -48,11 +50,20 @@
                      </children>
                   </HBox>
                   <Region prefHeight="200.0" prefWidth="100.0" />
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER" prefHeight="63.0" prefWidth="283.0">
                      <children>
-                        <Label text="Filter:" />
+                        <Label text="Filter:">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin></Label>
                         <TextField />
-                        <Button mnemonicParsing="false" text="Button" />
+                        <Button fx:id="searchButton" mnemonicParsing="false" style="-fx-background-color: transparent;">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin></Button>
                      </children>
                      <HBox.margin>
                         <Insets />
@@ -83,7 +94,7 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <Region prefHeight="200.0" prefWidth="15.0" />
+                  <Region prefHeight="200.0" prefWidth="60.0" />
                   <VBox prefHeight="512.0" prefWidth="163.0">
                      <children>
                         <Label text="Label" />
@@ -100,13 +111,13 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <Region prefHeight="200.0" prefWidth="15.0" />
-                  <Button mnemonicParsing="false" text="Button">
+                  <Region prefHeight="200.0" prefWidth="60.0" />
+                  <Button fx:id="leftButton" mnemonicParsing="false" style="-fx-background-color: transparent;">
                      <HBox.margin>
                         <Insets top="32.0" />
                      </HBox.margin>
                   </Button>
-                  <Region prefHeight="200.0" prefWidth="15.0" />
+                  <Region prefHeight="200.0" prefWidth="60.0" />
                   <VBox prefHeight="346.0" prefWidth="258.0">
                      <children>
                         <Label text="Songs" />
