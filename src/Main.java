@@ -1,23 +1,15 @@
-import BE.Author;
-import DAL.AuthorDAO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
-
-import java.util.List;
 
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainWindow.fxml"));
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
