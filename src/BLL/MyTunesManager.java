@@ -6,11 +6,11 @@ import DAL.CategoryDAO;
 
 import java.io.IOException;
 
-public class PlayerManager implements PlayerFacade{
+public class PlayerFacade implements MyTunesFacade {
     AuthorDAO authorDAO;
     CategoryDAO categoryDAO;
 
-    public PlayerManager() throws IOException {
+    public PlayerFacade() throws IOException {
         authorDAO = new AuthorDAO();
     }
     @Override

@@ -2,6 +2,6 @@ package BLL;
 
 import BE.Author;
 
-public interface PlayerFacade {
+public interface MyTunesFacade {
     void modifyAuthor(Author author);
 }
