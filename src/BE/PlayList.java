@@ -9,7 +9,7 @@ public class PlayList {
     private String name;
    // private int rankSong;
     private HashMap<Integer,Song> listSong;
-    public PlayList(int dataBaseId, int idPlaylist, Song song, String name, int rankSong) {
+    public PlayList(int dataBaseId, int idPlaylist, HashMap<Integer,Song> songList, String name) {
 
 
         this.idPlaylist = idPlaylist;
