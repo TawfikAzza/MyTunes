@@ -1,6 +1,7 @@
 package BE;
 
 import DAL.AuthorDAO;
+import javafx.scene.media.Media;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ public class Song {
     private String name;
     private Author author;
     private CategorySong category;
-
+    private Media songFile;
     public Song(int id, String name, Author author, CategorySong category) {
         this.id = id;
         this.name = name;
@@ -48,5 +49,9 @@ public class Song {
         this.category = category;
     }
 
+    public Media getSongFile() {
+        return songFile;
+    }
+//    public setSong
 
 }
