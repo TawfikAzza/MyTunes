@@ -17,6 +17,10 @@ public class SongPlayer {
         volume = MAX_VOLUME/2;
     }
 
+    /*
+    Plays the current song, if there is any.
+    TODO: play/pause function
+    */
     public void playAudio() throws SongPlayerException {
         try
         {
