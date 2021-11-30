@@ -2,6 +2,7 @@ import BE.Author;
 import BE.CategorySong;
 import BE.Song;
 import DAL.DB.AuthorDAO;
+import javafx.scene.media.Media;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -17,7 +18,8 @@ public class DAOTest {
     public static void main(String[] args) throws IOException {
         //getAllAuthors();
        // updateAuthor();
-        testFile();
+        //testFile();
+        testSongLength();
     }
 
     public static void getAllAuthors() throws IOException {
@@ -51,5 +53,9 @@ public class DAOTest {
         //Path dest = Paths.get("/"+file.getName().toString());
       /*  System.out.println("src:" + src + "  dest:" + dest);
         Files.copy(src, dest);*/
+    }
+    public static void testSongLength() {
+        Media song = new Media("C:\\Users\\EASV\\Desktop\\SCO\\MyTunes\\resources\\finalBoss.mp3");
+        System.out.println("Song length: "+song.getDuration().toMinutes());
     }
 }

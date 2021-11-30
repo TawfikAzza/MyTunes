@@ -3,6 +3,7 @@ package DAL.DB;
 import BE.Author;
 import DAL.ConnectionManager;
 import DAL.interfaces.IAuthorDataAccess;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.io.IOException;
 import java.sql.*;
@@ -13,7 +14,7 @@ import java.util.logging.Logger;
 
 public class AuthorDAO implements IAuthorDataAccess {
     ConnectionManager cm;
-    public AuthorDAO() throws IOException {
+    public AuthorDAO() throws Exception {
         cm = new ConnectionManager();
     }
     /**
@@ -23,7 +24,7 @@ public class AuthorDAO implements IAuthorDataAccess {
      * @param idAuthor
      */
     @Override
-    public Author getAuthor(int idAuthor) {
+    public Author getAuthor(int idAuthor) throws Exception {
         Author authorSearched = null;
         try (Connection con = cm.getConnection()) {
             String sqlcommandSelect = "SELECT * FROM Author WHERE id=?;";
@@ -38,9 +39,7 @@ public class AuthorDAO implements IAuthorDataAccess {
                 );
             }
         }
-        catch (SQLException ex) {
-            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         return authorSearched;
     }
 
@@ -49,7 +48,7 @@ public class AuthorDAO implements IAuthorDataAccess {
      * return a List of object author
      */
     @Override
-    public List<Author> getALlAuthors() {
+    public List<Author> getALlAuthors() throws Exception {
         List<Author> allAuthors = new ArrayList();
         try (Connection con = cm.getConnection()) {
             String sqlcommandSelect = "SELECT * FROM Author;";
@@ -63,9 +62,7 @@ public class AuthorDAO implements IAuthorDataAccess {
                 );
             }
         }
-        catch (SQLException ex) {
-            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         return allAuthors;
     }
 
@@ -76,7 +73,7 @@ public class AuthorDAO implements IAuthorDataAccess {
      * @param authorName
      */
     @Override
-    public Author createAuthor(String authorName) {
+    public Author createAuthor(String authorName) throws Exception {
         Author authorCreated=null;
         try (Connection con = cm.getConnection()) {
             String sqlcommandInsert = "INSERT INTO AUTHOR VALUE ('?');";
@@ -92,9 +89,7 @@ public class AuthorDAO implements IAuthorDataAccess {
                 );
             }
         }
-        catch (SQLException ex) {
-            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         return authorCreated;
     }
 
@@ -105,7 +100,7 @@ public class AuthorDAO implements IAuthorDataAccess {
      * @param author
      */
     @Override
-    public void updateAuthor(Author author) {
+    public void updateAuthor(Author author) throws Exception {
         try (Connection con = cm.getConnection()) {
             String sqlcommandUpdate = "UPDATE AUTHOR SET name = ? WHERE id = ?;";
             PreparedStatement pstmtUpdate = con.prepareStatement(sqlcommandUpdate);
@@ -114,9 +109,7 @@ public class AuthorDAO implements IAuthorDataAccess {
             pstmtUpdate.executeUpdate();
 
         }
-        catch (SQLException ex) {
-            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
 
     /**
@@ -125,7 +118,7 @@ public class AuthorDAO implements IAuthorDataAccess {
      * @param author
      */
     @Override
-    public void deleteAuthor(Author author) {
+    public void deleteAuthor(Author author) throws Exception {
         try (Connection con = cm.getConnection()) {
             String sqlcommandDelete = "DELETE FROM AUTHOR WHERE id=?;";
             PreparedStatement pstmtDelete = con.prepareStatement(sqlcommandDelete);
@@ -133,8 +126,6 @@ public class AuthorDAO implements IAuthorDataAccess {
             pstmtDelete.execute();
 
         }
-        catch (SQLException ex) {
-            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
 }

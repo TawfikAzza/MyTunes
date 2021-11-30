@@ -3,6 +3,7 @@ package DAL.DB;
 import BE.CategorySong;
 import DAL.ConnectionManager;
 import DAL.interfaces.ICategorySongDataAccess;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.io.IOException;
 import java.sql.*;
@@ -13,16 +14,16 @@ import java.util.logging.Logger;
 
 public class CategoryDAO implements ICategorySongDataAccess {
     ConnectionManager cm;
-    public CategoryDAO() throws IOException {
+    public CategoryDAO() throws Exception {
         cm = new ConnectionManager();
     }
     @Override
-    public CategorySong getCategorySong(int idCategory) {
+    public CategorySong getCategorySong(int idCategory) throws Exception {
         return null;
     }
 
     @Override
-    public List<CategorySong> getALlCategorySong() {
+    public List<CategorySong> getALlCategorySong() throws Exception {
         List<CategorySong> allCategories = new ArrayList();
         try (Connection con = cm.getConnection()) {
             String sqlcommandSelect = "SELECT * FROM CATEGORY;";
@@ -36,14 +37,12 @@ public class CategoryDAO implements ICategorySongDataAccess {
                 );
             }
         }
-        catch (SQLException ex) {
-            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         return allCategories;
     }
 
     @Override
-    public CategorySong createCategorySong(CategorySong category) {
+    public CategorySong createCategorySong(CategorySong category) throws Exception{
         CategorySong categoryCreated = null;
         try (Connection con = cm.getConnection()) {
             String sqlcommandInsert = "INSERT INTO CATEGORY VALUE(?);";
@@ -55,14 +54,12 @@ public class CategoryDAO implements ICategorySongDataAccess {
                 categoryCreated = new CategorySong(rs.getInt(1),category.getName());
             }
          }
-         catch (SQLException ex) {
-            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-         }
+
         return categoryCreated;
     }
 
     @Override
-    public void updateCategorySong(CategorySong categorySong) {
+    public void updateCategorySong(CategorySong categorySong) throws Exception{
         try (Connection con = cm.getConnection()) {
             String sqlcommandUpdate = "UPDATE CATEGORY SET name = ? WHERE id = ?;";
             PreparedStatement pstmtUpdate = con.prepareStatement(sqlcommandUpdate);
@@ -71,21 +68,17 @@ public class CategoryDAO implements ICategorySongDataAccess {
             pstmtUpdate.executeUpdate();
 
         }
-        catch (SQLException ex) {
-            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
 
     @Override
-    public void deleteCategorySong(CategorySong categorySong) {
+    public void deleteCategorySong(CategorySong categorySong) throws Exception{
         try (Connection con = cm.getConnection()) {
             String sqlcommandDelete = "DELETE FROM CATEGORY WHERE id=?;";
             PreparedStatement pstmtDelete = con.prepareStatement(sqlcommandDelete);
             pstmtDelete.setInt(1,categorySong.getId());
             pstmtDelete.execute();
         }
-        catch (SQLException ex) {
-            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
 }

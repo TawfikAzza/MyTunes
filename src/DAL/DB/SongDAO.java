@@ -5,6 +5,7 @@ import BE.CategorySong;
 import BE.Song;
 import DAL.ConnectionManager;
 import DAL.interfaces.ISongDataAccess;
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.io.IOException;
 import java.sql.*;
@@ -16,11 +17,11 @@ import java.util.logging.Logger;
 
 public class SongDAO implements ISongDataAccess {
     private ConnectionManager cm;
-    public SongDAO() throws IOException {
+    public SongDAO() throws Exception {
         cm = new ConnectionManager();
     }
     @Override
-    public Song getSong(int idSong) throws IOException {
+    public Song getSong(int idSong) throws Exception {
         Song songSearched = null;
         HashMap<Integer,Author> allAuthorMap = getMapAuthor();
         HashMap<Integer,CategorySong> allCategoryMap = getMapCategory();
@@ -40,14 +41,12 @@ public class SongDAO implements ISongDataAccess {
                 );
             }
         }
-        catch (SQLException ex) {
-            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         return songSearched;
     }
 
     @Override
-    public List<Song> getALlSongs() throws IOException {
+    public List<Song> getALlSongs() throws Exception {
         List<Song> allSongs = new ArrayList<>();
         HashMap<Integer,Author> allAuthorMap = getMapAuthor();
         HashMap<Integer,CategorySong> allCategoryMap = getMapCategory();
@@ -68,14 +67,11 @@ public class SongDAO implements ISongDataAccess {
                 );
             }
         }
-        catch (SQLException ex) {
-            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
         return allSongs;
     }
 
     @Override
-    public Song createSong(Song song) {
+    public Song createSong(Song song) throws Exception {
         Song songCreated = null;
         try (Connection con = cm.getConnection()) {
             String sqlcommandInsert = "INSERT INTO SONG VALUE(?,?,?,?);";
@@ -97,14 +93,12 @@ public class SongDAO implements ISongDataAccess {
                     );
             }
         }
-        catch (SQLException | IOException ex) {
-            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         return songCreated;
     }
 
     @Override
-    public void updateSong(Song song) throws SQLException {
+    public void updateSong(Song song) throws Exception {
         try (Connection con = cm.getConnection()) {
             String sqlcommandUpdate = "UPDATE SONG SET name=?, authorID=?,categoryID=?,songFile=? WHERE id = ?;";
             PreparedStatement pstmtUpdate = con.prepareStatement(sqlcommandUpdate);
@@ -120,18 +114,16 @@ public class SongDAO implements ISongDataAccess {
     }
 
     @Override
-    public void deleteSong(Song song) {
+    public void deleteSong(Song song) throws Exception {
         try (Connection con = cm.getConnection()) {
             String sqlcommandDelete = "DELETE FROM  SONG WHERE id = ?;";
             PreparedStatement pstmtDelete = con.prepareStatement(sqlcommandDelete);
             pstmtDelete.setInt(1,song.getId());
         }
-        catch (SQLException ex) {
-            Logger.getLogger(AuthorDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
 
-    private HashMap<Integer,Author> getMapAuthor() throws IOException {
+    private HashMap<Integer,Author> getMapAuthor() throws Exception {
         AuthorDAO authorDAO = new AuthorDAO();
         List<Author> allAuthors = authorDAO.getALlAuthors();
         HashMap<Integer,Author> authorMap = new HashMap<>();
@@ -142,7 +134,7 @@ public class SongDAO implements ISongDataAccess {
         }
         return authorMap;
     }
-    private HashMap<Integer, CategorySong> getMapCategory() throws IOException {
+    private HashMap<Integer, CategorySong> getMapCategory() throws Exception {
         CategoryDAO categoryDAO = new CategoryDAO();
         List<CategorySong> allCategories = categoryDAO.getALlCategorySong();
         HashMap<Integer,CategorySong> categoryMap = new HashMap<>();
