@@ -7,9 +7,9 @@ import BE.PlayList;
 import java.util.List;
 
 public interface IPlayListDataAccess {
-    PlayList getPlayList(int idPlayList);
-    List<PlayList> getALlPlayLists();
-    PlayList createPlayList(PlayList playList);
-    void updatePlayList(PlayList playList);
-    void deletePlayList(PlayList playList);
+    PlayList getPlayList(int idPlayList) throws Exception;
+    List<PlayList> getALlPlayLists() throws Exception;
+    PlayList createPlayList(PlayList playList) throws Exception;
+    void updatePlayList(PlayList playList) throws Exception;
+    void deletePlayList(PlayList playList) throws Exception;
 }
