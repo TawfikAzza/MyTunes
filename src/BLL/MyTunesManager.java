@@ -26,13 +26,12 @@ public class MyTunesManager {
 
     public MyTunesManager() throws MyTunesManagerException {
         songPlayer = new SongPlayer();
-
         try
         {
             idalMyTunesFacade = new DALMyTunesFacade();
         } catch (Exception e)
         {
-            throw new MyTunesManagerException("Failed to initalize MyTunesManager class!", e);
+            throw new MyTunesManagerException("Failed to initialize MyTunesManager class!", e);
         }
     }
 
