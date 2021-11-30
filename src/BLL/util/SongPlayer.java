@@ -33,7 +33,7 @@ public class SongPlayer {
         }
         catch (NullPointerException e)
         {
-            throw new SongPlayerException("No song is selected!");
+            throw new SongPlayerException("No song is selected!", e);
         }
     }
 
