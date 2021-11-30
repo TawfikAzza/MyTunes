@@ -1,7 +1,10 @@
 import BE.Author;
 import BE.CategorySong;
+import BE.PlayList;
 import BE.Song;
 import DAL.DB.AuthorDAO;
+import DAL.DB.PlayListDAO;
+import DAL.DB.SongDAO;
 import javafx.scene.media.Media;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -12,16 +15,29 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DAOTest {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         //getAllAuthors();
        // updateAuthor();
-        //testFile();
-        testSongLength();
+        // testFile();
+        //testSongLength();
+        //getAllSongs();
+       // createSong();
+        getPlayList();
     }
 
+    public static void getPlayList() throws Exception {
+        PlayListDAO playListDAO = new PlayListDAO();
+        PlayList playList = playListDAO.getPlayList(1);
+        for (Map.Entry entry: playList.getListSong().entrySet()) {
+            System.out.println(entry);
+        }
+    }
     public static void getAllAuthors() throws Exception {
         AuthorDAO authorDAO = new AuthorDAO();
         List<Author> authorList = authorDAO.getALlAuthors();
@@ -36,10 +52,15 @@ public class DAOTest {
         authorDAO.updateAuthor(author);
 
     }
+    public static void getAllSongs() throws Exception {
+        SongDAO songDAO = new SongDAO();
+        List<Song> allSongs = songDAO.getALlSongs();
+        for (Song so:allSongs) {
+            System.out.println("Song name: "+so.getName()+" Author: "+so.getAuthor().getName()+" Category: "+so.getCategory().getName());
+        }
+    }
     public static void testFile() throws IOException {
-
-
-       /* File file = new File("C:/Users/EASV/Desktop/Downloads/Old-cat.jpg");
+        /* File file = new File("C:/Users/EASV/Desktop/Downloads/Old-cat.jpg");
         System.out.println(file);
         //System.out.println(getClass().getResource("/").getHost());
         Author author = new Author(1,"Jeppe");
@@ -53,6 +74,31 @@ public class DAOTest {
         //Path dest = Paths.get("/"+file.getName().toString());
       /*  System.out.println("src:" + src + "  dest:" + dest);
         Files.copy(src, dest);*/
+    }
+    public static void createSong() throws Exception {
+        SongDAO songDAO = new SongDAO();
+        File file = new File("C:/Users/EASV/Desktop/Downloads/Old-cat.jpg");
+
+        Author author = new Author(2,"Adam");
+        Author author2 = new Author(3,"Jano");
+        Author author3 = new Author(4,"Tawfik");
+        Author author4 = new Author(1,"Jeppe");
+        CategorySong categorySong = new CategorySong(2,"jhfksdhfk");
+        CategorySong categorySong2 = new CategorySong(3,"jhfksdhfk");
+        CategorySong categorySong3 = new CategorySong(4,"jhfksdhfk");
+        CategorySong categorySong4 = new CategorySong(5,"jhfksdhfk");
+
+        Song mySong1 = new Song("I am Atomic!!!!!",author2,categorySong2,file);
+        Song mySong2 = new Song("Song of Love for Jano the artist",author3,categorySong3,file);
+        Song mySong3 = new Song("No Tomorrows for the non Java developpers",author4,categorySong4,file);
+        List<Song> testSongs = new ArrayList<>();
+        testSongs.add(mySong1);
+        testSongs.add(mySong2);
+        testSongs.add(mySong3);
+        for (Song so:testSongs) {
+            songDAO.createSong(so);
+        }
+
     }
     public static void testSongLength() {
         Media song = new Media("C:\\Users\\EASV\\Desktop\\SCO\\MyTunes\\resources\\finalBoss.mp3");
