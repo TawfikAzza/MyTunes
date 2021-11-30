@@ -12,6 +12,9 @@ public class SongPlayer {
     private Song currentSong;
     private float volume;
 
+    /*
+    The default volume should e 50
+     */
     public SongPlayer()
     {
         volume = MAX_VOLUME/2;
@@ -43,6 +46,9 @@ public class SongPlayer {
         return currentSong;
     }
 
+    /*
+    Setting the volume from 0-100 and clamped accordingly to the needs of the media player
+     */
     public void setVolume(int soundVolume)
     {
         volume = (float) (1 - (Math.log(MAX_VOLUME - soundVolume) / Math.log(MAX_VOLUME)));
