@@ -33,7 +33,7 @@ public class DALMyTunesFacade implements IDALMyTunesFacade {
 
     @Override
     public Author getAuthor(int idAuthor) throws Exception{
-        iAuthorDataAccess.getAuthor(idAuthor);
+        return iAuthorDataAccess.getAuthor(idAuthor);
     }
 
     @Override
