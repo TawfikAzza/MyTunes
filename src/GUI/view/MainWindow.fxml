@@ -44,14 +44,14 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <Region prefHeight="200.0" prefWidth="100.0" />
+                  <Region prefHeight="200.0" prefWidth="200.0" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Label text="var" />
                         <Label text="... is playing" />
                      </children>
                   </HBox>
-                  <Region prefHeight="200.0" prefWidth="100.0" />
+                  <Region prefHeight="200.0" prefWidth="200.0" />
                   <HBox alignment="CENTER" prefHeight="63.0" prefWidth="283.0">
                      <children>
                         <Label text="Filter:">
@@ -115,8 +115,9 @@
                            </VBox.margin></ListView>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Button" />
-                              <Button mnemonicParsing="false" text="Button" />
+                              <Button fx:id="upButton" mnemonicParsing="false" style="-fx-background-color: transparent;" />
+                              <Button fx:id="downButton" mnemonicParsing="false" style="-fx-background-color: transparent;" />
+                              <Region prefHeight="5.0" prefWidth="30.0" />
                               <Button mnemonicParsing="false" text="Delete" />
                            </children>
                         </HBox>
