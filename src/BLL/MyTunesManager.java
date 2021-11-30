@@ -4,10 +4,7 @@ import BE.Author;
 import BE.CategorySong;
 import BE.PlayList;
 import BE.Song;
-import BLL.exception.AuthorDAOException;
-import BLL.exception.CategorySongDAOException;
-import BLL.exception.MyTunesManagerException;
-import BLL.exception.SongDAOException;
+import BLL.exception.*;
 import BLL.util.SongPlayer;
 import DAL.DB.AuthorDAO;
 import DAL.DB.CategoryDAO;
@@ -120,24 +117,44 @@ public class MyTunesManager {
         }
     }
 
-    public PlayList getPlayList(int id) {
-        return playListDAO.getPlayList(id);
+    public PlayList getPlayList(int id) throws PlayListDAOException {
+        try {
+            return playListDAO.getPlayList(id);
+        } catch (Exception e) {
+            throw new PlayListDAOException("Cannot get playlist!", e);
+        }
     }
 
-    public List<PlayList> getALlPlayLists() {
-        return playListDAO.getALlPlayLists();
+    public List<PlayList> getALlPlayLists() throws PlayListDAOException {
+        try {
+            return playListDAO.getALlPlayLists();
+        } catch (Exception e) {
+            throw new PlayListDAOException("Cannot get all playlists!", e);
+        }
     }
 
-    public PlayList createPlayList(PlayList playList) {
-        return playListDAO.createPlayList(playList);
+    public PlayList createPlayList(PlayList playList) throws PlayListDAOException {
+        try {
+            return playListDAO.createPlayList(playList);
+        } catch (Exception e) {
+            throw new PlayListDAOException("Cannot create playlist!", e);
+        }
     }
 
-    public void updatePlayList(PlayList playList) {
-        playListDAO.updatePlayList(playList);
+    public void updatePlayList(PlayList playList) throws PlayListDAOException {
+        try {
+            playListDAO.updatePlayList(playList);
+        } catch (Exception e) {
+            throw new PlayListDAOException("Cannot update playlist!", e);
+        }
     }
 
-    public void deletePlayList(PlayList playList) {
-        playListDAO.deletePlayList(playList);
+    public void deletePlayList(PlayList playList) throws PlayListDAOException {
+        try {
+            playListDAO.deletePlayList(playList);
+        } catch (Exception e) {
+            throw new PlayListDAOException("Cannot delete playlist!", e);
+        }
     }
 
     public Song getSong(int id) throws SongDAOException {
