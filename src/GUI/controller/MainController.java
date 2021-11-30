@@ -31,18 +31,16 @@ public class MainController implements Initializable {
     ImageView volumeImage;
     @FXML
     TextField searchBar;
-    @FXML
-    TableView<?> songsTableView, playlistsTableView;
-    @FXML
-    private TableColumn<?, String> titleColumn, artistColumn, categoryColumn, timeColumn;
+//    @FXML
+//    TableView<?> songsTableView, playlistsTableView;
+//    @FXML
+//    private TableColumn<?, String> titleColumn, artistColumn, categoryColumn, timeColumn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Image image = new Image("/volume.png");
         volumeImage.setImage(image);
         volumeImage.setFitWidth(20);
-
-
 
         //System.out.println(getClass().getResource("../../../../").getPath());
         ImageView goBackImage = new ImageView(getClass().getResource("/back.png").toExternalForm());
@@ -74,6 +72,11 @@ public class MainController implements Initializable {
         downImage.setFitHeight(20);
         downImage.setFitWidth(20);
         downButton.setGraphic(downImage);
+
+        ImageView upImage = new ImageView(getClass().getResource("/up.png").toExternalForm());
+        upImage.setFitWidth(20);
+        upImage.setFitHeight(20);
+        upButton.setGraphic(upImage);
 
     }
 

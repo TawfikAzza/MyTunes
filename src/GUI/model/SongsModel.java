@@ -15,7 +15,7 @@ public class SongsModel {
 
 
     public SongsModel() throws IOException {
-//        this.myTunesFacade = new MyTunesManager();
+ //       this.myTunesFacade = new MyTunesManager();
         allSongs = FXCollections.observableArrayList();
     }
 //    public ObservableList<Song> getAllSongs() throws IOException {
