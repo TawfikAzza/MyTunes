@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class PlayListDAO implements IPlayListDataAccess {
                 );
                 playListName = rs.getString("playListName");
             }
-            System.out.println("SIZE: "+songList.size()+" id : "+idPlayList+" name: "+playListName);
+            //System.out.println("SIZE: "+songList.size()+" id : "+idPlayList+" name: "+playListName);
             playListSearched = new PlayList(idPlayList,playListName,songList);
         }
 
@@ -62,7 +63,54 @@ public class PlayListDAO implements IPlayListDataAccess {
 
     @Override
     public List<PlayList> getALlPlayLists() throws Exception {
-        return null;
+        HashMap<Integer,Author> mapAuthor = getMapAuthor();
+        HashMap<Integer,CategorySong> mapCategory = getMapCategory();
+        PlayList playListSearched = null;
+        List<PlayList> allPlayLists = new ArrayList<>();
+        HashMap<Integer,Song> songList = new HashMap<>();
+        try (Connection con = cm.getConnection()) {
+            String sqlcommandSelect = "SELECT PLAYLIST.id as playListID, Song.id as idSong, Song.name as songName, Song.authorID as AuthorID, Song.categoryID as CategoryID, " +
+                    "Song.songFile as songFile, CORR_SONG_PLAYLIST.rankSong as RankSong,PlayList.name as playListName " +
+                    "FROM Song INNER JOIN CORR_SONG_PLAYLIST " +
+                    "ON Song.id=CORR_SONG_PLAYLIST.songID " +
+                    "INNER JOIN Playlist ON CORR_SONG_PLAYLIST.playListID=PLAYLIST.id " +
+                    "ORDER BY PlayList.id,RankSong ";
+            PreparedStatement pstmtSelect = con.prepareStatement(sqlcommandSelect);
+            boolean flagFirst = false;
+            int currentPlaylist = -1;
+            ResultSet rs = pstmtSelect.executeQuery();
+            int idPlayList=0;
+            String playListName = null;
+            while(rs.next())
+            {
+                idPlayList=rs.getInt("playlistID");
+                if(!flagFirst) {
+                    currentPlaylist=idPlayList;
+                    flagFirst=true;
+                }
+                if(currentPlaylist!= idPlayList) {
+                    PlayList playList = new PlayList(currentPlaylist,playListName,songList);
+                    allPlayLists.add(playList);
+                    songList.clear();
+                }
+                songList.put(rs.getInt("RankSong"), new Song(
+                                rs.getInt("idSong"),
+                                rs.getString("songName"),
+                                mapAuthor.get(rs.getInt("authorID")),
+                                mapCategory.get(rs.getInt("categoryID")),
+                                rs.getString("songFile")
+                        )
+                );
+                playListName = rs.getString("playListName");
+                currentPlaylist=idPlayList;
+
+            }
+            //System.out.println("SIZE: "+songList.size()+" id : "+idPlayList+" name: "+playListName);
+            PlayList playList = new PlayList(idPlayList,playListName,songList);
+            allPlayLists.add(playList);
+        }
+
+        return allPlayLists;
     }
 
     @Override

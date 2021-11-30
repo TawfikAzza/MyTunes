@@ -28,9 +28,19 @@ public class DAOTest {
         //testSongLength();
         //getAllSongs();
        // createSong();
-        getPlayList();
+       // getPlayList();
+        getAllPlayList();
     }
-
+    public static void getAllPlayList() throws Exception {
+        PlayListDAO playListDAO = new PlayListDAO();
+        List<PlayList> allPlayList = playListDAO.getALlPlayLists();
+        for (PlayList p:allPlayList) {
+            for (Map.Entry entry: p.getListSong().entrySet()) {
+                Song song = (Song)entry.getValue();
+                System.out.println("idPlayList: "+p.getName()+" Song name: "+song.getName()+" Path: "+song.getStringSongFile());
+            }
+        }
+    }
     public static void getPlayList() throws Exception {
         PlayListDAO playListDAO = new PlayListDAO();
         PlayList playList = playListDAO.getPlayList(1);

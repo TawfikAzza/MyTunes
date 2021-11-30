@@ -100,6 +100,6 @@ public class Song {
     }
 
     public String getStringSongFile() {
-        return songFile.toURI().toString();
+        return songFile.toString();
     }
 }
