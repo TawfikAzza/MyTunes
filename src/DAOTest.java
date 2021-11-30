@@ -29,7 +29,8 @@ public class DAOTest {
         //getAllSongs();
        // createSong();
        // getPlayList();
-        getAllPlayList();
+        //getAllPlayList();
+        //createPlayList();
     }
     public static void getAllPlayList() throws Exception {
         PlayListDAO playListDAO = new PlayListDAO();
@@ -37,9 +38,14 @@ public class DAOTest {
         for (PlayList p:allPlayList) {
             for (Map.Entry entry: p.getListSong().entrySet()) {
                 Song song = (Song)entry.getValue();
-                System.out.println("idPlayList: "+p.getName()+" Song name: "+song.getName()+" Path: "+song.getStringSongFile());
+                System.out.println("idPlayList: "+p.getName()+" Song name: "+song.getName()+" Path: "+song.getStringSongFile()+" Song Rank: "+entry.getKey());
             }
         }
+    }
+    public static void createPlayList() throws Exception {
+        PlayListDAO playListDAO = new PlayListDAO();
+        PlayList playList = playListDAO.getPlayList(1);
+        playListDAO.createPlayList(playList);
     }
     public static void getPlayList() throws Exception {
         PlayListDAO playListDAO = new PlayListDAO();

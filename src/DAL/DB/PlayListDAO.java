@@ -12,9 +12,11 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PlayListDAO implements IPlayListDataAccess {
     private ConnectionManager cm;
@@ -112,10 +114,37 @@ public class PlayListDAO implements IPlayListDataAccess {
 
         return allPlayLists;
     }
-
+ //TODO: Not tested, will test it tomorrow, too tired now...
     @Override
     public PlayList createPlayList(PlayList playList) throws Exception {
-        return null;
+        PlayList playListCreated=null;
+        try (Connection con = cm.getConnection()) {
+            String sqlcommandInsert = "INSERT INTO PLAYLIST VALUES (?);";
+
+            PreparedStatement pstmtInsert = con.prepareStatement(sqlcommandInsert, Statement.RETURN_GENERATED_KEYS);
+            pstmtInsert.setString(1,playList.getName());
+            pstmtInsert.execute();
+            ResultSet rs = pstmtInsert.getGeneratedKeys();
+            int idPlayList = 0;
+            while(rs.next()) {
+                idPlayList=rs.getInt(1);
+            }
+
+            String sqlCommandInsertListSong = "INSERT INTO CORR_SONG_PLAYLIST VALUES (?,?,?)";
+            PreparedStatement pstmstInsertListSong = con.prepareStatement(sqlCommandInsertListSong);
+            for (Map.Entry entry: playList.getListSong().entrySet()) {
+                Song song = (Song) entry.getValue();
+                pstmstInsertListSong.setInt(1,song.getId());
+                pstmstInsertListSong.setInt(2,playList.getIdPlaylist());
+                pstmstInsertListSong.setInt(3,(int)entry.getKey());
+                System.out.println("ID SONG: "+song.getId()+" ID PLAYLIST: "+playList.getIdPlaylist()+" RANKSONG: "+(int)entry.getKey());
+                pstmstInsertListSong.executeQuery();
+            }
+            playListCreated = getPlayList(idPlayList);
+
+        }
+        return playListCreated;
+
     }
 
     @Override
