@@ -4,6 +4,9 @@ import BE.Author;
 import BE.CategorySong;
 import BE.PlayList;
 import BE.Song;
+import BLL.exception.AuthorDAOException;
+import BLL.exception.CategorySongDAOException;
+import BLL.exception.MyTunesManagerException;
 import BLL.exception.SongDAOException;
 import BLL.util.SongPlayer;
 import DAL.DB.AuthorDAO;
@@ -23,52 +26,98 @@ public class MyTunesManager {
     PlayListDAO playListDAO;
     SongDAO songDAO;
 
-    public MyTunesManager() throws IOException {
+    public MyTunesManager() throws MyTunesManagerException {
         songPlayer = new SongPlayer();
 
-        authorDAO = new AuthorDAO();
-        categoryDAO = new CategoryDAO();
-        playListDAO = new PlayListDAO();
-        songDAO = new SongDAO();
+        try
+        {
+            authorDAO = new AuthorDAO();
+            categoryDAO = new CategoryDAO();
+            playListDAO = new PlayListDAO();
+            songDAO = new SongDAO();
+        } catch (Exception e)
+        {
+            throw new MyTunesManagerException("Failed to initalize MyTunesManager class!", e);
+        }
     }
 
-    public Author getAuthor(int id) {
-        return authorDAO.getAuthor(id);
+    public Author getAuthor(int id) throws AuthorDAOException {
+        try {
+            return authorDAO.getAuthor(id);
+        } catch (Exception e) {
+            throw new AuthorDAOException("Cannot get author!", e);
+        }
     }
 
-    public List<Author> getALlAuthors() {
-        return authorDAO.getALlAuthors();
+    public List<Author> getALlAuthors() throws AuthorDAOException {
+        try {
+            return authorDAO.getALlAuthors();
+        } catch (Exception e) {
+            throw new AuthorDAOException("Cannot get all authors!", e);
+        }
     }
 
-    public Author createAuthor(String name) {
-        return authorDAO.createAuthor(name);
+    public Author createAuthor(String name) throws AuthorDAOException {
+        try {
+            return authorDAO.createAuthor(name);
+        } catch (Exception e) {
+            throw new AuthorDAOException("Cannot create the author!", e);
+        }
     }
 
-    public void updateAuthor(Author author) {
-        authorDAO.updateAuthor(author);
+    public void updateAuthor(Author author) throws AuthorDAOException {
+        try {
+            authorDAO.updateAuthor(author);
+        } catch (Exception e) {
+            throw new AuthorDAOException("Cannot update author!", e);
+        }
     }
-    public void deleteAuthor(Author author) {
-        authorDAO.updateAuthor(author);
-    }
-
-    public CategorySong getCategorySong(int id) {
-        return categoryDAO.getCategorySong(id);
-    }
-
-    public List<CategorySong> getALlCategorySong() {
-        return categoryDAO.getALlCategorySong();
-    }
-
-    public CategorySong createCategorySong(CategorySong category) {
-        return categoryDAO.createCategorySong(category);
+    public void deleteAuthor(Author author) throws AuthorDAOException {
+        try {
+            authorDAO.updateAuthor(author);
+        } catch (Exception e) {
+            throw new AuthorDAOException("Cannot delete author!", e);
+        }
     }
 
-    public void updateCategorySong(CategorySong category) {
-        categoryDAO.updateCategorySong(category);
+    public CategorySong getCategorySong(int id) throws CategorySongDAOException {
+        try {
+            return categoryDAO.getCategorySong(id);
+        } catch (Exception e) {
+            throw new CategorySongDAOException("Cannot get song category!", e);
+        }
     }
 
-    public void deleteCategorySong(CategorySong category) {
-        categoryDAO.deleteCategorySong(category);
+    public List<CategorySong> getALlCategorySong() throws CategorySongDAOException {
+        try {
+            return categoryDAO.getALlCategorySong();
+        } catch (Exception e) {
+            throw new CategorySongDAOException("Cannot get all song categories!", e);
+        }
+    }
+
+    public CategorySong createCategorySong(CategorySong category) throws CategorySongDAOException {
+        try {
+            return categoryDAO.createCategorySong(category);
+        } catch (Exception e) {
+            throw new CategorySongDAOException("Cannot create song category!", e);
+        }
+    }
+
+    public void updateCategorySong(CategorySong category) throws CategorySongDAOException {
+        try {
+            categoryDAO.updateCategorySong(category);
+        } catch (Exception e) {
+            throw new CategorySongDAOException("Cannot update song category!", e);
+        }
+    }
+
+    public void deleteCategorySong(CategorySong category) throws CategorySongDAOException {
+        try {
+            categoryDAO.deleteCategorySong(category);
+        } catch (Exception e) {
+            throw new CategorySongDAOException("Cannot create song category!", e);
+        }
     }
 
     public PlayList getPlayList(int id) {
@@ -94,7 +143,7 @@ public class MyTunesManager {
     public Song getSong(int id) throws SongDAOException {
         try {
             return songDAO.getSong(id);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new SongDAOException("Unable to get song!", e);
         }
     }
@@ -102,24 +151,32 @@ public class MyTunesManager {
     public List<Song> getALlSongs() throws SongDAOException {
         try {
             return songDAO.getALlSongs();
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new SongDAOException("Unable to get song!", e);
         }
     }
 
-    public Song createSong(Song song) {
-        return songDAO.createSong(song);
+    public Song createSong(Song song) throws SongDAOException {
+        try {
+            return songDAO.createSong(song);
+        } catch (Exception e) {
+            throw new SongDAOException("Unable to create song!", e);
+        }
     }
 
     public void updateSong(Song song) throws SongDAOException {
         try {
             songDAO.updateSong(song);
-        } catch (SQLException e) {
-            throw new SongDAOException("Unable to get song!", e);
+        } catch (Exception e) {
+            throw new SongDAOException("Unable to update song!", e);
         }
     }
 
-    public void deleteSong(Song song) {
-        songDAO.deleteSong(song);
+    public void deleteSong(Song song) throws SongDAOException {
+        try {
+            songDAO.deleteSong(song);
+        } catch (Exception e) {
+            throw new SongDAOException("Unable to delete song!", e);
+        }
     }
 }
