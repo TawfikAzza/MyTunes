@@ -5,15 +5,11 @@ import BE.CategorySong;
 import BE.Song;
 import DAL.ConnectionManager;
 import DAL.interfaces.ISongDataAccess;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
-
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class SongDAO implements ISongDataAccess {
     private ConnectionManager cm;
@@ -74,13 +70,13 @@ public class SongDAO implements ISongDataAccess {
     public Song createSong(Song song) throws Exception {
         Song songCreated = null;
         try (Connection con = cm.getConnection()) {
-            String sqlcommandInsert = "INSERT INTO SONG VALUE(?,?,?,?);";
+            String sqlcommandInsert = "INSERT INTO SONG VALUES (?,?,?,?);";
             PreparedStatement pstmtInsert = con.prepareStatement(sqlcommandInsert, Statement.RETURN_GENERATED_KEYS);
             pstmtInsert.setString(1,song.getName());
             pstmtInsert.setInt(2,song.getAuthor().getId());
             pstmtInsert.setInt(3,song.getCategory().getId());
             pstmtInsert.setString(4,song.getStringSongFile());
-            pstmtInsert.executeQuery();
+            pstmtInsert.execute();
             ResultSet rs = pstmtInsert.getGeneratedKeys();
             while(rs.next())
             {
