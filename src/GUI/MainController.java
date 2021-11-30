@@ -1,9 +1,13 @@
 package GUI;
 
+import BE.Song;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -25,6 +29,12 @@ public class MainController implements Initializable {
     Button goBack, goForward, play, leftButton, searchButton;
     @FXML
     ImageView volumeImage;
+    @FXML
+    TextField searchBar;
+    @FXML
+    TableView<?> songsTableView, playlistsTableView;
+    @FXML
+    private TableColumn<?, String> titleColumn, artistColumn, categoryColumn, timeColumn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

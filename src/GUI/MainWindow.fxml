@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="877.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MainController">
+<AnchorPane prefHeight="600.0" prefWidth="1065.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MainController">
    <children>
       <VBox layoutX="-8.0" layoutY="1.0" prefHeight="600.0" prefWidth="877.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -59,7 +61,7 @@
                            <HBox.margin>
                               <Insets right="20.0" />
                            </HBox.margin></Label>
-                        <TextField />
+                        <TextField fx:id="searchBar" />
                         <Button fx:id="searchButton" mnemonicParsing="false" style="-fx-background-color: transparent;">
                            <HBox.margin>
                               <Insets left="20.0" />
@@ -76,13 +78,19 @@
             </HBox>
             <HBox prefHeight="512.0" prefWidth="778.0">
                <children>
-                  <VBox prefHeight="512.0" prefWidth="188.0">
+                  <VBox prefHeight="489.0" prefWidth="292.0">
                      <children>
                         <Label text="Playlists" />
-                        <ListView prefHeight="430.0" prefWidth="188.0">
+                        <TableView fx:id="playlistsTableView" prefHeight="430.0" prefWidth="277.0">
+                          <columns>
+                            <TableColumn prefWidth="96.0" text="Name" />
+                            <TableColumn prefWidth="96.0" text="Songs" />
+                              <TableColumn prefWidth="96.0" text="Time" />
+                          </columns>
                            <VBox.margin>
-                              <Insets bottom="15.0" top="15.0" />
-                           </VBox.margin></ListView>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </TableView>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Button mnemonicParsing="false" text="New" textOverrun="CLIP" />
@@ -91,10 +99,13 @@
                               <Region prefHeight="20.0" prefWidth="25.0" />
                               <Button mnemonicParsing="false" text="Delete" />
                            </children>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
                         </HBox>
                      </children>
                   </VBox>
-                  <Region prefHeight="200.0" prefWidth="60.0" />
+                  <Region prefHeight="200.0" prefWidth="30.0" />
                   <VBox prefHeight="512.0" prefWidth="163.0">
                      <children>
                         <Label text="Label" />
@@ -118,14 +129,20 @@
                      </HBox.margin>
                   </Button>
                   <Region prefHeight="200.0" prefWidth="60.0" />
-                  <VBox prefHeight="346.0" prefWidth="258.0">
+                  <VBox>
                      <children>
                         <Label text="Songs" />
-                        <ListView prefHeight="430.0" prefWidth="258.0">
+                        <TableView fx:id="songsTableView" prefHeight="430.0" prefWidth="401.0">
+                          <columns>
+                            <TableColumn fx:id="titleColumn" prefWidth="100.0" text="Title" />
+                            <TableColumn fx:id="artistColumn" prefWidth="100.0" text="Artist" />
+                              <TableColumn fx:id="categoryColumn" prefWidth="100.0" text="Category" />
+                              <TableColumn fx:id="timeColumn" prefWidth="100.0" text="Time" />
+                          </columns>
                            <VBox.margin>
                               <Insets bottom="15.0" top="15.0" />
                            </VBox.margin>
-                        </ListView>
+                        </TableView>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Button mnemonicParsing="false" text="Button" />
