@@ -87,12 +87,12 @@ public interface IDALMyTunesFacade {
     /**
      * Update a playlist in the database
      * */
-    void updatePlayList(int idPlayList) throws Exception;
+    void updatePlayList(PlayList playList) throws Exception;
 
     /**
      * Delete a playlist from the database
      * */
-    void deletePlayList(int idPlayList) throws Exception;
+    void deletePlayList(PlayList playList) throws Exception;
 
 
     /***

@@ -97,13 +97,13 @@ public class DALMyTunesFacade implements IDALMyTunesFacade {
     }
 
     @Override
-    public void updatePlayList(int idPlayList) throws Exception {
-        iPlayListDataAccess.updatePlayList(idPlayList);
+    public void updatePlayList(PlayList playList) throws Exception {
+        iPlayListDataAccess.updatePlayList(playList);
     }
 
     @Override
-    public void deletePlayList(int idPlayList) throws Exception {
-        iPlayListDataAccess.deletePlayList(idPlayList);
+    public void deletePlayList(PlayList playList) throws Exception {
+        iPlayListDataAccess.deletePlayList(playList);
     }
 
     @Override

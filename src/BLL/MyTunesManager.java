@@ -141,7 +141,7 @@ public class MyTunesManager {
 
     public void updatePlayList(PlayList playList) throws PlayListDAOException {
         try {
-            idalMyTunesFacade.updatePlayList(playList.getIdPlaylist());
+            idalMyTunesFacade.updatePlayList(playList);
         } catch (Exception e) {
             throw new PlayListDAOException("Cannot update playlist!", e);
         }
@@ -149,7 +149,7 @@ public class MyTunesManager {
 
     public void deletePlayList(PlayList playList) throws PlayListDAOException {
         try {
-            idalMyTunesFacade.deletePlayList(playList.getIdPlaylist());
+            idalMyTunesFacade.deletePlayList(playList);
         } catch (Exception e) {
             throw new PlayListDAOException("Cannot delete playlist!", e);
         }
