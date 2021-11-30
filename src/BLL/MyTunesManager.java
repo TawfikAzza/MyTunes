@@ -13,7 +13,6 @@ import DAL.DB.SongDAO;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 
 public class MyTunesManager {
@@ -84,12 +83,12 @@ public class MyTunesManager {
         return playListDAO.createPlayList(playList);
     }
 
-    public void updatePlayList(int id) {
-        playListDAO.updatePlayList(id);
+    public void updatePlayList(PlayList playList) {
+        playListDAO.updatePlayList(playList);
     }
 
-    public void deletePlayList(int id) {
-        playListDAO.deletePlayList(id);
+    public void deletePlayList(PlayList playList) {
+        playListDAO.deletePlayList(playList);
     }
 
     public Song getSong(int id) throws SongDAOException {

@@ -10,6 +10,6 @@ public interface IPlayListDataAccess {
     PlayList getPlayList(int idPlayList);
     List<PlayList> getALlPlayLists();
     PlayList createPlayList(PlayList playList);
-    void updatePlayList(int idPlayList);
-    void deletePlayList(int idPlayList);
+    void updatePlayList(PlayList playList);
+    void deletePlayList(PlayList playList);
 }
