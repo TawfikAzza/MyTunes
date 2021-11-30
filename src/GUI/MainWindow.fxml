@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="877.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MainController">
+   <children>
+      <VBox layoutX="-8.0" layoutY="1.0" prefHeight="600.0" prefWidth="877.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="660.0">
+               <children>
+                  <VBox prefHeight="79.0" prefWidth="128.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="goBack" mnemonicParsing="false" style="-fx-background-color: transparent;" />
+                              <Button fx:id="play" mnemonicParsing="false" style="-fx-background-color: transparent;" />
+                              <Button fx:id="goForward" mnemonicParsing="false" style="-fx-background-color: transparent;" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <ImageView fx:id="volumeImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
+                              <Slider blockIncrement="2.0" prefHeight="16.0" prefWidth="85.0" value="30.0" />
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Region prefHeight="200.0" prefWidth="100.0" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label text="var" />
+                        <Label text="... is playing" />
+                     </children>
+                  </HBox>
+                  <Region prefHeight="200.0" prefWidth="100.0" />
+                  <HBox alignment="CENTER" prefHeight="63.0" prefWidth="283.0">
+                     <children>
+                        <Label text="Filter:">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin></Label>
+                        <TextField />
+                        <Button fx:id="searchButton" mnemonicParsing="false" style="-fx-background-color: transparent;">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin></Button>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets left="30.0" right="30.0" top="30.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="512.0" prefWidth="778.0">
+               <children>
+                  <VBox prefHeight="512.0" prefWidth="188.0">
+                     <children>
+                        <Label text="Playlists" />
+                        <ListView prefHeight="430.0" prefWidth="188.0">
+                           <VBox.margin>
+                              <Insets bottom="15.0" top="15.0" />
+                           </VBox.margin></ListView>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="New" textOverrun="CLIP" />
+                              <Region prefHeight="20.0" prefWidth="25.0" />
+                              <Button mnemonicParsing="false" text="Edit" />
+                              <Region prefHeight="20.0" prefWidth="25.0" />
+                              <Button mnemonicParsing="false" text="Delete" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Region prefHeight="200.0" prefWidth="60.0" />
+                  <VBox prefHeight="512.0" prefWidth="163.0">
+                     <children>
+                        <Label text="Label" />
+                        <ListView prefHeight="430.0" prefWidth="163.0">
+                           <VBox.margin>
+                              <Insets bottom="15.0" top="15.0" />
+                           </VBox.margin></ListView>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Button" />
+                              <Button mnemonicParsing="false" text="Button" />
+                              <Button mnemonicParsing="false" text="Delete" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Region prefHeight="200.0" prefWidth="60.0" />
+                  <Button fx:id="leftButton" mnemonicParsing="false" style="-fx-background-color: transparent;">
+                     <HBox.margin>
+                        <Insets top="32.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Region prefHeight="200.0" prefWidth="60.0" />
+                  <VBox prefHeight="346.0" prefWidth="258.0">
+                     <children>
+                        <Label text="Songs" />
+                        <ListView prefHeight="430.0" prefWidth="258.0">
+                           <VBox.margin>
+                              <Insets bottom="15.0" top="15.0" />
+                           </VBox.margin>
+                        </ListView>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Button" />
+                              <Button mnemonicParsing="false" text="Button" />
+                              <Button mnemonicParsing="false" text="Button" />
+                              <Button mnemonicParsing="false" text="Button" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets left="30.0" right="30.0" top="15.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

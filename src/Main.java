@@ -7,9 +7,9 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
+        System.out.println("th: "+getClass().getResource(""));
 
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/MainWindow.fxml"));
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
