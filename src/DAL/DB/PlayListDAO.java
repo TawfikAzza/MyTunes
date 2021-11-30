@@ -25,12 +25,12 @@ public class PlayListDAO implements IPlayListDataAccess {
     }
 
     @Override
-    public void updatePlayList(PlayList playList) {
+    public void updatePlayList(int idPlayList) {
 
     }
 
     @Override
-    public void deletePlayList(PlayList playList) {
+    public void deletePlayList(int idPlayList) {
 
     }
 }
