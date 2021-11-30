@@ -1,4 +1,4 @@
-package GUI;
+package GUI.controller;
 
 import BE.Song;
 import javafx.event.ActionEvent;
@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     @FXML
-    Button goBack, goForward, play, leftButton, searchButton;
+    Button goBack, goForward, play, leftButton, searchButton, upButton, downButton;
     @FXML
     ImageView volumeImage;
     @FXML
@@ -69,6 +69,11 @@ public class MainController implements Initializable {
         searchImage.setFitHeight(25);
         searchImage.setFitWidth(25);
         searchButton.setGraphic(searchImage);
+
+        ImageView downImage = new ImageView(getClass().getResource("/down.png").toExternalForm());
+        downImage.setFitHeight(20);
+        downImage.setFitWidth(20);
+        downButton.setGraphic(downImage);
 
     }
 

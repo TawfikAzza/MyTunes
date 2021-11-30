@@ -9,7 +9,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         System.out.println("th: "+getClass().getResource(""));
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/MainWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/view/MainWindow.fxml"));
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
