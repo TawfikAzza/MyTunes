@@ -27,7 +27,7 @@ public class Song {
      * returns the File as a media to the caller of the getSong method.
      */
 
-    public Song(int id, String name, Author author, CategorySong category, File file) throws IOException {
+    public Song(int id, String name, Author author, CategorySong category, File file) throws Exception {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -38,7 +38,7 @@ public class Song {
      * This constructor will be used when retrieving info from the database.
      * As the database will only store the name of the file and not its path or the file itself
      * */
-    public Song(int id, String name, Author author, CategorySong category, String songfile) throws IOException {
+    public Song(int id, String name, Author author, CategorySong category, String songfile) throws Exception {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -71,7 +71,11 @@ public class Song {
     public void setAuthor(Author author) {
         this.author = author;
     }
-
+    public int getSongLength() {
+        Media song = new Media(songFile);
+        song.getDuration().toMinutes();
+        return 0;
+    }
     public CategorySong getCategory() {
         return category;
     }
@@ -85,7 +89,7 @@ public class Song {
      */
 
     public Media getSongFile() {
-        return new Media(PATH_TO_FILE + category.getName() + "/" + songFile);
+        return new Media(songFile);
     }
 
     /**
@@ -94,12 +98,9 @@ public class Song {
      * to the songFile String attribute.
      * If the target folder doesn't exist, it will create it.
      * */
-    public void setSongFile(File file) throws IOException {
-        Path src = Paths.get(file.getAbsolutePath());
-        Path dest = Paths.get(PATH_TO_FILE + category.getName() + "/" + file.getName().toString());
-        Files.createDirectories(dest.getParent());
-        Files.copy(src, dest);
-        songFile = file.getName();
+    public void setSongFile(File file) throws Exception {
+
+        songFile = file.getAbsolutePath();
     }
 
 }
