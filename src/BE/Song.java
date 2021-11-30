@@ -27,7 +27,7 @@ public class Song {
      * returns the File as a media to the caller of the getSong method.
      */
 
-    public Song(int id, String name, Author author, CategorySong category, File file) throws Exception {
+    public Song(String name, Author author, CategorySong category, File file) throws Exception {
         this.id = id;
         this.name = name;
         this.author = author;

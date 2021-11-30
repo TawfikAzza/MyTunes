@@ -1,7 +1,5 @@
 package DAL.interfaces;
 
-import BE.Author;
-import BE.CategorySong;
 import BE.PlayList;
 
 import java.util.List;
