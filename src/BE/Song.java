@@ -13,19 +13,48 @@ public class Song {
     private String name;
     private Author author;
     private CategorySong category;
-    private Media songFile;
-    private static final String PATH_TO_FILE = "C:/Users/EASV/Desktop/SCO/MyTunes/resources/";
-    public Song(int id, String name, Author author, CategorySong category) {
+    private String songFile;
+    //TODO: FInd a way to get rid of the absolute path and use a getClass().getResources().
+    private static final String PATH_TO_FILE = "C:/Users/EASV/Desktop/SCO/MyTunes/resources/music/";
+    /***
+     * This constructor is to be used when creating the song
+     * this will launch the copy of the file to the right folder
+     * i.e: root_resources/category/fileName
+     * and assign the fileName to the String attribute songFile of the song object.
+     * this attribute is the value saved in the databse.
+     * Each time the object is instanciated through a query to the database,
+     * the path is constructed using the category attribute of the song as well as its name and
+     * returns the File as a media to the caller of the getSong method.
+     */
+
+    public Song(int id, String name, Author author, CategorySong category, File file) throws IOException {
         this.id = id;
         this.name = name;
         this.author = author;
         this.category = category;
+        setSongFile(file);
     }
-
+    /**
+     * This constructor will be used when retrieving info from the database.
+     * As the database will only store the name of the file and not its path or the file itself
+     * */
+    public Song(int id, String name, Author author, CategorySong category, String songfile) throws IOException {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.category = category;
+        this.songFile=songfile;
+    }
     public int getId() {
         return id;
     }
+    /**
+     * This method is used only for the database operations, it contains the file name as a String and not the file itself
+     * */
 
+    public String getStringSongFile() {
+        return songFile;
+    }
 
     public String getName() {
         return name;
@@ -50,15 +79,27 @@ public class Song {
     public void setCategory(CategorySong category) {
         this.category = category;
     }
+    /****
+     * This method construct the filePath using the category as well as the file name to identify the song
+     * in the folder hierarchy and return the Media constructed with the path.
+     */
 
     public Media getSongFile() {
-        return songFile;
+        return new Media(PATH_TO_FILE + category.getName() + "/" + songFile);
     }
+
+    /**
+     * Method used at the creation of the song, it separate the file path from the file received from the
+     * FileChooser object as well as making a copy of it in the right folder and assigning the file name
+     * to the songFile String attribute.
+     * If the target folder doesn't exist, it will create it.
+     * */
     public void setSongFile(File file) throws IOException {
         Path src = Paths.get(file.getAbsolutePath());
-        Path dest = Paths.get(PATH_TO_FILE + file.getName().toString());
+        Path dest = Paths.get(PATH_TO_FILE + category.getName() + "/" + file.getName().toString());
+        Files.createDirectories(dest.getParent());
         Files.copy(src, dest);
-        songFile = new Media(PATH_TO_FILE + category.getName() + "/" + file.getName());
+        songFile = file.getName();
     }
 
 }
