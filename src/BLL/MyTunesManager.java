@@ -19,7 +19,7 @@ import DAL.interfaces.ISongDataAccess;
 
 import java.util.List;
 
-public class MyTunesManager {
+public class MyTunesManager implements MyTunesFacade{
     SongPlayer songPlayer;
 
     IDALMyTunesFacade idalMyTunesFacade;

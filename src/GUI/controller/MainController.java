@@ -1,6 +1,9 @@
 package GUI.controller;
 
 import BE.Song;
+import BLL.exception.MyTunesManagerException;
+import BLL.exception.SongDAOException;
+import GUI.model.SongsModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -8,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -25,19 +29,37 @@ import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
+    private final SongsModel songsModel;
     @FXML
     Button goBack, goForward, play, leftButton, searchButton, upButton, downButton;
     @FXML
     ImageView volumeImage;
     @FXML
     TextField searchBar;
-//    @FXML
-//    TableView<?> songsTableView, playlistsTableView;
-//    @FXML
-//    private TableColumn<?, String> titleColumn, artistColumn, categoryColumn, timeColumn;
+    @FXML
+    private TableView<Song> songsTableView, playlistsTableView;
+    @FXML
+    private TableColumn<Song, String> titleColumn, artistColumn, categoryColumn, timeColumn;
+
+    public MainController () throws MyTunesManagerException {
+        this.songsModel = new SongsModel();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        artistColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+//        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+
+        try {
+            songsTableView.setItems(songsModel.getAllSongs());
+        } catch (SongDAOException e) {
+            e.printStackTrace();
+        }
+
+
         Image image = new Image("/volume.png");
         volumeImage.setImage(image);
         volumeImage.setFitWidth(20);
