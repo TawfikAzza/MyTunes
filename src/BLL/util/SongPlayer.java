@@ -27,9 +27,7 @@ public class SongPlayer {
     public void playAudio() throws SongPlayerException {
         try
         {
-            Media media = currentSong.getSongFile();
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.play();
+            //play media
         }
         catch (NullPointerException e)
         {
