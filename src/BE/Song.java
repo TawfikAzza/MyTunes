@@ -13,9 +13,9 @@ public class Song {
     private String name;
     private Author author;
     private CategorySong category;
-    private String songFile;
+    private File songFile;
     //TODO: FInd a way to get rid of the absolute path and use a getClass().getResources().
-    private static final String PATH_TO_FILE = "C:/Users/EASV/Desktop/SCO/MyTunes/resources/music/";
+   // private static final String PATH_TO_FILE = "C:/Users/EASV/Desktop/SCO/MyTunes/resources/music/";
     /***
      * This constructor is to be used when creating the song
      * this will launch the copy of the file to the right folder
@@ -43,8 +43,11 @@ public class Song {
         this.name = name;
         this.author = author;
         this.category = category;
-        this.songFile=songfile;
+        setSongFile(new File(songfile));
     }
+
+
+
     public int getId() {
         return id;
     }
@@ -52,9 +55,7 @@ public class Song {
      * This method is used only for the database operations, it contains the file name as a String and not the file itself
      * */
 
-    public String getStringSongFile() {
-        return songFile;
-    }
+
 
     public String getName() {
         return name;
@@ -71,11 +72,7 @@ public class Song {
     public void setAuthor(Author author) {
         this.author = author;
     }
-    public int getSongLength() {
-        Media song = new Media(songFile);
-        song.getDuration().toMinutes();
-        return 0;
-    }
+
     public CategorySong getCategory() {
         return category;
     }
@@ -88,8 +85,8 @@ public class Song {
      * in the folder hierarchy and return the Media constructed with the path.
      */
 
-    public Media getSongFile() {
-        return new Media(songFile);
+    public File getSongFile() {
+        return songFile;
     }
 
     /**
@@ -99,8 +96,10 @@ public class Song {
      * If the target folder doesn't exist, it will create it.
      * */
     public void setSongFile(File file) throws Exception {
-
-        songFile = file.getAbsolutePath();
+        songFile = file;
     }
 
+    public String getStringSongFile() {
+        return songFile.toURI().toString();
+    }
 }
