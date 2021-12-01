@@ -3,7 +3,7 @@ package DAL.DB;
 import BE.Author;
 import DAL.ConnectionManager;
 import DAL.interfaces.IAuthorDataAccess;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
+
 
 
 import java.sql.*;
