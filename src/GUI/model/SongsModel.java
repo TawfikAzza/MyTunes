@@ -12,16 +12,16 @@ import java.io.IOException;
 import java.util.List;
 
 public class SongsModel {
-    private ObservableList<Song> allSongs;
+    private ObservableList<Song> allAvailableSongs;
     private MyTunesFacade myTunesFacade;
 
     public SongsModel() throws MyTunesManagerException {
         this.myTunesFacade = new MyTunesManager();
-        allSongs = FXCollections.observableArrayList();
+        allAvailableSongs = FXCollections.observableArrayList();
     }
     public ObservableList<Song> getAllSongs() throws SongDAOException {
        List<Song> allSongs = myTunesFacade.getALlSongs();
-        this.allSongs.addAll(allSongs);
-        return this.allSongs;
+        allAvailableSongs.addAll(allSongs);
+        return allAvailableSongs;
     }
 }
