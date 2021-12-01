@@ -48,13 +48,19 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        artistColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
-        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+
 //        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
 
         try {
-            songsTableView.setItems(songsModel.getAllSongs());
+            titleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("name"));
+            artistColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("author"));
+            categoryColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("category"));
+            songsTableView.getItems().setAll(songsModel.getAllSongs());
+        } catch (SongDAOException e) {
+            e.printStackTrace();
+        }
+        try {
+            System.out.println(songsModel.getAllSongs());
         } catch (SongDAOException e) {
             e.printStackTrace();
         }
