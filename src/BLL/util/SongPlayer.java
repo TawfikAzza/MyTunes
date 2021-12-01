@@ -5,6 +5,8 @@ import BLL.exception.SongPlayerException;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+import java.io.File;
+
 public class SongPlayer {
     private final static float MAX_VOLUME = 100;
 
@@ -27,7 +29,8 @@ public class SongPlayer {
     public void playAudio() throws SongPlayerException {
         try
         {
-            //play media
+            //File file = new File("C:/Users/EASV/Desktop/SCO/MyTunes/resources/finalBoss.mp3");
+            Media media = new Media("C:/Users/EASV/Desktop/SCO/MyTunes/resources/finalBoss.mp3");
         }
         catch (NullPointerException e)
         {
