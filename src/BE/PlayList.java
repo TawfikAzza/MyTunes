@@ -6,7 +6,7 @@ public class PlayList {
     private int idPlaylist;
     private String name;
     private HashMap<Integer,Song> listSong;
-    private int sizeList=0;
+    private Integer sizeList=0;
     public PlayList(int idPlaylist, String name ,HashMap<Integer,Song> songList ) {
         this.idPlaylist = idPlaylist;
         this.name = name;

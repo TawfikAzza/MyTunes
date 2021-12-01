@@ -7,6 +7,8 @@ import BLL.exception.PlayListDAOException;
 import BLL.exception.SongDAOException;
 import GUI.model.PlaylistsModel;
 import GUI.model.SongsModel;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -51,7 +53,7 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<PlayList, String> nameColumn, timePlaylistColumn;
     @FXML
-    private TableColumn<PlayList, Integer> songsColumn;
+    private TableColumn<PlayList, String> songsColumn;
 
     public MainController () throws MyTunesManagerException {
         this.songsModel = new SongsModel();
@@ -75,13 +77,13 @@ public class MainController implements Initializable {
         }
 
 
-//        try {
-//            nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-//            songsColumn.setCellValueFactory(new PropertyValueFactory<>());
-//            playlistsTableView.getItems().setAll();
-//        } catch (PlayListDAOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+            songsColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().size())));
+            playlistsTableView.getItems().setAll(playlistsModel.getAllPlayLists());
+        } catch (PlayListDAOException e) {
+            e.printStackTrace();
+        }
 
 
         Image image = new Image("/volume.png");
