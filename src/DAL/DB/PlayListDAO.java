@@ -55,7 +55,6 @@ public class PlayListDAO implements IPlayListDataAccess {
                 );
                 playListName = rs.getString("playListName");
             }
-            //System.out.println("SIZE: "+songList.size()+" id : "+idPlayList+" name: "+playListName);
             playListSearched = new PlayList(idPlayList, playListName, songList);
         }
 
