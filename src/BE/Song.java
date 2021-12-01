@@ -19,7 +19,7 @@ public class Song {
     private Author author;
     private CategorySong category;
     private File songFile;
-
+    private int duration;
     /***
      * This constructor is to be used when creating the song
      * this will launch the copy of the file to the right folder
@@ -31,23 +31,60 @@ public class Song {
      * returns the File as a media to the caller of the getSong method.
      */
 
-    public Song(String name, Author author, CategorySong category, File file) throws Exception {
+    public Song(String name, Author author, CategorySong category, File file, int duration) throws Exception {
         this.id = id;
         this.name = name;
         this.author = author;
         this.category = category;
         setSongFile(file);
+        this.duration=duration;
     }
+    /***
+     * Constructor used when creating the Object Song from the UI, as the UI will take the duration as an Int
+     * With the format mm:ss, this method will simply calculate a duration in seconds according to the
+     * <String entered, convert it into an int and return the value which will in turn be stored as an instance variable
+     * and used for database operation as the Song Table stores an int type value for it to be used
+     * later on to calculate the total duration of a PlayList.
+     * */
+    public Song(String name, Author author, CategorySong category, File file, String duration) throws Exception {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.category = category;
+        setSongFile(file);
+        this.duration=setStringToIntDuration(duration);
+    }
+
+    private int setStringToIntDuration(String duration) {
+        int transformedDuration=0;
+        String[] arrayStringDuration = duration.split(":");
+        if(arrayStringDuration.length==2) {
+            int minutes = Integer.parseInt(arrayStringDuration[0]);
+            int seconds = Integer.parseInt(arrayStringDuration[1]);
+            transformedDuration=(minutes*60)+seconds;
+        } else {
+            transformedDuration = 0;
+        }
+        return transformedDuration;
+    }
+
+    public String getStringDuration() {
+        int minutes = this.duration/60;
+        int seconds = this.duration % 60;
+        return minutes+":"+seconds;
+    }
+
     /**
      * This constructor will be used when retrieving info from the database.
      * As the database will only store the name of the file and not its path or the file itself
      * */
-    public Song(int id, String name, Author author, CategorySong category, String songfile) throws Exception {
+    public Song(int id, String name, Author author, CategorySong category, String songfile, int duration) throws Exception {
         this.id = id;
         this.name = name;
         this.author = author;
         this.category = category;
         setSongFile(new File(songfile));
+        this.duration=duration;
     }
 
 
@@ -107,9 +144,17 @@ public class Song {
         return songFile.toString();
     }
 
+    public int getIntDuration() {
+        return duration;
+    }
+
+    public void setIntDuration(int duration) {
+        this.duration = duration;
+    }
+
     /*
-    Returns the length of the song in seconds
-     */
+        Returns the length of the song in seconds
+         */
     public double getSongLength() throws SongException {
         AudioInputStream audioInputStream = null;
         try {
