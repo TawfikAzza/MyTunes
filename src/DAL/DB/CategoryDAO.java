@@ -3,9 +3,7 @@ package DAL.DB;
 import BE.CategorySong;
 import DAL.ConnectionManager;
 import DAL.interfaces.ICategorySongDataAccess;
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
