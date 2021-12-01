@@ -105,7 +105,6 @@ public class PlayListDAO implements IPlayListDataAccess {
                 currentPlaylist = idPlayList;
 
             }
-            //System.out.println("SIZE: "+songList.size()+" id : "+idPlayList+" name: "+playListName);
             PlayList playList = new PlayList(idPlayList, playListName, songList);
             allPlayLists.add(playList);
         }
