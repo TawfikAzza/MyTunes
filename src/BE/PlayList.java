@@ -16,6 +16,10 @@ public class PlayList {
         return listSong;
     }
 
+    public int getSongCount() {
+        return listSong.size();
+    }
+
     public void setListSong(HashMap<Integer, Song> listSong) {
         this.listSong = listSong;
     }
