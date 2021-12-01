@@ -1,8 +1,11 @@
 package GUI.controller;
 
+import BE.PlayList;
 import BE.Song;
 import BLL.exception.MyTunesManagerException;
+import BLL.exception.PlayListDAOException;
 import BLL.exception.SongDAOException;
+import GUI.model.PlaylistsModel;
 import GUI.model.SongsModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,10 +29,13 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     private final SongsModel songsModel;
+    private final PlaylistsModel playlistsModel;
     @FXML
     Button goBack, goForward, play, leftButton, searchButton, upButton, downButton;
     @FXML
@@ -37,12 +43,20 @@ public class MainController implements Initializable {
     @FXML
     TextField searchBar;
     @FXML
-    private TableView<Song> songsTableView, playlistsTableView;
+    private TableView<Song> songsTableView;
+    @FXML
+    private TableView<PlayList> playlistsTableView;
     @FXML
     private TableColumn<Song, String> titleColumn, artistColumn, categoryColumn, timeColumn;
+    @FXML
+    private TableColumn<PlayList, String> nameColumn, timePlaylistColumn;
+    @FXML
+    private TableColumn<PlayList, Integer> songsColumn;
 
     public MainController () throws MyTunesManagerException {
         this.songsModel = new SongsModel();
+        this.playlistsModel = new PlaylistsModel();
+
     }
 
     @Override
@@ -59,11 +73,15 @@ public class MainController implements Initializable {
         } catch (SongDAOException e) {
             e.printStackTrace();
         }
-        try {
-            System.out.println(songsModel.getAllSongs());
-        } catch (SongDAOException e) {
-            e.printStackTrace();
-        }
+
+
+//        try {
+//            nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+//            songsColumn.setCellValueFactory(new PropertyValueFactory<>());
+//            playlistsTableView.getItems().setAll();
+//        } catch (PlayListDAOException e) {
+//            e.printStackTrace();
+//        }
 
 
         Image image = new Image("/volume.png");
@@ -156,4 +174,7 @@ public class MainController implements Initializable {
         System.out.println("src:" + src + "  dest:" + dest);
         Files.copy(src, dest);
     }
+//    private Integer getPlayListSize() throws PlayListDAOException {
+//       final List<Song> jjj = PlayList::getListSong;
+//    }
 }

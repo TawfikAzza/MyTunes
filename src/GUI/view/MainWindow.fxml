@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
@@ -83,15 +84,15 @@
                         <Label text="Playlists" />
                         <TableView fx:id="playlistsTableView" prefHeight="430.0" prefWidth="277.0">
                           <columns>
-                            <TableColumn prefWidth="96.0" text="Name" />
-                            <TableColumn prefWidth="96.0" text="Songs" />
-                              <TableColumn prefWidth="96.0" text="Time" />
+                            <TableColumn fx:id="nameColumn" prefWidth="96.0" text="Name" />
+                            <TableColumn fx:id="songsColumn" prefWidth="96.0" text="Songs" />
+                              <TableColumn fx:id="timePlaylistColumn" prefWidth="96.0" text="Time" />
                           </columns>
                            <VBox.margin>
                               <Insets top="15.0" />
                            </VBox.margin>
                         </TableView>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox prefWidth="200.0">
                            <children>
                               <Button mnemonicParsing="false" text="New" textOverrun="CLIP" />
                               <Region prefHeight="20.0" prefWidth="25.0" />
@@ -100,7 +101,7 @@
                               <Button mnemonicParsing="false" text="Delete" />
                            </children>
                            <VBox.margin>
-                              <Insets top="15.0" />
+                              <Insets bottom="20.0" top="15.0" />
                            </VBox.margin>
                         </HBox>
                      </children>
@@ -113,13 +114,16 @@
                            <VBox.margin>
                               <Insets bottom="15.0" top="15.0" />
                            </VBox.margin></ListView>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <HBox prefWidth="200.0">
                            <children>
                               <Button fx:id="upButton" mnemonicParsing="false" style="-fx-background-color: transparent;" />
                               <Button fx:id="downButton" mnemonicParsing="false" style="-fx-background-color: transparent;" />
                               <Region prefHeight="5.0" prefWidth="30.0" />
                               <Button mnemonicParsing="false" text="Delete" />
                            </children>
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
                         </HBox>
                      </children>
                   </VBox>
@@ -144,14 +148,23 @@
                               <Insets bottom="15.0" top="15.0" />
                            </VBox.margin>
                         </TableView>
-                        <HBox prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Button mnemonicParsing="false" text="Button" />
-                              <Button mnemonicParsing="false" text="Button" />
-                              <Button mnemonicParsing="false" text="Button" />
-                              <Button mnemonicParsing="false" text="Button" />
-                           </children>
-                        </HBox>
+                        <BorderPane prefWidth="200.0">
+                           <right>
+                              <Button mnemonicParsing="false" text="Close" BorderPane.alignment="CENTER" />
+                           </right>
+                           <left>
+                              <HBox spacing="20.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Button mnemonicParsing="false" text="New" />
+                                    <Button mnemonicParsing="false" text="Delete" />
+                                    <Button mnemonicParsing="false" text="Button" />
+                                 </children>
+                              </HBox>
+                           </left>
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </BorderPane>
                      </children>
                   </VBox>
                </children>
