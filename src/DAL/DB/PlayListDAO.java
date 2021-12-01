@@ -113,7 +113,7 @@ public class PlayListDAO implements IPlayListDataAccess {
         return allPlayLists;
     }
 
-    //TODO: Not tested, will test it tomorrow, too tired now...
+
     @Override
     public PlayList createPlayList(PlayList playList) throws Exception {
         PlayList playListCreated = null;
