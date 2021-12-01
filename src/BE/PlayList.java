@@ -32,4 +32,8 @@ public class PlayList {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s",getName());
+    }
 }
