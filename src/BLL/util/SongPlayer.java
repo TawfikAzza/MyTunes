@@ -30,7 +30,9 @@ public class SongPlayer {
         try
         {
             //File file = new File("C:/Users/EASV/Desktop/SCO/MyTunes/resources/finalBoss.mp3");
-            Media media = new Media("C:/Users/EASV/Desktop/SCO/MyTunes/resources/finalBoss.mp3");
+            Media media = new Media("file:/C:/Users/EASV/Desktop/SCO/MyTunes/resources/finalBoss.mp3");
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
         }
         catch (NullPointerException e)
         {

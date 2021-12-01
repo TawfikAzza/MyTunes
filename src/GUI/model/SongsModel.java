@@ -5,6 +5,7 @@ import BLL.MyTunesFacade;
 import BLL.MyTunesManager;
 import BLL.exception.MyTunesManagerException;
 import BLL.exception.SongDAOException;
+import BLL.exception.SongPlayerException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -23,5 +24,10 @@ public class SongsModel {
        List<Song> allSongs = myTunesFacade.getALlSongs();
         allAvailableSongs.addAll(allSongs);
         return allAvailableSongs;
+    }
+
+    public void playSong() throws MyTunesManagerException, SongPlayerException {
+        MyTunesManager myTunesManager = new MyTunesManager();
+        myTunesManager.playSong();
     }
 }

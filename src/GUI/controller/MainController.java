@@ -5,6 +5,7 @@ import BE.Song;
 import BLL.exception.MyTunesManagerException;
 import BLL.exception.PlayListDAOException;
 import BLL.exception.SongDAOException;
+import BLL.exception.SongPlayerException;
 import GUI.model.PlaylistsModel;
 import GUI.model.SongsModel;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -65,8 +66,8 @@ public class MainController implements Initializable {
 
     }
 
-    public void playSong(ActionEvent event) {
-
+    public void playSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
+        songsModel.playSong();
     }
 
     @Override
