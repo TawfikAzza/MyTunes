@@ -10,8 +10,13 @@ import GUI.model.SongsModel;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -39,7 +44,7 @@ public class MainController implements Initializable {
     private final SongsModel songsModel;
     private final PlaylistsModel playlistsModel;
     @FXML
-    Button goBack, goForward, play, leftButton, searchButton, upButton, downButton;
+    Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton;
     @FXML
     ImageView volumeImage;
     @FXML
@@ -51,11 +56,10 @@ public class MainController implements Initializable {
     @FXML
     private TableColumn<Song, String> titleColumn, artistColumn, categoryColumn, timeColumn;
     @FXML
-    private TableColumn<PlayList, String> nameColumn, timePlaylistColumn;
-    @FXML
-    private TableColumn<PlayList, String> songsColumn;
+    private TableColumn<PlayList, String> nameColumn, timePlaylistColumn, songsColumn;
 
-    public MainController () throws MyTunesManagerException {
+
+    public MainController() throws MyTunesManagerException {
         this.songsModel = new SongsModel();
         this.playlistsModel = new PlaylistsModel();
 
@@ -63,6 +67,25 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        newSongButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Parent root;
+                try {
+                    root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"), resources);
+                    Stage stage = new Stage();
+                    stage.setTitle("My New Stage Title");
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                    // Hide this current window (if this is what you want)
+//                    ((Node)(event.getSource())).getScene().getWindow().hide();
+                }
+                catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
 
 
 //        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
