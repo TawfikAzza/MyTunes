@@ -5,7 +5,7 @@ import DAL.ConnectionManager;
 import DAL.interfaces.IAuthorDataAccess;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
-import java.io.IOException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
