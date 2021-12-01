@@ -30,7 +30,14 @@ public class DAOTest {
        // createSong();
        // getPlayList();
         //getAllPlayList();
-        //createPlayList();
+       // createPlayList();
+       // updatePlayList();
+       // deletePlayList();
+    }
+    public static void deletePlayList() throws Exception {
+        PlayListDAO playListDAO = new PlayListDAO();
+        PlayList playList = playListDAO.getPlayList(4);
+        playListDAO.deletePlayList(playList);
     }
     public static void getAllPlayList() throws Exception {
         PlayListDAO playListDAO = new PlayListDAO();
@@ -42,9 +49,19 @@ public class DAOTest {
             }
         }
     }
+
+    public static void updatePlayList() throws Exception {
+        PlayListDAO playListDAO = new PlayListDAO();
+        PlayList playList = playListDAO.getPlayList(4);
+        PlayList playList1 = playListDAO.getPlayList(2);
+        playList.setListSong(playList1.getListSong());
+        playList.setName("MyThirdPlayListModifiedATHIRD TIME");
+        playListDAO.updatePlayList(playList);
+    }
     public static void createPlayList() throws Exception {
         PlayListDAO playListDAO = new PlayListDAO();
         PlayList playList = playListDAO.getPlayList(1);
+        playList.setName("MyThirdPlayList");
         playListDAO.createPlayList(playList);
     }
     public static void getPlayList() throws Exception {
