@@ -2,8 +2,15 @@ package BE;
 
 
 
-import java.io.File;
+import BLL.exception.SongException;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 
 
 public class Song {
@@ -98,5 +105,21 @@ public class Song {
 
     public String getStringSongFile() {
         return songFile.toString();
+    }
+
+    /*
+    Returns the length of the song in seconds
+     */
+    public double getSongLength() throws SongException {
+        AudioInputStream audioInputStream = null;
+        try {
+            audioInputStream = AudioSystem.getAudioInputStream(songFile);
+        } catch (UnsupportedAudioFileException | IOException e)
+        {
+            throw new SongException("Cannot get length of the song!", e);
+        }
+        AudioFormat format = audioInputStream.getFormat();
+            long frames = audioInputStream.getFrameLength();
+            return  (frames+0.0) / format.getFrameRate();
     }
 }
