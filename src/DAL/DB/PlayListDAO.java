@@ -40,7 +40,7 @@ public class PlayListDAO implements IPlayListDataAccess {
         HashMap<Integer, Song> songList = new HashMap<>();
         try (Connection con = cm.getConnection()) {
             String sqlcommandSelect = "SELECT Song.id as idSong, Song.name as songName, Song.authorID as AuthorID, Song.categoryID as CategoryID, " +
-                    " Song.songFile as songFile, " +
+                    " Song.songFile as songFile, Song.duration as duration " +
                     " CORR_SONG_PLAYLIST.rankSong as RankSong,PlayList.name as playListName " +
                     " FROM Song,CORR_SONG_PLAYLIST,Playlist " +
                     " WHERE Song.id = CORR_SONG_PLAYLIST.songID " +
@@ -57,7 +57,8 @@ public class PlayListDAO implements IPlayListDataAccess {
                                 rs.getString("songName"),
                                 mapAuthor.get(rs.getInt("authorID")),
                                 mapCategory.get(rs.getInt("categoryID")),
-                                rs.getString("songFile")
+                                rs.getString("songFile"),
+                                rs.getInt("duration")
                         )
                 );
                 playListName = rs.getString("playListName");
@@ -77,7 +78,7 @@ public class PlayListDAO implements IPlayListDataAccess {
         HashMap<Integer, Song> songList = new HashMap<>();
         try (Connection con = cm.getConnection()) {
             String sqlcommandSelect = "SELECT PLAYLIST.id as playListID, Song.id as idSong, Song.name as songName, Song.authorID as AuthorID, Song.categoryID as CategoryID, " +
-                    "Song.songFile as songFile, CORR_SONG_PLAYLIST.rankSong as RankSong,PlayList.name as playListName " +
+                    "Song.songFile as songFile, Song.duration as duration, CORR_SONG_PLAYLIST.rankSong as RankSong,PlayList.name as playListName " +
                     "FROM Song INNER JOIN CORR_SONG_PLAYLIST " +
                     "ON Song.id=CORR_SONG_PLAYLIST.songID " +
                     "INNER JOIN Playlist ON CORR_SONG_PLAYLIST.playListID=PLAYLIST.id " +
@@ -104,7 +105,8 @@ public class PlayListDAO implements IPlayListDataAccess {
                                 rs.getString("songName"),
                                 mapAuthor.get(rs.getInt("authorID")),
                                 mapCategory.get(rs.getInt("categoryID")),
-                                rs.getString("songFile")
+                                rs.getString("songFile"),
+                                rs.getInt("duration")
                         )
                 );
                 playListName = rs.getString("playListName");

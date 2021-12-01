@@ -40,7 +40,8 @@ public class SongDAO implements ISongDataAccess {
                         rs.getString("name"),
                         allAuthorMap.get(rs.getInt("authorID")),
                         allCategoryMap.get(rs.getInt("categoryID")),
-                        rs.getString("songFile")
+                        rs.getString("songFile"),
+                        rs.getInt("duration")
                 );
             }
         }
@@ -65,7 +66,8 @@ public class SongDAO implements ISongDataAccess {
                         rs.getString("name"),
                         allAuthorMap.get(rs.getInt("authorID")),
                         allCategoryMap.get(rs.getInt("categoryID")),
-                        rs.getString("songFile")
+                        rs.getString("songFile"),
+                        rs.getInt("duration")
                         )
                 );
             }
@@ -77,12 +79,13 @@ public class SongDAO implements ISongDataAccess {
     public Song createSong(Song song) throws Exception {
         Song songCreated = null;
         try (Connection con = cm.getConnection()) {
-            String sqlcommandInsert = "INSERT INTO SONG VALUES (?,?,?,?);";
+            String sqlcommandInsert = "INSERT INTO SONG VALUES (?,?,?,?,?);";
             PreparedStatement pstmtInsert = con.prepareStatement(sqlcommandInsert, Statement.RETURN_GENERATED_KEYS);
             pstmtInsert.setString(1,song.getName());
             pstmtInsert.setInt(2,song.getAuthor().getId());
             pstmtInsert.setInt(3,song.getCategory().getId());
             pstmtInsert.setString(4,song.getStringSongFile());
+            pstmtInsert.setInt(5,song.getIntDuration());
             pstmtInsert.execute();
             ResultSet rs = pstmtInsert.getGeneratedKeys();
             while(rs.next())
@@ -92,7 +95,8 @@ public class SongDAO implements ISongDataAccess {
                                 song.getName(),
                                 song.getAuthor(),
                                 song.getCategory(),
-                                song.getStringSongFile()
+                                song.getStringSongFile(),
+                                song.getIntDuration()
                     );
             }
         }
@@ -103,13 +107,14 @@ public class SongDAO implements ISongDataAccess {
     @Override
     public void updateSong(Song song) throws Exception {
         try (Connection con = cm.getConnection()) {
-            String sqlcommandUpdate = "UPDATE SONG SET name=?, authorID=?,categoryID=?,songFile=? WHERE id = ?;";
+            String sqlcommandUpdate = "UPDATE SONG SET name=?, authorID=?,categoryID=?,songFile=?,duration=? WHERE id = ?;";
             PreparedStatement pstmtUpdate = con.prepareStatement(sqlcommandUpdate);
             pstmtUpdate.setString(1,song.getName());
             pstmtUpdate.setInt(2,song.getAuthor().getId());
             pstmtUpdate.setInt(3,song.getCategory().getId());
             pstmtUpdate.setString(4,song.getStringSongFile());
-            pstmtUpdate.setInt(5,song.getId());
+            pstmtUpdate.setInt(5,song.getIntDuration());
+            pstmtUpdate.setInt(6,song.getId());
             pstmtUpdate.executeUpdate();
 
         }

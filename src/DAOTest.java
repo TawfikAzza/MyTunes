@@ -27,12 +27,20 @@ public class DAOTest {
         // testFile();
         //testSongLength();
         //getAllSongs();
-       // createSong();
+        //createSong();
        // getPlayList();
         //getAllPlayList();
        // createPlayList();
        // updatePlayList();
        // deletePlayList();
+        //getSong();
+    }
+
+    public static void getSong() throws Exception {
+        SongDAO songDAO = new SongDAO();
+        Song test = songDAO.getSong(6);
+        System.out.printf("Name: %s, Author: %s, Category: %s, Duration: %s %n",test.getName(),test.getAuthor().getName()
+                                ,test.getCategory().getName(),test.getStringDuration());
     }
     public static void deletePlayList() throws Exception {
         PlayListDAO playListDAO = new PlayListDAO();
@@ -113,7 +121,10 @@ public class DAOTest {
         File file = new File("C:/Users/EASV/Desktop/Downloads/Old-cat.jpg");
 
         Author author = new Author(2,"Adam");
-        Author author2 = new Author(3,"Jano");
+        CategorySong categorySong2 = new CategorySong(3,"jhfksdhfk");
+        Song mySong1 = new Song("I HATE WOMBATSSSSSSSS!!! ",author,categorySong2,file,"2:35");
+        songDAO.createSong(mySong1);
+       /* Author author2 = new Author(3,"Jano");
         Author author3 = new Author(4,"Tawfik");
         Author author4 = new Author(1,"Jeppe");
         CategorySong categorySong = new CategorySong(2,"jhfksdhfk");
@@ -121,16 +132,16 @@ public class DAOTest {
         CategorySong categorySong3 = new CategorySong(4,"jhfksdhfk");
         CategorySong categorySong4 = new CategorySong(5,"jhfksdhfk");
 
-        Song mySong1 = new Song("I am Atomic!!!!!",author2,categorySong2,file);
-        Song mySong2 = new Song("Song of Love for Jano the artist",author3,categorySong3,file);
-        Song mySong3 = new Song("No Tomorrows for the non Java developpers",author4,categorySong4,file);
+        Song mySong1 = new Song("I am Atomic!!!!!",author2,categorySong2,file,120);
+        Song mySong2 = new Song("Song of Love for Jano the artist",author3,categorySong3,file,111);
+        Song mySong3 = new Song("No Tomorrows for the non Java developpers",author4,categorySong4,file,240);
         List<Song> testSongs = new ArrayList<>();
         testSongs.add(mySong1);
         testSongs.add(mySong2);
         testSongs.add(mySong3);
         for (Song so:testSongs) {
             songDAO.createSong(so);
-        }
+        }*/
 
     }
     public static void testSongLength() {
