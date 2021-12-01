@@ -14,8 +14,7 @@ public class Song {
     private Author author;
     private CategorySong category;
     private File songFile;
-    //TODO: FInd a way to get rid of the absolute path and use a getClass().getResources().
-   // private static final String PATH_TO_FILE = "C:/Users/EASV/Desktop/SCO/MyTunes/resources/music/";
+
     /***
      * This constructor is to be used when creating the song
      * this will launch the copy of the file to the right folder
