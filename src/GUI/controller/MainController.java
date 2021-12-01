@@ -45,11 +45,11 @@ public class MainController implements Initializable {
     private final SongsModel songsModel;
     private final PlaylistsModel playlistsModel;
     @FXML
-    Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton;
+    private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton;
     @FXML
-    ImageView volumeImage;
+    private ImageView volumeImage;
     @FXML
-    TextField searchBar;
+    private TextField searchBar;
     @FXML
     private TableView<Song> songsTableView;
     @FXML

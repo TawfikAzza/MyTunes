@@ -29,8 +29,8 @@
             <RowConstraints vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField prefHeight="30.0" prefWidth="143.0" GridPane.columnIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="titleTextField" prefHeight="30.0" prefWidth="143.0" GridPane.columnIndex="1" />
+            <TextField fx:id="artistTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
                   <ComboBox prefHeight="26.0" prefWidth="89.0">
@@ -84,12 +84,12 @@
             </BorderPane>
             <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="4">
                <center>
-                  <TextField BorderPane.alignment="CENTER" />
+                  <TextField fx:id="fileTextField" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
             <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="3">
                <left>
-                  <TextField prefWidth="100.0" BorderPane.alignment="CENTER" />
+                  <TextField fx:id="timeTextField" prefWidth="100.0" BorderPane.alignment="CENTER" />
                </left>
             </BorderPane>
          </children>
