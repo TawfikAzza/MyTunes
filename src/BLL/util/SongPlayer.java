@@ -2,6 +2,7 @@ package BLL.util;
 
 import BE.Song;
 import BLL.exception.SongPlayerException;
+import DAL.DB.SongDAO;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -29,14 +30,25 @@ public class SongPlayer {
     public void playAudio() throws SongPlayerException {
         try
         {
-            //File file = new File("C:/Users/EASV/Desktop/SCO/MyTunes/resources/finalBoss.mp3");
-            Media media = new Media("file:/C:/Users/EASV/Desktop/SCO/MyTunes/resources/finalBoss.mp3");
+            SongDAO songDAO = new SongDAO();
+            Song testSong = songDAO.getSong(1);
+            System.out.println("File: "+testSong.getStringSongFile().replace("\\","/"));
+            File file = new File(testSong.getStringSongFile().replace("\\","/"));
+            String path = file.toString();
+
+            path= path.replace("\\","/").replace(" ","%20");
+            System.out.println("Path: "+path);
+            // path = file.toURI().toASCIIString();
+
+            Media media = new Media(path);
             MediaPlayer mediaPlayer = new MediaPlayer(media);
             mediaPlayer.play();
         }
         catch (NullPointerException e)
         {
             throw new SongPlayerException("No song is selected!", e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
