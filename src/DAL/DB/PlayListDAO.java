@@ -7,8 +7,6 @@ import BE.PlayList;
 import BE.Song;
 import DAL.ConnectionManager;
 import DAL.interfaces.IPlayListDataAccess;
-
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
