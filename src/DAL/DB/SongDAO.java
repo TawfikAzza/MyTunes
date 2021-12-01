@@ -119,6 +119,11 @@ public class SongDAO implements ISongDataAccess {
     @Override
     public void deleteSong(Song song) throws Exception {
         try (Connection con = cm.getConnection()) {
+            String sqlCommandDeleteListSong = "DELETE FROM CORR_SONG_PLAYLIST WHERE songID=?;";
+            PreparedStatement pstmtDeleteListSong = con.prepareStatement(sqlCommandDeleteListSong);
+            pstmtDeleteListSong.setInt(1, song.getId());
+            pstmtDeleteListSong.execute();
+
             String sqlcommandDelete = "DELETE FROM  SONG WHERE id = ?;";
             PreparedStatement pstmtDelete = con.prepareStatement(sqlcommandDelete);
             pstmtDelete.setInt(1,song.getId());

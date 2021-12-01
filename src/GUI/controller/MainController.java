@@ -199,6 +199,10 @@ public class MainController implements Initializable {
         System.out.println("src:" + src + "  dest:" + dest);
         Files.copy(src, dest);
     }
+
+    public void playSong(ActionEvent actionEvent) {
+
+    }
 //    private Integer getPlayListSize() throws PlayListDAOException {
 //       final List<Song> jjj = PlayList::getListSong;
 //    }
