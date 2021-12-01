@@ -164,7 +164,6 @@ public class PlayListDAO implements IPlayListDataAccess {
                 pstmstInsertListSong.setInt(1, song.getId());
                 pstmstInsertListSong.setInt(2, playList.getIdPlaylist());
                 pstmstInsertListSong.setInt(3, (int) entry.getKey());
-                System.out.println("ID SONG: " + song.getId() + " ID PLAYLIST: " + playList.getIdPlaylist() + " RANKSONG: " + (int) entry.getKey());
                 pstmstInsertListSong.execute();
             }
 
