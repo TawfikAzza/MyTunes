@@ -109,7 +109,7 @@
                   <Region prefHeight="200.0" prefWidth="30.0" />
                   <VBox prefHeight="512.0" prefWidth="163.0">
                      <children>
-                        <Label text="Label" />
+                        <Label text="Songs on playlist" />
                         <ListView prefHeight="430.0" prefWidth="163.0">
                            <VBox.margin>
                               <Insets bottom="15.0" top="15.0" />
@@ -156,8 +156,8 @@
                               <HBox spacing="20.0" BorderPane.alignment="CENTER">
                                  <children>
                                     <Button fx:id="newSongButton" mnemonicParsing="false" text="New" />
+                                    <Button mnemonicParsing="false" text="Edit" />
                                     <Button mnemonicParsing="false" text="Delete" />
-                                    <Button mnemonicParsing="false" text="Button" />
                                  </children>
                               </HBox>
                            </left>

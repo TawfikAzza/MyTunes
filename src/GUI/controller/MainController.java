@@ -65,8 +65,13 @@ public class MainController implements Initializable {
 
     }
 
+    public void playSong(ActionEvent event) {
+
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         newSongButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -74,7 +79,7 @@ public class MainController implements Initializable {
                 try {
                     root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"), resources);
                     Stage stage = new Stage();
-                    stage.setTitle("My New Stage Title");
+                    stage.setTitle("New/Edit Song");
                     stage.setScene(new Scene(root));
                     stage.show();
                     // Hide this current window (if this is what you want)
@@ -199,6 +204,8 @@ public class MainController implements Initializable {
         System.out.println("src:" + src + "  dest:" + dest);
         Files.copy(src, dest);
     }
+
+
 //    private Integer getPlayListSize() throws PlayListDAOException {
 //       final List<Song> jjj = PlayList::getListSong;
 //    }
