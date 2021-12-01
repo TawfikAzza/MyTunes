@@ -15,6 +15,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+/**
+ * PlayList Databse management Class, it work with the table:
+ * CORR_SONG_PLAYLIST, PLAYLIST, SONG, AUTHOR and CATEGORY
+ * and modify the content of PLAYLIST and CORR_SONG_PLAYLIST
+ * So essentially with all the tables as it is a central Data Access Object.
+ * The table AUTHOR and CATEGORY are only used in order to return the references of author or
+ * category associated with the song returned in the list of songs.
+ *
+ * */
 
 public class PlayListDAO implements IPlayListDataAccess {
     private ConnectionManager cm;
@@ -72,7 +81,7 @@ public class PlayListDAO implements IPlayListDataAccess {
                     "FROM Song INNER JOIN CORR_SONG_PLAYLIST " +
                     "ON Song.id=CORR_SONG_PLAYLIST.songID " +
                     "INNER JOIN Playlist ON CORR_SONG_PLAYLIST.playListID=PLAYLIST.id " +
-                    "ORDER BY PlayList.id,RankSong ";
+                    "ORDER BY PlayList.id,RankSong ;";
             PreparedStatement pstmtSelect = con.prepareStatement(sqlcommandSelect);
             boolean flagFirst = false;
             int currentPlaylist = -1;
@@ -125,7 +134,7 @@ public class PlayListDAO implements IPlayListDataAccess {
                 idPlayList = rs.getInt(1);
             }
             if (idPlayList != 0) {
-                String sqlCommandInsertListSong = "INSERT INTO CORR_SONG_PLAYLIST VALUES (?,?,?)";
+                String sqlCommandInsertListSong = "INSERT INTO CORR_SONG_PLAYLIST VALUES (?,?,?);";
                 PreparedStatement pstmstInsertListSong = con.prepareStatement(sqlCommandInsertListSong);
                 for (Map.Entry entry : playList.getListSong().entrySet()) {
                     Song song = (Song) entry.getValue();
@@ -162,7 +171,7 @@ public class PlayListDAO implements IPlayListDataAccess {
                 pstmstInsertListSong.execute();
             }
 
-            String sqlCOmmandUpdatePlayList = "UPDATE PLAYLIST SET name=? WHERE id=?";
+            String sqlCOmmandUpdatePlayList = "UPDATE PLAYLIST SET name=? WHERE id=?;";
             PreparedStatement pstmstUpdatePlayList = con.prepareStatement((sqlCOmmandUpdatePlayList));
             pstmstUpdatePlayList.setString(1,playList.getName());
             pstmstUpdatePlayList.setInt(2,playList.getIdPlaylist());

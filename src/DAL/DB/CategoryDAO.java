@@ -1,5 +1,6 @@
 package DAL.DB;
 
+import BE.Author;
 import BE.CategorySong;
 import DAL.ConnectionManager;
 import DAL.interfaces.ICategorySongDataAccess;
@@ -7,7 +8,13 @@ import DAL.interfaces.ICategorySongDataAccess;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Category database management Class,
+ * In charge of creating, deleting, updating or reading the content of the CATEGORYSONG Table
+ * This class modify the table CATEGORYSONG
+ * but does not have any other table management associated.
+ *
+ * */
 
 public class CategoryDAO implements ICategorySongDataAccess {
     ConnectionManager cm;
@@ -16,7 +23,22 @@ public class CategoryDAO implements ICategorySongDataAccess {
     }
     @Override
     public CategorySong getCategorySong(int idCategory) throws Exception {
-        return null;
+        CategorySong categorySearched = null;
+        try (Connection con = cm.getConnection()) {
+            String sqlcommandSelect = "SELECT * FROM CATEGORYSONG WHERE id=?;";
+            PreparedStatement pstmtSelect = con.prepareStatement(sqlcommandSelect);
+            pstmtSelect.setInt(1,idCategory);
+            ResultSet rs = pstmtSelect.executeQuery();
+            while(rs.next())
+            {
+                categorySearched= new CategorySong(
+                        rs.getInt("id"),
+                        rs.getString("name")
+                );
+            }
+        }
+
+        return categorySearched;
     }
 
     @Override

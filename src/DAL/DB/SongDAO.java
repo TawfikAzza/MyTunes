@@ -10,7 +10,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
+/**
+ * Song Databse management Class, it work with the table:
+ * SONG, AUTHOR and CATEGORY
+ * and modify the content of SONG
+ * The table AUTHOR and CATEGORY are only used in order to return the references of author or
+ * category associated with the song returned in order to provide Author and Category objects references.
+ *
+ * */
 public class SongDAO implements ISongDataAccess {
     private ConnectionManager cm;
     public SongDAO() throws Exception {

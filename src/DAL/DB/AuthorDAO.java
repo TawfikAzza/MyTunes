@@ -10,7 +10,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * AUTHOR database management Class,
+ * In charge of creating, deleting, updating or reading the content of the AUTHOR Table
+ * This class modify the table AUTHOR
+ * but does not have any other table management associated.
+ *
+ * */
 public class AuthorDAO implements IAuthorDataAccess {
     ConnectionManager cm;
     public AuthorDAO() throws Exception {

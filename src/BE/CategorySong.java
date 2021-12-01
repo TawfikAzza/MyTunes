@@ -21,4 +21,9 @@ public class CategorySong {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s", getName());
+    }
 }
