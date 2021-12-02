@@ -54,4 +54,8 @@ public class SongsModel {
         listCategories.addAll(myTunesFacade.getALlCategorySong());
         return listCategories;
     }
+
+    public void updateSong(Song song) throws SongDAOException {
+        myTunesFacade.updateSong(song);
+    }
 }

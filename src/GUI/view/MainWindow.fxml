@@ -156,7 +156,7 @@
                               <HBox spacing="20.0" BorderPane.alignment="CENTER">
                                  <children>
                                     <Button fx:id="newSongButton" mnemonicParsing="false" text="New" />
-                                    <Button mnemonicParsing="false" text="Edit" />
+                                    <Button fx:id="editSongButton" mnemonicParsing="false" text="Edit" />
                                     <Button mnemonicParsing="false" text="Delete" />
                                  </children>
                               </HBox>

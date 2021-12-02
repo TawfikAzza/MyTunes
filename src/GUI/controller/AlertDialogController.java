@@ -32,7 +32,8 @@ public class AlertDialogController implements Initializable {
     private Button cancelButton, saveButton;
     @FXML
     private ComboBox comboBoxCategory;
-
+    private String operationType="creation";
+    private int idSongModified;
     public AlertDialogController() throws MyTunesManagerException {
         songsModel = new SongsModel();
         authorModel = new AuthorModel();
@@ -49,12 +50,23 @@ public class AlertDialogController implements Initializable {
     }
 
     public void isSaved(ActionEvent event) throws AuthorDAOException, Exception, SongDAOException {
-        Song songCreated = null;
-        File file = new File(fileTextField.getText());
-        Author author = authorModel.createNewAuthor(artistTextField.getText());
-        Song song = new Song(titleTextField.getText(), author, (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem(), file, timeTextField.getText());
-        songCreated = songsModel.addSong(song);
-        if (song != null){
+        if(operationType.equals("creation")){
+            Song songCreated = null;
+            File file = new File(fileTextField.getText());
+            Author author = authorModel.createNewAuthor(artistTextField.getText());
+            Song song = new Song(0,titleTextField.getText(), author, (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem(), file, timeTextField.getText());
+            songCreated = songsModel.addSong(song);
+            if (song != null){
+                if (saveButton.getScene().getWindow() != null){
+                    Stage stage = (Stage) saveButton.getScene().getWindow();
+                    stage.close();
+                }
+            }
+        } else {
+            File file = new File(fileTextField.getText());
+            Author author = authorModel.createNewAuthor(artistTextField.getText());
+            Song song = new Song(idSongModified,titleTextField.getText(), author, (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem(), file, timeTextField.getText());
+            songsModel.updateSong(song);
             if (saveButton.getScene().getWindow() != null){
                 Stage stage = (Stage) saveButton.getScene().getWindow();
                 stage.close();
@@ -63,7 +75,10 @@ public class AlertDialogController implements Initializable {
 
 
     }
-
+    public void setOperationType(String aString) {
+        operationType = aString;
+        System.out.println(operationType);
+    }
     public void isCanceled(ActionEvent event) {
         if (cancelButton.getScene().getWindow() != null) {
             Stage stage = (Stage) cancelButton.getScene().getWindow();
@@ -78,5 +93,13 @@ public class AlertDialogController implements Initializable {
         if (selectedFile != null){
             fileTextField.setText(selectedFile.toURI().toString());
         }
+    }
+    public void setValue(Song song) {
+        idSongModified = song.getId();
+        fileTextField.setText(song.getStringSongFile());
+        timeTextField.setText(song.getStringDuration());
+        artistTextField.setText(song.getAuthor().getName());
+        titleTextField.setText(song.getName());
+        comboBoxCategory.getSelectionModel().select(song.getCategory());
     }
 }

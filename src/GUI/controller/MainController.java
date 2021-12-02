@@ -43,7 +43,7 @@ public class MainController implements Initializable {
     private final SongsModel songsModel;
     private final PlaylistsModel playlistsModel;
     @FXML
-    private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton, closeButton;
+    private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton, closeButton, editSongButton;
     @FXML
     private ImageView volumeImage;
     @FXML
@@ -89,7 +89,30 @@ public class MainController implements Initializable {
                 }
             }
         });
+        editSongButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
 
+                try {
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"));
+                    Parent root = loader.load();
+                    AlertDialogController alertDialogController = loader.getController();
+                    alertDialogController.setValue(songsTableView.getSelectionModel().getSelectedItem());
+                    alertDialogController.setOperationType("modification");
+                    //root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"), resources);
+                    Stage stage = new Stage();
+                    stage.setTitle("New/Edit Song");
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                    // Hide this current window (if this is what you want)
+//                    ((Node)(event.getSource())).getScene().getWindow().hide();
+                }
+                catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        });
 
 
 //        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));

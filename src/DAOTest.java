@@ -122,7 +122,7 @@ public class DAOTest {
 
         Author author = new Author(2,"Adam");
         CategorySong categorySong2 = new CategorySong(3,"jhfksdhfk");
-        Song mySong1 = new Song("I HATE WOMBATSSSSSSSS!!! ",author,categorySong2,file,"2:35");
+        Song mySong1 = new Song(0,"I HATE WOMBATSSSSSSSS!!! ",author,categorySong2,file,"2:35");
         songDAO.createSong(mySong1);
        /* Author author2 = new Author(3,"Jano");
         Author author3 = new Author(4,"Tawfik");

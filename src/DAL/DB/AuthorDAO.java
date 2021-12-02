@@ -81,20 +81,32 @@ public class AuthorDAO implements IAuthorDataAccess {
     public Author createAuthor(String authorName) throws Exception {
         Author authorCreated=null;
         try (Connection con = cm.getConnection()) {
+            //I check if an author with the same name already exists in the databse,
+            //if it does, I return the author already existing, if not, I create a new author with this name and return the author created
             String sqlCheckSelect = "SELECT * FROM AUTHOR WHERE name = ?";
             PreparedStatement pstCheckAuthor = con.prepareStatement(sqlCheckSelect);
-
-            String sqlcommandInsert = "INSERT INTO AUTHOR VALUES (?);";
-            PreparedStatement pstmtSelect = con.prepareStatement(sqlcommandInsert, Statement.RETURN_GENERATED_KEYS);
-            pstmtSelect.setString(1,authorName);
-            pstmtSelect.execute();
-            ResultSet rs = pstmtSelect.getGeneratedKeys();
-            while(rs.next())
-            {
-                authorCreated = new Author(
-                        rs.getInt(1),
-                        authorName
-                );
+            pstCheckAuthor.setString(1,authorName);
+            ResultSet rsCheck = pstCheckAuthor.executeQuery();
+            if(!rsCheck.isBeforeFirst()) {
+                String sqlcommandInsert = "INSERT INTO AUTHOR VALUES (?);";
+                PreparedStatement pstmtSelect = con.prepareStatement(sqlcommandInsert, Statement.RETURN_GENERATED_KEYS);
+                pstmtSelect.setString(1,authorName);
+                pstmtSelect.execute();
+                ResultSet rs = pstmtSelect.getGeneratedKeys();
+                while(rs.next())
+                {
+                    authorCreated = new Author(
+                            rs.getInt(1),
+                            authorName
+                    );
+                }
+            } else {
+                while(rsCheck.next()) {
+                    authorCreated= new Author(
+                            rsCheck.getInt("id"),
+                            rsCheck.getString("name")
+                    );
+                }
             }
         }
 

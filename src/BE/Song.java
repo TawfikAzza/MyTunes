@@ -46,7 +46,7 @@ public class Song {
      * and used for database operation as the Song Table stores an int type value for it to be used
      * later on to calculate the total duration of a PlayList.
      * */
-    public Song(String name, Author author, CategorySong category, File file, String duration) throws Exception {
+    public Song(int id,String name, Author author, CategorySong category, File file, String duration) throws Exception {
         this.id = id;
         this.name = name;
         this.author = author;
