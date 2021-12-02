@@ -100,6 +100,7 @@ public class MainController implements Initializable {
             titleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("name"));
             artistColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("author"));
             categoryColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("category"));
+            timeColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getIntDuration()/60+":"+String.format("%02d", data.getValue().getIntDuration()%60))));
             songsTableView.getItems().setAll(songsModel.getAllSongs());
         } catch (SongDAOException e) {
             e.printStackTrace();
@@ -109,7 +110,7 @@ public class MainController implements Initializable {
         try {
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             songsColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().size())));
-            timePlaylistColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()/60)+":"+data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()%60));
+            timePlaylistColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()/60)+":"+String.format("%02d", data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()%60)));
             playlistsTableView.getItems().setAll(playlistsModel.getAllPlayLists());
         } catch (PlayListDAOException e) {
             e.printStackTrace();
