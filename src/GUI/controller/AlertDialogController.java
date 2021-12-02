@@ -29,7 +29,7 @@ public class AlertDialogController implements Initializable {
     @FXML
     private TextField fileTextField, timeTextField, artistTextField, titleTextField;
     @FXML
-    private Button cancelButton;
+    private Button cancelButton, saveButton;
     @FXML
     private ComboBox comboBoxCategory;
 
@@ -49,10 +49,19 @@ public class AlertDialogController implements Initializable {
     }
 
     public void isSaved(ActionEvent event) throws AuthorDAOException, Exception, SongDAOException {
+        Song songCreated = null;
         File file = new File(fileTextField.getText());
         Author author = authorModel.createNewAuthor(artistTextField.getText());
         Song song = new Song(titleTextField.getText(), author, (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem(), file, timeTextField.getText());
-        songsModel.addSong(song);
+        songCreated = songsModel.addSong(song);
+        if (song != null){
+            if (saveButton.getScene().getWindow() != null){
+                Stage stage = (Stage) saveButton.getScene().getWindow();
+                stage.close();
+            }
+        }
+
+
     }
 
     public void isCanceled(ActionEvent event) {

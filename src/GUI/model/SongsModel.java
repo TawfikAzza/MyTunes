@@ -32,8 +32,9 @@ public class SongsModel {
         MyTunesManager myTunesManager = new MyTunesManager();
         myTunesManager.playSong();
     }
-    public void addSong(Song song) throws SongDAOException {
-        myTunesFacade.createSong(song);
+    public Song addSong(Song song) throws SongDAOException {
+        Song songCreated = myTunesFacade.createSong(song);
+        return songCreated;
 
     }
 
