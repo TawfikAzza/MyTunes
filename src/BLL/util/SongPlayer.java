@@ -61,7 +61,7 @@ public class SongPlayer {
         this.currentSong = song;
         final Media media = new Media(toValidPath(currentSong.getStringSongFile()));
         this.player = new MediaPlayer(media);
-        playStopSong();
+        //playStopSong();
     }
 
     public Song getCurrentSong() {
