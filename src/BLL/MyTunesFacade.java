@@ -30,4 +30,6 @@ public interface MyTunesFacade {
     public void updateSong(Song song) throws SongDAOException;
     public void deleteSong(Song song) throws SongDAOException;
     public void playStopSong() throws SongPlayerException;
+    public void setCurrentSong(Song song);
+    public Song getCurrentSong();
 }

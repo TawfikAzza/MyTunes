@@ -34,9 +34,7 @@ public class MyTunesManager implements MyTunesFacade{
             throw new MyTunesManagerException("Failed to initialize MyTunesManager class!", e);
         }
     }
-    public void playStopSong() throws SongPlayerException {
-        songPlayer.playStopSong();
-    }
+
     public Author getAuthor(int id) throws AuthorDAOException {
         try {
             return idalMyTunesFacade.getAuthor(id);
@@ -194,5 +192,19 @@ public class MyTunesManager implements MyTunesFacade{
         } catch (Exception e) {
             throw new SongDAOException("Unable to delete song!", e);
         }
+    }
+
+    public void playStopSong() throws SongPlayerException {
+        songPlayer.playStopSong();
+    }
+
+    public void setCurrentSong(Song song)
+    {
+        songPlayer.setCurrentSong(song);
+    }
+
+    public Song getCurrentSong()
+    {
+        return songPlayer.getCurrentSong();
     }
 }

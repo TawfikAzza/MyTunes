@@ -63,7 +63,6 @@ public class MainController implements Initializable {
     public MainController() throws MyTunesManagerException {
         this.songsModel = new SongsModel();
         this.playlistsModel = new PlaylistsModel();
-
     }
 
     public void playStopSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
