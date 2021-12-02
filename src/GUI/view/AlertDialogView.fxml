@@ -76,7 +76,7 @@
                   <Label text="File:" BorderPane.alignment="CENTER" />
                </right>
             </BorderPane>
-            <Button alignment="CENTER" mnemonicParsing="false" text="Choose" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#isFileChooserPressed" text="Choose" GridPane.columnIndex="2" GridPane.rowIndex="4" />
             <BorderPane GridPane.columnIndex="2" GridPane.rowIndex="5">
                <right>
                   <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#isSaved" text="Save" BorderPane.alignment="CENTER" />
