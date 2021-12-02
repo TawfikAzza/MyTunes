@@ -47,6 +47,7 @@ public class SongPlayer {
             if(player != null && player.getStatus() == MediaPlayer.Status.PLAYING) {
                 player.stop();
             }
+            System.out.println("MediaPlayerObject:"+player);
             player.play();
         }
         catch (NullPointerException e)
@@ -60,6 +61,9 @@ public class SongPlayer {
     public void setCurrentSong(Song song)
     {
         this.currentSong = song;
+        if(player != null && player.getStatus() == MediaPlayer.Status.PLAYING) {
+            player.stop();
+        }
         final Media media = new Media(toValidPath(currentSong.getStringSongFile()));
         this.player = new MediaPlayer(media);
     }
