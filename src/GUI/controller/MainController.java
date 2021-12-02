@@ -63,7 +63,6 @@ public class MainController implements Initializable {
     public MainController() throws MyTunesManagerException, SongDAOException {
         this.songsModel = new SongsModel();
         this.playlistsModel = new PlaylistsModel();
-        songsModel.setCurrentSong(songsModel.getAllSongs().get(0));
     }
 
     public void playStopSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
@@ -214,6 +213,11 @@ public class MainController implements Initializable {
             // do what you have to do
             stage.close();
         }
+    }
+
+    public void handleChooseSong()
+    {
+        songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
     }
 
 
