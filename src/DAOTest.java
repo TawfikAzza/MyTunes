@@ -33,14 +33,14 @@ public class DAOTest {
        // createPlayList();
        // updatePlayList();
        // deletePlayList();
-        //getSong();
+        getSong();
     }
 
     public static void getSong() throws Exception {
         SongDAO songDAO = new SongDAO();
         Song test = songDAO.getSong(6);
-        System.out.printf("Name: %s, Author: %s, Category: %s, Duration: %s %n",test.getName(),test.getAuthor().getName()
-                                ,test.getCategory().getName(),test.getStringDuration());
+        System.out.printf("Name: %s, Author: %s, Category: %s, Duration: %s Path, %s %n",test.getName(),test.getAuthor().getName()
+                                ,test.getCategory().getName(),test.getStringDuration(),test.getStringSongFile());
     }
     public static void deletePlayList() throws Exception {
         PlayListDAO playListDAO = new PlayListDAO();
