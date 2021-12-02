@@ -25,7 +25,7 @@ public class MyTunesManager implements MyTunesFacade{
     IDALMyTunesFacade idalMyTunesFacade;
 
     public MyTunesManager() throws MyTunesManagerException {
-        songPlayer = new SongPlayer();
+        songPlayer = SongPlayer.getInstance();
         try
         {
             idalMyTunesFacade = new DALMyTunesFacade();
