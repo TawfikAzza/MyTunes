@@ -109,6 +109,7 @@ public class MainController implements Initializable {
         try {
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             songsColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().size())));
+            timePlaylistColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()/60)+":"+data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()%60));
             playlistsTableView.getItems().setAll(playlistsModel.getAllPlayLists());
         } catch (PlayListDAOException e) {
             e.printStackTrace();
