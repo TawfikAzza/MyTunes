@@ -134,6 +134,7 @@ public class SongDAO implements ISongDataAccess {
             String sqlcommandDelete = "DELETE FROM  SONG WHERE id = ?;";
             PreparedStatement pstmtDelete = con.prepareStatement(sqlcommandDelete);
             pstmtDelete.setInt(1,song.getId());
+            pstmtDelete.execute();
         }
 
     }

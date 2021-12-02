@@ -43,7 +43,9 @@ public class MainController implements Initializable {
     private final SongsModel songsModel;
     private final PlaylistsModel playlistsModel;
     @FXML
-    private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton, closeButton, editSongButton;
+    private Label lblSongPlaying;
+    @FXML
+    private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton, closeButton, editSongButton, deleteButton;
     @FXML
     private ImageView volumeImage;
     @FXML
@@ -63,8 +65,14 @@ public class MainController implements Initializable {
         this.songsModel = new SongsModel();
         this.playlistsModel = new PlaylistsModel();
     }
-
+    private void setLabelSongPlaying() {
+        if(songsTableView.getSelectionModel().getSelectedItem()!=null)
+            lblSongPlaying.setText(songsTableView.getSelectionModel().getSelectedItem().getName());
+        else
+            lblSongPlaying.setText(songListFromPlayList.getSelectionModel().getSelectedItem().getName());
+    }
     public void playStopSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
+        setLabelSongPlaying();
         songsModel.playStopSong();
     }
 
@@ -114,6 +122,35 @@ public class MainController implements Initializable {
             }
         });
 
+        deleteButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + songsTableView.getSelectionModel().getSelectedItem() + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+                    alert.showAndWait();
+
+                    if (alert.getResult() == ButtonType.YES) {
+                        songsModel.deleteSong(songsTableView.getSelectionModel().getSelectedItem());
+                        songsTableView.refresh();
+                    }
+
+                } catch (SongDAOException e) {
+                    e.printStackTrace();
+                }
+
+            }});
+        closeButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Close the Application ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+                alert.showAndWait();
+
+                if (alert.getResult() == ButtonType.YES) {
+                    Stage stage = (Stage) closeButton.getScene().getWindow();
+                    stage.close();
+                }
+
+            }});
 
 //        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
 
@@ -240,6 +277,7 @@ public class MainController implements Initializable {
     public void handleChooseSong()
     {
         songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
+        setLabelSongPlaying();
     }
 
     public void handleDisplayPlayList(MouseEvent mouseEvent) throws PlayListDAOException {

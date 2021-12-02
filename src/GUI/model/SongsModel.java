@@ -58,4 +58,8 @@ public class SongsModel {
     public void updateSong(Song song) throws SongDAOException {
         myTunesFacade.updateSong(song);
     }
+
+    public void deleteSong(Song song) throws SongDAOException {
+        myTunesFacade.deleteSong(song);
+    }
 }
