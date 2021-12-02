@@ -47,7 +47,7 @@
             </HBox>
             <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="5">
                <right>
-                  <Button mnemonicParsing="false" text="Cancel" BorderPane.alignment="CENTER_RIGHT" />
+                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#isCanceled" text="Cancel" BorderPane.alignment="CENTER_RIGHT" />
                </right>
             </BorderPane>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
@@ -79,7 +79,7 @@
             <Button alignment="CENTER" mnemonicParsing="false" text="Choose" GridPane.columnIndex="2" GridPane.rowIndex="4" />
             <BorderPane GridPane.columnIndex="2" GridPane.rowIndex="5">
                <right>
-                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" text="Save" BorderPane.alignment="CENTER" />
+                  <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#isSaved" text="Save" BorderPane.alignment="CENTER" />
                </right>
             </BorderPane>
             <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="4">
