@@ -137,7 +137,7 @@
                   <VBox>
                      <children>
                         <Label text="Songs" />
-                        <TableView fx:id="songsTableView" prefHeight="430.0" prefWidth="401.0">
+                        <TableView fx:id="songsTableView" onMouseClicked="#handleChooseSong" prefHeight="430.0" prefWidth="401.0">
                           <columns>
                             <TableColumn fx:id="titleColumn" prefWidth="100.0" text="Title" />
                             <TableColumn fx:id="artistColumn" prefWidth="100.0" text="Artist" />
@@ -150,7 +150,7 @@
                         </TableView>
                         <BorderPane prefWidth="200.0">
                            <right>
-                              <Button fx:id="closeButton" mnemonicParsing="false" onAction="#isClosed" text="Close" BorderPane.alignment="CENTER" />
+                              <Button mnemonicParsing="false" text="Close" BorderPane.alignment="CENTER" />
                            </right>
                            <left>
                               <HBox spacing="20.0" BorderPane.alignment="CENTER">

@@ -31,6 +31,17 @@ public class SongsModel {
     public void playStopSong() throws MyTunesManagerException, SongPlayerException {
         myTunesFacade.playStopSong();
     }
+
+    public void setCurrentSong(Song song)
+    {
+        myTunesFacade.setCurrentSong(song);
+    }
+
+    public Song getCurrentSong()
+    {
+        return myTunesFacade.getCurrentSong();
+    }
+
     public Song addSong(Song song) throws SongDAOException {
         Song songCreated = myTunesFacade.createSong(song);
         return songCreated;

@@ -60,7 +60,7 @@ public class MainController implements Initializable {
     private TableColumn<PlayList, String> nameColumn, timePlaylistColumn, songsColumn;
 
 
-    public MainController() throws MyTunesManagerException {
+    public MainController() throws MyTunesManagerException, SongDAOException {
         this.songsModel = new SongsModel();
         this.playlistsModel = new PlaylistsModel();
     }
@@ -213,6 +213,11 @@ public class MainController implements Initializable {
             // do what you have to do
             stage.close();
         }
+    }
+
+    public void handleChooseSong()
+    {
+        songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
     }
 
 
