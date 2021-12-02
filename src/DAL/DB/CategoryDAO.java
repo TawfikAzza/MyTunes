@@ -64,7 +64,7 @@ public class CategoryDAO implements ICategorySongDataAccess {
     public CategorySong createCategorySong(CategorySong category) throws Exception{
         CategorySong categoryCreated = null;
         try (Connection con = cm.getConnection()) {
-            String sqlcommandInsert = "INSERT INTO CATEGORY VALUE(?);";
+            String sqlcommandInsert = "INSERT INTO CATEGORY VALUES (?);";
             PreparedStatement pstmtInsert = con.prepareStatement(sqlcommandInsert, Statement.RETURN_GENERATED_KEYS);
             pstmtInsert.setString(1, category.getName());
             pstmtInsert.executeQuery();
