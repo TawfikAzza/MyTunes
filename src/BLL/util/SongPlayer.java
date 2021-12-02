@@ -41,31 +41,27 @@ public class SongPlayer {
 
 
     */
-    public void playStopSong() throws SongPlayerException {
-        try
+    public void playStopSong() {
+        if (currentSong == null)
         {
-            if(player != null && player.getStatus() == MediaPlayer.Status.PLAYING) {
-                player.stop();
-            }
-            System.out.println("MediaPlayerObject:"+player);
-            player.play();
+            return;
         }
-        catch (NullPointerException e)
-        {
-            throw new SongPlayerException("No song is selected!", e);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(player != null && player.getStatus() == MediaPlayer.Status.PLAYING) {
+            player.pause();
+            return;
         }
+        player.play();
     }
 
     public void setCurrentSong(Song song)
     {
-        this.currentSong = song;
         if(player != null && player.getStatus() == MediaPlayer.Status.PLAYING) {
             player.stop();
         }
+        this.currentSong = song;
         final Media media = new Media(toValidPath(currentSong.getStringSongFile()));
         this.player = new MediaPlayer(media);
+        playStopSong();
     }
 
     public Song getCurrentSong() {
