@@ -60,9 +60,10 @@ public class MainController implements Initializable {
     private TableColumn<PlayList, String> nameColumn, timePlaylistColumn, songsColumn;
 
 
-    public MainController() throws MyTunesManagerException {
+    public MainController() throws MyTunesManagerException, SongDAOException {
         this.songsModel = new SongsModel();
         this.playlistsModel = new PlaylistsModel();
+        songsModel.setCurrentSong(songsModel.getAllSongs().get(0));
     }
 
     public void playStopSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
