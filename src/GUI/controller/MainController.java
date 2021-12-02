@@ -45,7 +45,7 @@ public class MainController implements Initializable {
     private final SongsModel songsModel;
     private final PlaylistsModel playlistsModel;
     @FXML
-    private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton;
+    private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton, closeButton;
     @FXML
     private ImageView volumeImage;
     @FXML
@@ -206,6 +206,14 @@ public class MainController implements Initializable {
         //Path dest = Paths.get("/"+file.getName().toString());
         System.out.println("src:" + src + "  dest:" + dest);
         Files.copy(src, dest);
+    }
+
+    public void isClosed(ActionEvent event) {
+        if (closeButton.getScene().getWindow() != null) {
+            Stage stage = (Stage) closeButton.getScene().getWindow();
+            // do what you have to do
+            stage.close();
+        }
     }
 
 

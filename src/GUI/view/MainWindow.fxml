@@ -150,7 +150,7 @@
                         </TableView>
                         <BorderPane prefWidth="200.0">
                            <right>
-                              <Button mnemonicParsing="false" text="Close" BorderPane.alignment="CENTER" />
+                              <Button fx:id="closeButton" mnemonicParsing="false" onAction="#isClosed" text="Close" BorderPane.alignment="CENTER" />
                            </right>
                            <left>
                               <HBox spacing="20.0" BorderPane.alignment="CENTER">

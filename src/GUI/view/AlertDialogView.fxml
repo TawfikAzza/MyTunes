@@ -33,7 +33,7 @@
             <TextField fx:id="artistTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <ComboBox prefHeight="26.0" prefWidth="89.0">
+                  <ComboBox fx:id="comboBoxCategory" prefHeight="26.0" prefWidth="89.0">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
