@@ -28,9 +28,8 @@ public class SongsModel {
         return allAvailableSongs;
     }
 
-    public void playSong() throws MyTunesManagerException, SongPlayerException {
-        MyTunesManager myTunesManager = new MyTunesManager();
-        myTunesManager.playSong();
+    public void playStopSong() throws MyTunesManagerException, SongPlayerException {
+        myTunesFacade.playStopSong();
     }
     public Song addSong(Song song) throws SongDAOException {
         Song songCreated = myTunesFacade.createSong(song);

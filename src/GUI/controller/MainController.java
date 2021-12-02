@@ -66,8 +66,8 @@ public class MainController implements Initializable {
 
     }
 
-    public void playSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
-        songsModel.playSong();
+    public void playStopSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
+        songsModel.playStopSong();
     }
 
     @Override

@@ -4,10 +4,7 @@ import BE.Author;
 import BE.CategorySong;
 import BE.PlayList;
 import BE.Song;
-import BLL.exception.AuthorDAOException;
-import BLL.exception.CategorySongDAOException;
-import BLL.exception.PlayListDAOException;
-import BLL.exception.SongDAOException;
+import BLL.exception.*;
 
 import java.util.List;
 
@@ -32,4 +29,5 @@ public interface MyTunesFacade {
     public Song createSong(Song song) throws SongDAOException;
     public void updateSong(Song song) throws SongDAOException;
     public void deleteSong(Song song) throws SongDAOException;
+    public void playStopSong() throws SongPlayerException;
 }

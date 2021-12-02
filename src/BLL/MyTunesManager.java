@@ -34,8 +34,8 @@ public class MyTunesManager implements MyTunesFacade{
             throw new MyTunesManagerException("Failed to initialize MyTunesManager class!", e);
         }
     }
-    public void playSong() throws SongPlayerException {
-        songPlayer.playAudio();
+    public void playStopSong() throws SongPlayerException {
+        songPlayer.playStopSong();
     }
     public Author getAuthor(int id) throws AuthorDAOException {
         try {

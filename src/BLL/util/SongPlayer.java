@@ -1,5 +1,7 @@
 package BLL.util;
 
+import BE.Author;
+import BE.CategorySong;
 import BE.Song;
 import BLL.exception.SongPlayerException;
 import DAL.DB.SongDAO;
@@ -7,6 +9,9 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
+/*
+To play a song, we need to set a song either from a playlist or a list of songs, when you choose a song from the list of songs, then the "playlist" will be discarded
+ */
 
 public class SongPlayer {
     private final static float MAX_VOLUME = 100;
@@ -36,27 +41,13 @@ public class SongPlayer {
 
 
     */
-    public void playAudio() throws SongPlayerException {
+    public void playStopSong() throws SongPlayerException {
         try
         {
-            SongDAO songDAO = new SongDAO();
-
-            Song testSong = songDAO.getSong(1);
-            //System.out.println("File: "+testSong.getStringSongFile().replace("\\","/"));
-            File file = new File(testSong.getStringSongFile().replace("\\","/"));
-            String path = file.toString();
-
-            path= path.replace("\\","/").replace(" ","%20");
-            //System.out.println("Path: "+path);
-            // path = file.toURI().toASCIIString();
-
-            //Media media = new Media(path);
-            selectTrack(path);
-//            MediaPlayer mediaPlayer1 = new MediaPlayer(media);
-//            this.player = mediaPlayer1;
-            play();
-
-
+            if(player != null && player.getStatus() == MediaPlayer.Status.PLAYING) {
+                player.stop();
+            }
+            player.play();
         }
         catch (NullPointerException e)
         {
@@ -65,24 +56,12 @@ public class SongPlayer {
             e.printStackTrace();
         }
     }
-    public void selectTrack(String mediaEntered) {
-        if(player!=null && player.getStatus() == MediaPlayer.Status.PLAYING) {
-            player.stop();}
-        final Media media = new Media(mediaEntered);
-        System.out.println("In select Track before: "+player);
-        this.player = new MediaPlayer(media);
-        System.out.println("In select Track After: "+player);
-    }
-    public void play() {
-        if(player != null && player.getStatus() == MediaPlayer.Status.PLAYING) {
-            System.out.println("player not null"+player);
-            player.stop();
-        }
-        player.play();
-    }
+
     public void setCurrentSong(Song song)
     {
         this.currentSong = song;
+        final Media media = new Media(toValidPath(currentSong.getStringSongFile()));
+        this.player = new MediaPlayer(media);
     }
 
     public Song getCurrentSong() {
@@ -101,5 +80,10 @@ public class SongPlayer {
     public float getVolume()
     {
         return volume;
+    }
+
+    public String toValidPath(String path)
+    {
+        return path.replace("\\","/").replace(" ", "%20");
     }
 }
