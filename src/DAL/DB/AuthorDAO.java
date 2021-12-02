@@ -81,7 +81,7 @@ public class AuthorDAO implements IAuthorDataAccess {
     public Author createAuthor(String authorName) throws Exception {
         Author authorCreated=null;
         try (Connection con = cm.getConnection()) {
-            String sqlcommandInsert = "INSERT INTO AUTHOR VALUE ('?');";
+            String sqlcommandInsert = "INSERT INTO AUTHOR VALUES (?);";
             PreparedStatement pstmtSelect = con.prepareStatement(sqlcommandInsert, Statement.RETURN_GENERATED_KEYS);
             pstmtSelect.setString(1,authorName);
             pstmtSelect.execute();
