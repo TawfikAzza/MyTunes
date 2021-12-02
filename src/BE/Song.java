@@ -151,20 +151,4 @@ public class Song {
     public void setIntDuration(int duration) {
         this.duration = duration;
     }
-
-    /*
-        Returns the length of the song in seconds
-         */
-    public double getSongLength() throws SongException {
-        AudioInputStream audioInputStream = null;
-        try {
-            audioInputStream = AudioSystem.getAudioInputStream(songFile);
-        } catch (UnsupportedAudioFileException | IOException e)
-        {
-            throw new SongException("Cannot get length of the song!", e);
-        }
-        AudioFormat format = audioInputStream.getFormat();
-            long frames = audioInputStream.getFrameLength();
-            return  (frames+0.0) / format.getFrameRate();
-    }
 }
