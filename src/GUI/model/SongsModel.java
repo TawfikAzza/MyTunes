@@ -1,8 +1,10 @@
 package GUI.model;
 
+import BE.CategorySong;
 import BE.Song;
 import BLL.MyTunesFacade;
 import BLL.MyTunesManager;
+import BLL.exception.CategorySongDAOException;
 import BLL.exception.MyTunesManagerException;
 import BLL.exception.SongDAOException;
 import BLL.exception.SongPlayerException;
@@ -33,5 +35,12 @@ public class SongsModel {
     public void addSong(Song song) throws SongDAOException {
         myTunesFacade.createSong(song);
 
+    }
+
+
+    public ObservableList getAllCategories() throws CategorySongDAOException {
+        ObservableList<CategorySong> listCategories = FXCollections.observableArrayList();
+        listCategories.addAll(myTunesFacade.getALlCategorySong());
+        return listCategories;
     }
 }

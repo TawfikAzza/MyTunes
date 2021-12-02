@@ -1,6 +1,7 @@
 package GUI.controller;
 
 import BE.Song;
+import BLL.exception.CategorySongDAOException;
 import BLL.exception.MyTunesManagerException;
 import GUI.model.SongsModel;
 import javafx.event.ActionEvent;
@@ -30,7 +31,11 @@ public class AlertDialogController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        comboBoxCategory.getItems().addAll();
+        try {
+            comboBoxCategory.setItems(songsModel.getAllCategories());
+        } catch (CategorySongDAOException e) {
+            e.printStackTrace();
+        }
 
     }
 
