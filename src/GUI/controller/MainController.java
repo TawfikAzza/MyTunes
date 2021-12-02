@@ -276,13 +276,20 @@ public class MainController implements Initializable {
 
     public void handleChooseSong()
     {
-        songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
+
+       songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
+       setLabelSongPlaying();
+    }
+    public void handleChooseSongPlayList(MouseEvent mouseEvent) {
+        songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
         setLabelSongPlaying();
     }
 
     public void handleDisplayPlayList(MouseEvent mouseEvent) throws PlayListDAOException {
         songListFromPlayList.setItems(playlistsModel.getPlayListSelected(playlistsTableView.getSelectionModel().getSelectedItem()));
     }
+
+
 
 
 //    private Integer getPlayListSize() throws PlayListDAOException {

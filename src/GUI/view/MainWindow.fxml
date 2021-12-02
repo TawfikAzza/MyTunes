@@ -48,7 +48,7 @@
                   <Region prefHeight="200.0" prefWidth="200.0" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label fx:id="lblSongPlaying" text="var">
+                        <Label fx:id="lblSongPlaying" prefHeight="18.0" prefWidth="25.0" text="var">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font></Label>
@@ -113,7 +113,7 @@
                   <VBox prefHeight="512.0" prefWidth="163.0">
                      <children>
                         <Label text="Songs on playlist" />
-                        <ListView fx:id="songListFromPlayList" prefHeight="430.0" prefWidth="163.0">
+                        <ListView fx:id="songListFromPlayList" onMouseClicked="#handleChooseSongPlayList" prefHeight="430.0" prefWidth="163.0">
                            <VBox.margin>
                               <Insets bottom="15.0" top="15.0" />
                            </VBox.margin></ListView>
