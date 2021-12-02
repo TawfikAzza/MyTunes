@@ -151,4 +151,9 @@ public class Song {
     public void setIntDuration(int duration) {
         this.duration = duration;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s by %s",getName(),getAuthor());
+    }
 }

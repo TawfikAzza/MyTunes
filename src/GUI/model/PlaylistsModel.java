@@ -10,6 +10,7 @@ import BLL.exception.SongDAOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistsModel {
@@ -26,4 +27,12 @@ public class PlaylistsModel {
         return allPlayLists;
     }
 
+    public ObservableList<Song> getPlayListSelected(PlayList selectedItem) throws PlayListDAOException {
+        ObservableList<Song> allSongList = FXCollections.observableArrayList();
+        List<Song> allSongFromPlayList;
+        allSongFromPlayList = new ArrayList<Song>(myTunesFacade.getPlayList(selectedItem.getIdPlaylist()).getListSong().values());
+
+        allSongList.addAll(allSongFromPlayList);
+        return allSongList;
+    }
 }

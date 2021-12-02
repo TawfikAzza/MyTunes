@@ -40,7 +40,7 @@ public class PlayListDAO implements IPlayListDataAccess {
         HashMap<Integer, Song> songList = new HashMap<>();
         try (Connection con = cm.getConnection()) {
             String sqlcommandSelect = "SELECT Song.id as idSong, Song.name as songName, Song.authorID as AuthorID, Song.categoryID as CategoryID, " +
-                    " Song.songFile as songFile, Song.duration as duration " +
+                    " Song.songFile as songFile, Song.duration as duration, " +
                     " CORR_SONG_PLAYLIST.rankSong as RankSong,PlayList.name as playListName " +
                     " FROM Song,CORR_SONG_PLAYLIST,Playlist " +
                     " WHERE Song.id = CORR_SONG_PLAYLIST.songID " +

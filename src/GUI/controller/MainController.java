@@ -18,12 +18,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
@@ -58,7 +56,8 @@ public class MainController implements Initializable {
     private TableColumn<Song, String> titleColumn, artistColumn, categoryColumn, timeColumn;
     @FXML
     private TableColumn<PlayList, String> nameColumn, timePlaylistColumn, songsColumn;
-
+    @FXML
+    private ListView<Song> songListFromPlayList;
 
     public MainController() throws MyTunesManagerException, SongDAOException {
         this.songsModel = new SongsModel();
@@ -218,6 +217,10 @@ public class MainController implements Initializable {
     public void handleChooseSong()
     {
         songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
+    }
+
+    public void handleDisplayPlayList(MouseEvent mouseEvent) throws PlayListDAOException {
+        songListFromPlayList.setItems(playlistsModel.getPlayListSelected(playlistsTableView.getSelectionModel().getSelectedItem()));
     }
 
 

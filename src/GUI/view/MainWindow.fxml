@@ -82,7 +82,7 @@
                   <VBox prefHeight="489.0" prefWidth="292.0">
                      <children>
                         <Label text="Playlists" />
-                        <TableView fx:id="playlistsTableView" prefHeight="430.0" prefWidth="277.0">
+                        <TableView fx:id="playlistsTableView" onMouseClicked="#handleDisplayPlayList" prefHeight="430.0" prefWidth="277.0">
                           <columns>
                             <TableColumn fx:id="nameColumn" prefWidth="96.0" text="Name" />
                             <TableColumn fx:id="songsColumn" prefWidth="96.0" text="Songs" />
@@ -110,7 +110,7 @@
                   <VBox prefHeight="512.0" prefWidth="163.0">
                      <children>
                         <Label text="Songs on playlist" />
-                        <ListView prefHeight="430.0" prefWidth="163.0">
+                        <ListView fx:id="songListFromPlayList" prefHeight="430.0" prefWidth="163.0">
                            <VBox.margin>
                               <Insets bottom="15.0" top="15.0" />
                            </VBox.margin></ListView>
