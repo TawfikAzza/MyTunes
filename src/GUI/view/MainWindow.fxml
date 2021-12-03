@@ -122,7 +122,7 @@
                               <Button fx:id="upButton" mnemonicParsing="false" style="-fx-background-color: transparent;" />
                               <Button fx:id="downButton" mnemonicParsing="false" style="-fx-background-color: transparent;" />
                               <Region prefHeight="5.0" prefWidth="30.0" />
-                              <Button mnemonicParsing="false" text="Delete" />
+                              <Button fx:id="deleteFromPlayListButton" mnemonicParsing="false" text="Delete" />
                            </children>
                            <VBox.margin>
                               <Insets bottom="20.0" />

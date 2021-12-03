@@ -49,7 +49,7 @@ public class MainController implements Initializable {
     @FXML
     private Label lblSongPlaying;
     @FXML
-    private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton, closeButton, editSongButton, deleteButton;
+    private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton, closeButton, editSongButton, deleteButton,deleteFromPlayListButton;
     @FXML
     private ImageView volumeImage;
     @FXML
@@ -217,12 +217,15 @@ public class MainController implements Initializable {
             }
 
         });
-
+        deleteFromPlayListButton.setOnAction(event -> {
+            songListFromPlayList.getItems().remove(songListFromPlayList.getSelectionModel().getSelectedItem());
+        });
         try {
             titleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("name"));
             artistColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("author"));
             categoryColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("category"));
-            timeColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getIntDuration()/60+":"+String.format("%02d", data.getValue().getIntDuration()%60))));
+            //timeColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getIntDuration()/60+":"+String.format("%02d", data.getValue().getIntDuration()%60))));
+            timeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getStringDuration()));
             songsTableView.getItems().setAll(songsModel.getAllSongs());
         } catch (SongDAOException e) {
             e.printStackTrace();
