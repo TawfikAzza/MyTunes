@@ -114,6 +114,9 @@ public class PlayListDAO implements IPlayListDataAccess {
                         );
                         playListName = rs.getString("playListName");
                         currentPlaylist = idPlayList;
+                    } else {
+                        playListName = rs.getString("playListName");
+                        currentPlaylist = idPlayList;
                     }
 
 
