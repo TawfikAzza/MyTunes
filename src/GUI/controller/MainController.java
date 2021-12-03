@@ -240,6 +240,7 @@ public class MainController implements Initializable {
             //songsColumn.setCellValueFactory(data -> String.valueOf(data.getValue().getListSong().values().stream().collect(Collectors.toCollection(ObservableValue<String>::new))));
            // timePlaylistColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()/60)+":"+String.format("%02d", data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()%60)));
             timePlaylistColumn.setCellValueFactory(new PropertyValueFactory<>("totalDuration"));
+            System.out.println("In MainController");
             playlistsTableView.getItems().setAll(playlistsModel.getAllPlayLists());
         } catch (PlayListDAOException e) {
             e.printStackTrace();

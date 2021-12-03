@@ -21,6 +21,8 @@ public class PlayList {
     public PlayList(String name, HashMap<Integer,Song> songList){
         this.name = name;
         listSong=songList;
+        sizeList=0;
+        totalDuration="0";
     }
 
     public String getTotalDuration() {

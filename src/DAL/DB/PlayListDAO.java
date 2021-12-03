@@ -81,8 +81,9 @@ public class PlayListDAO implements IPlayListDataAccess {
                     "Song.songFile as songFile, Song.duration as duration, CORR_SONG_PLAYLIST.rankSong as RankSong,PlayList.name as playListName " +
                     "FROM Song INNER JOIN CORR_SONG_PLAYLIST " +
                     "ON Song.id=CORR_SONG_PLAYLIST.songID " +
-                    "INNER JOIN Playlist ON CORR_SONG_PLAYLIST.playListID=PLAYLIST.id " +
+                    "RIGHT JOIN Playlist ON CORR_SONG_PLAYLIST.playListID=PLAYLIST.id " +
                     "ORDER BY PlayList.id,RankSong ;";
+            System.out.println(sqlcommandSelect);
             PreparedStatement pstmtSelect = con.prepareStatement(sqlcommandSelect);
             boolean flagFirst = false;
             int currentPlaylist = -1;
@@ -90,6 +91,7 @@ public class PlayListDAO implements IPlayListDataAccess {
             int idPlayList = 0;
             String playListName = null;
             while (rs.next()) {
+
                 idPlayList = rs.getInt("playlistID");
                 if (!flagFirst) {
                     currentPlaylist = idPlayList;
@@ -100,23 +102,29 @@ public class PlayListDAO implements IPlayListDataAccess {
                     allPlayLists.add(playList);
                     songList.clear();
                 }
-                songList.put(rs.getInt("RankSong"), new Song(
-                                rs.getInt("idSong"),
-                                rs.getString("songName"),
-                                mapAuthor.get(rs.getInt("authorID")),
-                                mapCategory.get(rs.getInt("categoryID")),
-                                rs.getString("songFile"),
-                                rs.getInt("duration")
-                        )
-                );
-                playListName = rs.getString("playListName");
-                currentPlaylist = idPlayList;
+                int rankSong = rs.getInt("RankSong");
+                    if(rankSong!=0) {
+                        songList.put(rankSong, new Song(
+                                        rs.getInt("idSong"),
+                                        rs.getString("songName"),
+                                        mapAuthor.get(rs.getInt("authorID")),
+                                        mapCategory.get(rs.getInt("categoryID")),
+                                        rs.getString("songFile"),
+                                        rs.getInt("duration")
+                                )
+                        );
+                        playListName = rs.getString("playListName");
+                        currentPlaylist = idPlayList;
+                    }
+
+
 
             }
             PlayList playList = new PlayList(idPlayList, playListName, songList);
             allPlayLists.add(playList);
-        }
 
+        }
+        System.out.println("BEFORE RETURN PLAYLISTDAO");
         return allPlayLists;
     }
 
