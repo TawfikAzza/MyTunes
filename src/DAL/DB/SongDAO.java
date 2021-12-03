@@ -116,9 +116,7 @@ public class SongDAO implements ISongDataAccess {
             pstmtUpdate.setInt(5,song.getIntDuration());
             pstmtUpdate.setInt(6,song.getId());
             pstmtUpdate.executeUpdate();
-            System.out.printf("UPDATE SONG SET name= %s, authorID=%d,categoryID=%d,songFile=%s,duration=%d WHERE id = %d;"
-                                ,song.getName(),song.getAuthor().getId(),song.getCategory().getId(),song.getStringSongFile()
-                                ,song.getIntDuration(),song.getId());
+
         }
 
     }

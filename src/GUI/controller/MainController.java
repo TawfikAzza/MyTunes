@@ -157,6 +157,66 @@ public class MainController implements Initializable {
             }});
 
 //        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+        leftButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(songsTableView.getSelectionModel().getSelectedItem()!=null) {
+                    songListFromPlayList.getItems().add(songsTableView.getSelectionModel().getSelectedItem());
+                    songListFromPlayList.refresh();
+                    for (Song song: songListFromPlayList.getItems()) {
+                        System.out.println(song);
+                    }
+                }
+
+            }});
+
+        upButton.setOnAction(event -> {
+            if(songListFromPlayList.getSelectionModel().getSelectedIndex()!=0) {
+                int indexChosen = songListFromPlayList.getSelectionModel().getSelectedIndex();
+                int indexToMoveTo = songListFromPlayList.getSelectionModel().getSelectedIndex()-1;
+                Song songSelected = songListFromPlayList.getSelectionModel().getSelectedItem();
+                Song tmpSong = songListFromPlayList.getItems().get(indexToMoveTo);
+                //I add the song which will be replaced by the song selected at the index of the song selected +1
+                songListFromPlayList.getItems().add(indexChosen+1,tmpSong);
+                //I then remove the song which will be replaced by the song selected from the ListView
+                songListFromPlayList.getItems().remove(indexToMoveTo);
+                //I remove the now selected Song from the List as it has a new Index now, I have to take the previous selected
+                //index "IndexChosen" -1 to pinpoint the new Index of the selected song after the deletion f the targetted for removal song
+                //in the list
+                songListFromPlayList.getItems().remove(indexChosen-1);
+                //All I have to do now is populate the ListView whith the song at the index I want
+                songListFromPlayList.getItems().add(indexToMoveTo,songSelected);
+                //This can be optimized, but as I am now, I don't now ListView functionalities very well. so this is the best I could do.
+                //After havng moved the songs in the listView, I replace the cursor on the right object in the ListView
+                //This way if the user click multiple times on the upArrow, it will consecutively move the song first selected up
+                songListFromPlayList.getSelectionModel().select(indexToMoveTo);
+            }
+
+        });
+        downButton.setOnAction(event -> {
+            if(songListFromPlayList.getSelectionModel().getSelectedIndex()!=0 && songListFromPlayList.getSelectionModel().getSelectedIndex()!=songListFromPlayList.getItems().size()-1) {
+                int indexChosen = songListFromPlayList.getSelectionModel().getSelectedIndex();
+                //IndexToMoveTo is the Index at which the selected song will be moved at
+                int indexToMoveTo = songListFromPlayList.getSelectionModel().getSelectedIndex()+1;
+                Song songSelected = songListFromPlayList.getSelectionModel().getSelectedItem();
+                Song tmpSong = songListFromPlayList.getItems().get(indexToMoveTo);
+                //I add the song which will be replaced by the song selected at the index of the song selected
+                songListFromPlayList.getItems().add(indexChosen,tmpSong);
+                //I then remove the song which will be replaced by the song selected from the ListView
+                songListFromPlayList.getItems().remove(indexToMoveTo);
+                //I remove the now selected Song from the List as it has a new Index now, I have to take the previous selected
+                //index "IndexChosen" +1 to pinpoint the new Index of the selected song after the deletion f the targetted for removal song
+                //in the list
+                songListFromPlayList.getItems().remove(indexChosen+1);
+                //All I have to do now is populate the ListView whith the song at the index I want
+                songListFromPlayList.getItems().add(indexToMoveTo,songSelected);
+                //This can be optimized, but as I am now, I don't now ListView functionalities very well. so this is the best I could do.
+                //After havng moved the songs in the listView, I replace the cursor on the right object in the ListView
+                //This way if the user click multiple times on the downArrow, it will consecutively move the song first selected down
+                songListFromPlayList.getSelectionModel().select(indexToMoveTo);
+            }
+
+        });
 
         try {
             titleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("name"));
