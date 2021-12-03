@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class PlaylistsModel {
@@ -34,5 +35,9 @@ public class PlaylistsModel {
 
         allSongList.addAll(allSongFromPlayList);
         return allSongList;
+    }
+    public void createNewPlaylist(String name) throws PlayListDAOException {
+        HashMap<Integer,Song> songList = null;
+        myTunesFacade.createPlayList(new PlayList(name, songList));
     }
 }

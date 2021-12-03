@@ -8,6 +8,7 @@ import BLL.exception.SongDAOException;
 import BLL.exception.SongPlayerException;
 import GUI.model.PlaylistsModel;
 import GUI.model.SongsModel;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -49,7 +50,7 @@ public class MainController implements Initializable {
     @FXML
     private Label lblSongPlaying;
     @FXML
-    private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton, closeButton, editSongButton, deleteButton,deleteFromPlayListButton;
+    private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton, closeButton, editSongButton, deleteButton,deleteFromPlayListButton, newPlayListButton;
     @FXML
     private ImageView volumeImage;
     @FXML
@@ -135,13 +136,12 @@ public class MainController implements Initializable {
 
                     if (alert.getResult() == ButtonType.YES) {
                         songsModel.deleteSong(songsTableView.getSelectionModel().getSelectedItem());
-                        songsTableView.refresh();
+//                        songsTableView.refresh();
                     }
 
                 } catch (SongDAOException e) {
                     e.printStackTrace();
                 }
-
             }});
         closeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -359,7 +359,17 @@ public class MainController implements Initializable {
     public void handleDisplayPlayList(MouseEvent mouseEvent) throws PlayListDAOException {
         songListFromPlayList.setItems(playlistsModel.getPlayListSelected(playlistsTableView.getSelectionModel().getSelectedItem()));
     }
-
+    @FXML
+    private void isNewPlayListPressed(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/view/PlaylistDialogView.fxml"));
+        Parent root = loader.load();
+        PlaylistDialogController playlistDialogController = loader.getController();
+        Stage stage = new Stage();
+        stage.setTitle("New/Edit Playlist");
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+    
 
 
 

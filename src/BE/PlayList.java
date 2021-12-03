@@ -18,6 +18,11 @@ public class PlayList {
         sizeList=songList.size();
         totalDuration=totalDurationCount();
     }
+    public PlayList(String name, HashMap<Integer,Song> songList){
+        this.name = name;
+        listSong=songList;
+    }
+
     public String getTotalDuration() {
         return totalDuration;
     }

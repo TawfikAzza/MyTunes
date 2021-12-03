@@ -97,7 +97,7 @@
                         </TableView>
                         <HBox prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" text="New" textOverrun="CLIP" />
+                              <Button fx:id="newPlayListButton" mnemonicParsing="false" onAction="#isNewPlayListPressed" text="New" textOverrun="CLIP" />
                               <Region prefHeight="20.0" prefWidth="25.0" />
                               <Button mnemonicParsing="false" text="Edit" />
                               <Region prefHeight="20.0" prefWidth="25.0" />
