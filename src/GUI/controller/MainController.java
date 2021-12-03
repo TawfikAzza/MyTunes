@@ -194,7 +194,7 @@ public class MainController implements Initializable {
 
         });
         downButton.setOnAction(event -> {
-            if(songListFromPlayList.getSelectionModel().getSelectedIndex()!=0 && songListFromPlayList.getSelectionModel().getSelectedIndex()!=songListFromPlayList.getItems().size()-1) {
+            if(songListFromPlayList.getSelectionModel().getSelectedIndex()>-1 && songListFromPlayList.getSelectionModel().getSelectedIndex()!=songListFromPlayList.getItems().size()-1) {
                 int indexChosen = songListFromPlayList.getSelectionModel().getSelectedIndex();
                 //IndexToMoveTo is the Index at which the selected song will be moved at
                 int indexToMoveTo = songListFromPlayList.getSelectionModel().getSelectedIndex()+1;
