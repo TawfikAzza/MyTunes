@@ -23,7 +23,6 @@ public class PlaylistsModel {
         allPlayLists = FXCollections.observableArrayList();
     }
     public ObservableList<PlayList> getAllPlayLists() throws PlayListDAOException {
-        System.out.println("in Model");
         List<PlayList> allAvailablePlaylists = myTunesFacade.getALlPlayLists();
         allPlayLists.addAll(allAvailablePlaylists);
         return allPlayLists;
