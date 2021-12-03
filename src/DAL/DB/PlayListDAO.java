@@ -79,7 +79,8 @@ public class PlayListDAO implements IPlayListDataAccess {
         try (Connection con = cm.getConnection()) {
             String sqlcommandSelect = "SELECT PLAYLIST.id as playListID, Song.id as idSong, Song.name as songName, Song.authorID as AuthorID, Song.categoryID as CategoryID, " +
                     "Song.songFile as songFile, Song.duration as duration, CORR_SONG_PLAYLIST.rankSong as RankSong,PlayList.name as playListName " +
-                    "FROM Song INNER JOIN CORR_SONG_PLAYLIST " +
+                    "FROM Song " +
+                    "INNER JOIN CORR_SONG_PLAYLIST " +
                     "ON Song.id=CORR_SONG_PLAYLIST.songID " +
                     "RIGHT JOIN Playlist ON CORR_SONG_PLAYLIST.playListID=PLAYLIST.id " +
                     "ORDER BY PlayList.id,RankSong ;";
@@ -118,9 +119,6 @@ public class PlayListDAO implements IPlayListDataAccess {
                         playListName = rs.getString("playListName");
                         currentPlaylist = idPlayList;
                     }
-
-
-
             }
             PlayList playList = new PlayList(idPlayList, playListName, songList);
             allPlayLists.add(playList);
@@ -171,17 +169,17 @@ public class PlayListDAO implements IPlayListDataAccess {
             pstmtDelete.execute();
 
 
-
-            String sqlCommandInsertListSong = "INSERT INTO CORR_SONG_PLAYLIST VALUES (?,?,?);";
-            PreparedStatement pstmstInsertListSong = con.prepareStatement(sqlCommandInsertListSong);
-            for (Map.Entry entry : playList.getListSong().entrySet()) {
-                Song song = (Song) entry.getValue();
-                pstmstInsertListSong.setInt(1, song.getId());
-                pstmstInsertListSong.setInt(2, playList.getIdPlaylist());
-                pstmstInsertListSong.setInt(3, (int) entry.getKey());
-                pstmstInsertListSong.execute();
+            if(playList.getListSong().size()>0) {
+                String sqlCommandInsertListSong = "INSERT INTO CORR_SONG_PLAYLIST VALUES (?,?,?);";
+                PreparedStatement pstmstInsertListSong = con.prepareStatement(sqlCommandInsertListSong);
+                for (Map.Entry entry : playList.getListSong().entrySet()) {
+                    Song song = (Song) entry.getValue();
+                    pstmstInsertListSong.setInt(1, song.getId());
+                    pstmstInsertListSong.setInt(2, playList.getIdPlaylist());
+                    pstmstInsertListSong.setInt(3, (int) entry.getKey());
+                    pstmstInsertListSong.execute();
+                }
             }
-
             String sqlCOmmandUpdatePlayList = "UPDATE PLAYLIST SET name=? WHERE id=?;";
             PreparedStatement pstmstUpdatePlayList = con.prepareStatement((sqlCOmmandUpdatePlayList));
             pstmstUpdatePlayList.setString(1,playList.getName());

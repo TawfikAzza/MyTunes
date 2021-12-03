@@ -50,7 +50,7 @@ public class MainController implements Initializable {
     @FXML
     private Label lblSongPlaying;
     @FXML
-    private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton, closeButton, editSongButton, deleteButton,deleteFromPlayListButton, newPlayListButton;
+    private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton, closeButton, editSongButton, deleteButton,deleteFromPlayListButton, newPlayListButton, updatePlayListButton,deletePlayList;
     @FXML
     private ImageView volumeImage;
     @FXML
@@ -65,7 +65,7 @@ public class MainController implements Initializable {
     private TableColumn<PlayList, String> nameColumn, timePlaylistColumn, songsColumn;
     @FXML
     private ListView<Song> songListFromPlayList;
-
+    private int currentPlayList;
     public MainController() throws MyTunesManagerException, SongDAOException {
         this.songsModel = new SongsModel();
         this.playlistsModel = new PlaylistsModel();
@@ -96,120 +96,91 @@ public class MainController implements Initializable {
                     stage.show();
                     // Hide this current window (if this is what you want)
 //                    ((Node)(event.getSource())).getScene().getWindow().hide();
-                }
-                catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
-        });
-        editSongButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-                try {
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"));
-                    Parent root = loader.load();
-                    AlertDialogController alertDialogController = loader.getController();
-                    alertDialogController.setValue(songsTableView.getSelectionModel().getSelectedItem());
-                    alertDialogController.setOperationType("modification");
-                    //root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"), resources);
-                    Stage stage = new Stage();
-                    stage.setTitle("New/Edit Song");
-                    stage.setScene(new Scene(root));
-                    stage.show();
-                    // Hide this current window (if this is what you want)
-//                    ((Node)(event.getSource())).getScene().getWindow().hide();
-                }
-                catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
 
-        deleteButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete " + songsTableView.getSelectionModel().getSelectedItem() + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
-                    alert.showAndWait();
 
-                    if (alert.getResult() == ButtonType.YES) {
-                        songsModel.deleteSong(songsTableView.getSelectionModel().getSelectedItem());
-//                        songsTableView.refresh();
-                    }
-
-                } catch (SongDAOException e) {
-                    e.printStackTrace();
-                }
-            }});
-        closeButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Close the Application ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+        deleteButton.setOnAction(event -> {
+            try {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Delete " + songsTableView.getSelectionModel().getSelectedItem() + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+                alert.setHeaderText("You are about to delete a song");
                 alert.showAndWait();
 
                 if (alert.getResult() == ButtonType.YES) {
-                    Stage stage = (Stage) closeButton.getScene().getWindow();
-                    stage.close();
+                    songsModel.deleteSong(songsTableView.getSelectionModel().getSelectedItem());
+//                        songsTableView.refresh();
                 }
+               // updateSongTableView();
+            } catch (SongDAOException e) {
+                e.printStackTrace();
+            }
+        });
+        closeButton.setOnAction(event -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Close the Application ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+            alert.setHeaderText("You have chosen to close the Application");
+            alert.showAndWait();
 
-            }});
+            if (alert.getResult() == ButtonType.YES) {
+                Stage stage = (Stage) closeButton.getScene().getWindow();
+                stage.close();
+            }
+
+        });
 
 //        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
-        leftButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(songsTableView.getSelectionModel().getSelectedItem()!=null) {
-                    songListFromPlayList.getItems().add(songsTableView.getSelectionModel().getSelectedItem());
-                    songListFromPlayList.refresh();
-                    for (Song song: songListFromPlayList.getItems()) {
-                        System.out.println(song);
-                    }
+        leftButton.setOnAction(event -> {
+            if (songsTableView.getSelectionModel().getSelectedItem() != null) {
+                songListFromPlayList.getItems().add(songsTableView.getSelectionModel().getSelectedItem());
+                songListFromPlayList.refresh();
+                for (Song song : songListFromPlayList.getItems()) {
+                    System.out.println(song);
                 }
-
-            }});
+            }
+        });
 
         upButton.setOnAction(event -> {
-            if(songListFromPlayList.getSelectionModel().getSelectedIndex()!=0) {
+            if (songListFromPlayList.getSelectionModel().getSelectedIndex() != 0) {
                 int indexChosen = songListFromPlayList.getSelectionModel().getSelectedIndex();
-                int indexToMoveTo = songListFromPlayList.getSelectionModel().getSelectedIndex()-1;
+                int indexToMoveTo = songListFromPlayList.getSelectionModel().getSelectedIndex() - 1;
                 Song songSelected = songListFromPlayList.getSelectionModel().getSelectedItem();
                 Song tmpSong = songListFromPlayList.getItems().get(indexToMoveTo);
                 //I add the song which will be replaced by the song selected at the index of the song selected +1
-                songListFromPlayList.getItems().add(indexChosen+1,tmpSong);
+                songListFromPlayList.getItems().add(indexChosen + 1, tmpSong);
                 //I then remove the song which will be replaced by the song selected from the ListView
                 songListFromPlayList.getItems().remove(indexToMoveTo);
                 //I remove the now selected Song from the List as it has a new Index now, I have to take the previous selected
                 //index "IndexChosen" -1 to pinpoint the new Index of the selected song after the deletion f the targetted for removal song
                 //in the list
-                songListFromPlayList.getItems().remove(indexChosen-1);
+                songListFromPlayList.getItems().remove(indexChosen - 1);
                 //All I have to do now is populate the ListView whith the song at the index I want
-                songListFromPlayList.getItems().add(indexToMoveTo,songSelected);
+                songListFromPlayList.getItems().add(indexToMoveTo, songSelected);
                 //This can be optimized, but as I am now, I don't now ListView functionalities very well. so this is the best I could do.
                 //After havng moved the songs in the listView, I replace the cursor on the right object in the ListView
-                //This way if the user click multiple times on the upArrow, it will consecutively move the song first selected up
+                //This way if the user click multiple times on the up Arrow, it will consecutively move the song first selected up
                 songListFromPlayList.getSelectionModel().select(indexToMoveTo);
             }
 
         });
         downButton.setOnAction(event -> {
-            if(songListFromPlayList.getSelectionModel().getSelectedIndex()>-1 && songListFromPlayList.getSelectionModel().getSelectedIndex()!=songListFromPlayList.getItems().size()-1) {
+            if (songListFromPlayList.getSelectionModel().getSelectedIndex() > -1 && songListFromPlayList.getSelectionModel().getSelectedIndex() != songListFromPlayList.getItems().size() - 1) {
                 int indexChosen = songListFromPlayList.getSelectionModel().getSelectedIndex();
                 //IndexToMoveTo is the Index at which the selected song will be moved at
-                int indexToMoveTo = songListFromPlayList.getSelectionModel().getSelectedIndex()+1;
+                int indexToMoveTo = songListFromPlayList.getSelectionModel().getSelectedIndex() + 1;
                 Song songSelected = songListFromPlayList.getSelectionModel().getSelectedItem();
                 Song tmpSong = songListFromPlayList.getItems().get(indexToMoveTo);
                 //I add the song which will be replaced by the song selected at the index of the song selected
-                songListFromPlayList.getItems().add(indexChosen,tmpSong);
+                songListFromPlayList.getItems().add(indexChosen, tmpSong);
                 //I then remove the song which will be replaced by the song selected from the ListView
                 songListFromPlayList.getItems().remove(indexToMoveTo);
                 //I remove the now selected Song from the List as it has a new Index now, I have to take the previous selected
                 //index "IndexChosen" +1 to pinpoint the new Index of the selected song after the deletion f the targetted for removal song
                 //in the list
-                songListFromPlayList.getItems().remove(indexChosen+1);
+                songListFromPlayList.getItems().remove(indexChosen + 1);
                 //All I have to do now is populate the ListView whith the song at the index I want
-                songListFromPlayList.getItems().add(indexToMoveTo,songSelected);
+                songListFromPlayList.getItems().add(indexToMoveTo, songSelected);
                 //This can be optimized, but as I am now, I don't now ListView functionalities very well. so this is the best I could do.
                 //After havng moved the songs in the listView, I replace the cursor on the right object in the ListView
                 //This way if the user click multiple times on the downArrow, it will consecutively move the song first selected down
@@ -217,34 +188,56 @@ public class MainController implements Initializable {
             }
 
         });
+
         deleteFromPlayListButton.setOnAction(event -> {
             songListFromPlayList.getItems().remove(songListFromPlayList.getSelectionModel().getSelectedItem());
+            updatePlayListTableView();
         });
-        try {
-            titleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("name"));
-            artistColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("author"));
-            categoryColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("category"));
-            //timeColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getIntDuration()/60+":"+String.format("%02d", data.getValue().getIntDuration()%60))));
-            timeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getStringDuration()));
-            songsTableView.getItems().setAll(songsModel.getAllSongs());
-        } catch (SongDAOException e) {
-            e.printStackTrace();
-        }
 
+        updatePlayListButton.setOnAction(event -> {
+            PlayList playList=null;
+            if(playlistsTableView.getSelectionModel().getSelectedItem()!=null){
+                playList = playlistsTableView.getSelectionModel().getSelectedItem();
+            } else {
+                try {
+                    playList = playlistsModel.getPlayList(currentPlayList);
+                } catch (PlayListDAOException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println("Playlist:" + playList.getIdPlaylist() + " name: " + playList.getName());
+            for (Song song : songListFromPlayList.getItems()) {
+                System.out.println(song);
+            }
+            try {
+                playlistsModel.updatePlayList(playList, songListFromPlayList.getItems());
+                updatePlayListTableView();
+            } catch (PlayListDAOException e) {
+                e.printStackTrace();
+            }
+        });
 
-        try {
+        deletePlayList.setOnAction(event -> {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Delete " + playlistsTableView.getSelectionModel().getSelectedItem().getName() + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+            alert.setHeaderText("You are about to delete a Playlist");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.YES) {
+                try {
+                    playlistsModel.deletePlayList(playlistsTableView.getSelectionModel().getSelectedItem());
+                    playlistsTableView.getItems().remove(playlistsTableView.getSelectionModel().getSelectedIndex());
+                    updatePlayListTableView();
+                } catch (PlayListDAOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
-            nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-            songsColumn.setCellValueFactory(new PropertyValueFactory<>("sizeListString"));
-            //songsColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().values().stream().count())));
-            //songsColumn.setCellValueFactory(data -> String.valueOf(data.getValue().getListSong().values().stream().collect(Collectors.toCollection(ObservableValue<String>::new))));
-           // timePlaylistColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()/60)+":"+String.format("%02d", data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()%60)));
-            timePlaylistColumn.setCellValueFactory(new PropertyValueFactory<>("totalDuration"));
-            playlistsTableView.getItems().setAll(playlistsModel.getAllPlayLists());
-        } catch (PlayListDAOException e) {
-            e.printStackTrace();
-        }
+        updateSongTableView();
+        updatePlayListTableView();
+        setupUI();
 
+    }
+    private void setupUI() {
 
         Image image = new Image("/volume.png");
         volumeImage.setImage(image);
@@ -285,9 +278,43 @@ public class MainController implements Initializable {
         upImage.setFitWidth(20);
         upImage.setFitHeight(20);
         upButton.setGraphic(upImage);
+    }
+    public void updatePlayListTableView() {
+
+        try {
+            nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+            songsColumn.setCellValueFactory(new PropertyValueFactory<>("sizeListString"));
+            //songsColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().values().stream().count())));
+            //songsColumn.setCellValueFactory(data -> String.valueOf(data.getValue().getListSong().values().stream().collect(Collectors.toCollection(ObservableValue<String>::new))));
+            // timePlaylistColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()/60)+":"+String.format("%02d", data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()%60)));
+            timePlaylistColumn.setCellValueFactory(new PropertyValueFactory<>("totalDuration"));
+            playlistsTableView.getItems().setAll(playlistsModel.getAllPlayLists());
+        } catch (PlayListDAOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void refreshTable() {
+        songsTableView.getItems().clear();
+    }
+    public void updateSongTableView() {
+
+
+       // songsTableView.getColumns().remove(0,songsColumn.getTableView().getItems().size());
+
+        try {
+            titleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("name"));
+            artistColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("author"));
+            categoryColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("category"));
+            //timeColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getIntDuration()/60+":"+String.format("%02d", data.getValue().getIntDuration()%60))));
+            timeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getStringDuration()));
+
+            songsTableView.getItems().addAll(songsModel.getAllSongs());
+
+        } catch (SongDAOException e) {
+            e.printStackTrace();
+        }
 
     }
-
     public void testP(ActionEvent actionEvent) {
         System.out.println("Before");
         System.out.println();
@@ -357,6 +384,7 @@ public class MainController implements Initializable {
     }
 
     public void handleDisplayPlayList(MouseEvent mouseEvent) throws PlayListDAOException {
+        currentPlayList=playlistsTableView.getSelectionModel().getSelectedItem().getIdPlaylist();
         songListFromPlayList.setItems(playlistsModel.getPlayListSelected(playlistsTableView.getSelectionModel().getSelectedItem()));
     }
     @FXML
@@ -369,11 +397,30 @@ public class MainController implements Initializable {
         stage.setScene(new Scene(root));
         stage.show();
     }
-    
+
+    public void editSong(ActionEvent actionEvent) {
+        try {
+
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"));
+                Parent root = loader.load();
+                AlertDialogController alertDialogController = loader.getController();
+                alertDialogController.setValue(songsTableView.getSelectionModel().getSelectedItem());
+                songsTableView.getItems().clear();
+                songsTableView.refresh();
 
 
-
-//    private Integer getPlayListSize() throws PlayListDAOException {
-//       final List<Song> jjj = PlayList::getListSong;
-//    }
+                alertDialogController.setMainController(this);
+                alertDialogController.setOperationType("modification");
+                //root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"), resources);
+                Stage stage = new Stage();
+                stage.setTitle("New/Edit Song");
+                stage.setScene(new Scene(root));
+                stage.show();
+                // Hide this current window (if this is what you want)
+    //                    ((Node)(event.getSource())).getScene().getWindow().hide();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 }

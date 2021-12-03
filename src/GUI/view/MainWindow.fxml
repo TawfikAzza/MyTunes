@@ -99,9 +99,10 @@
                            <children>
                               <Button fx:id="newPlayListButton" mnemonicParsing="false" onAction="#isNewPlayListPressed" text="New" textOverrun="CLIP" />
                               <Region prefHeight="20.0" prefWidth="25.0" />
-                              <Button mnemonicParsing="false" text="Edit" />
+                              <Button mnemonicParsing="false" text="Edit Name" />
                               <Region prefHeight="20.0" prefWidth="25.0" />
-                              <Button mnemonicParsing="false" text="Delete" />
+                              <Button fx:id="updatePlayListButton" mnemonicParsing="false" text="Update" />
+                              <Button fx:id="deletePlayList" mnemonicParsing="false" text="Delete" />
                            </children>
                            <VBox.margin>
                               <Insets bottom="20.0" top="15.0" />
@@ -159,7 +160,7 @@
                               <HBox spacing="20.0" BorderPane.alignment="CENTER">
                                  <children>
                                     <Button fx:id="newSongButton" mnemonicParsing="false" text="New" />
-                                    <Button fx:id="editSongButton" mnemonicParsing="false" text="Edit" />
+                                    <Button fx:id="editSongButton" mnemonicParsing="false" onAction="#editSong" text="Edit" />
                                     <Button fx:id="deleteButton" mnemonicParsing="false" text="Delete" />
                                  </children>
                               </HBox>

@@ -9,6 +9,7 @@ import BLL.exception.MyTunesManagerException;
 import BLL.exception.SongDAOException;
 import GUI.model.AuthorModel;
 import GUI.model.SongsModel;
+import com.sun.tools.javac.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,6 +27,7 @@ public class AlertDialogController implements Initializable {
 
     SongsModel songsModel;
     AuthorModel authorModel;
+    MainController mainController;
     @FXML
     private TextField fileTextField, timeTextField, artistTextField, titleTextField;
     @FXML
@@ -34,6 +36,9 @@ public class AlertDialogController implements Initializable {
     private ComboBox comboBoxCategory;
     private String operationType="creation";
     private int idSongModified;
+    public void setMainController(MainController mainController) {
+        this.mainController=mainController;
+    }
     public AlertDialogController() throws MyTunesManagerException {
         songsModel = new SongsModel();
         authorModel = new AuthorModel();
@@ -58,16 +63,21 @@ public class AlertDialogController implements Initializable {
             songCreated = songsModel.addSong(song);
             if (song != null){
                 if (saveButton.getScene().getWindow() != null){
+                    mainController.updateSongTableView();
                     Stage stage = (Stage) saveButton.getScene().getWindow();
                     stage.close();
                 }
             }
         } else {
+            System.out.println("modif");
             File file = new File(fileTextField.getText());
             Author author = authorModel.createNewAuthor(artistTextField.getText());
             Song song = new Song(idSongModified,titleTextField.getText(), author, (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem(), file, timeTextField.getText());
             songsModel.updateSong(song);
             if (saveButton.getScene().getWindow() != null){
+                mainController.refreshTable();
+                mainController.updateSongTableView();
+
                 Stage stage = (Stage) saveButton.getScene().getWindow();
                 stage.close();
             }
@@ -77,7 +87,6 @@ public class AlertDialogController implements Initializable {
     }
     public void setOperationType(String aString) {
         operationType = aString;
-        System.out.println(operationType);
     }
     public void isCanceled(ActionEvent event) {
         if (cancelButton.getScene().getWindow() != null) {

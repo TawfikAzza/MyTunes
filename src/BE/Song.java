@@ -69,6 +69,7 @@ public class Song {
     }
 
     public String getStringDuration() {
+
         int minutes = this.duration/60;
         int seconds = this.duration % 60;
         return String.format("%02d:%02d",minutes,seconds);

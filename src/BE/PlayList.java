@@ -43,7 +43,7 @@ public class PlayList {
             total+=song.getIntDuration();
         }
         int hours = total/3600;
-        int minutes = total/60;
+        int minutes = (total%3600)/60;
         int seconds = total%60;
         return String.format("%02d:%02d:%02d",hours,minutes,seconds);
     }

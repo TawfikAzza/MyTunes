@@ -24,8 +24,13 @@ public class SongsModel {
         allAvailableSongs = FXCollections.observableArrayList();
     }
     public ObservableList<Song> getAllSongs() throws SongDAOException {
-       List<Song> allSongs = myTunesFacade.getALlSongs();
+        allAvailableSongs.clear();
+        List<Song> allSongs = myTunesFacade.getALlSongs();
         allAvailableSongs.addAll(allSongs);
+        return allAvailableSongs;
+    }
+
+    public ObservableList<Song> getFromCache() {
         return allAvailableSongs;
     }
 
