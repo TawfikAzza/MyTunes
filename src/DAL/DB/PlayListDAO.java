@@ -83,7 +83,6 @@ public class PlayListDAO implements IPlayListDataAccess {
                     "ON Song.id=CORR_SONG_PLAYLIST.songID " +
                     "RIGHT JOIN Playlist ON CORR_SONG_PLAYLIST.playListID=PLAYLIST.id " +
                     "ORDER BY PlayList.id,RankSong ;";
-            System.out.println(sqlcommandSelect);
             PreparedStatement pstmtSelect = con.prepareStatement(sqlcommandSelect);
             boolean flagFirst = false;
             int currentPlaylist = -1;
@@ -124,7 +123,6 @@ public class PlayListDAO implements IPlayListDataAccess {
             allPlayLists.add(playList);
 
         }
-        System.out.println("BEFORE RETURN PLAYLISTDAO");
         return allPlayLists;
     }
 
