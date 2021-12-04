@@ -76,6 +76,8 @@ public class MainController implements Initializable {
     //Piece of code given to me by Renars the genius!
     ChangeListener<Duration> changeListener;
     MediaPlayer player;
+    private double valueSongPlayer;
+    private boolean sliderTouched=false;
     public MainController() throws MyTunesManagerException, SongDAOException {
 
         /**
@@ -84,9 +86,10 @@ public class MainController implements Initializable {
         changeListener = new ChangeListener<Duration>() {
             @Override
             public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
-                slider.setValue(((double) newValue.toSeconds())/ ((double) player.getTotalDuration().toSeconds()));
+                    slider.setValue(((double) newValue.toSeconds()));
             }
         };
+
         /**
          * End piece of code given by Renars
          * */
@@ -94,65 +97,28 @@ public class MainController implements Initializable {
         this.playlistsModel = new PlaylistsModel();
     }
 
-    /**
-     * Piece of code given graciously by Renars,
-     * */
-  /*  public void moveProgressSlider(MouseEvent mouseEvent) {
-        player.currentTimeProperty().removeListener(changeListener);
-    }
-
-    public void setProgress(MouseEvent mouseEvent) {
-        player.seek(player.getTotalDuration().multiply(progressSlider.getValue()));
-        player.currentTimeProperty().addListener(changeListener);
-    }*/
-    /**
-     * End of piece of code given by Renars
-     * */
     private void setLabelSongPlaying() {
         if(songsTableView.getSelectionModel().getSelectedItem()!=null)
             lblSongPlaying.setText(songsTableView.getSelectionModel().getSelectedItem().getName());
         else
             lblSongPlaying.setText(songListFromPlayList.getSelectionModel().getSelectedItem().getName());
     }
+    public void moveProgressSlider(MouseEvent mouseEvent) {
+        player.currentTimeProperty().removeListener(changeListener);
+    }
+
+    public void setProgress(MouseEvent mouseEvent) {
+        player.seek(Duration.seconds(slider.getValue()));
+        player.currentTimeProperty().addListener(changeListener);
+    }
     public void playStopSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
         setLabelSongPlaying();
         songsModel.playStopSong();
         SongPlayer songPlayer = SongPlayer.getInstance();
-
         player = songPlayer.getPlayer();
-        //System.out.println(player);
+        slider.maxProperty().set(player.getTotalDuration().toSeconds());
+        player.currentTimeProperty().addListener(changeListener);
         Double time = player.getTotalDuration().toSeconds();
-        changeListener = new ChangeListener<Duration>() {
-            @Override
-            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
-                slider.setValue(((double) newValue.toSeconds())/ ((double) player.getTotalDuration().toSeconds()));
-            }
-        };
-//        player.currentTimeProperty().addListener((ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) -> {
-//            slider.setValue(newValue.toSeconds());
-//        });
-       /* player.totalDurationProperty().addListener(new ChangeListener<Duration>() {
-            @Override
-            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue,
-                                Duration newValue) {
-                slider.setMax(newValue.toSeconds());
-            }
-        });*/
-        slider.maxProperty().bind(Bindings.createDoubleBinding(
-                () -> player.getTotalDuration().toSeconds(),
-                player.totalDurationProperty()));
-        slider.setOnMouseClicked((MouseEvent mouseEvent) -> {
-           player.seek(Duration.seconds(slider.getValue()));
-           // System.out.println(Duration.seconds((slider.getValue())));
-            double value = (mouseEvent.getX()-9) * (slider.getMax() / (slider.getWidth()-19));
-
-           // System.out.println("Value"+value);
-            slider.setValue(value);
-
-        });
-
-
-
     }
     public void previousSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
         if(songListFromPlayList.getSelectionModel().getSelectedIndex()>0) {
