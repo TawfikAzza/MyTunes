@@ -28,13 +28,13 @@
                            <children>
                               <Button fx:id="goBack" mnemonicParsing="false" style="-fx-background-color: transparent;" />
                               <Button fx:id="play" mnemonicParsing="false" onAction="#playStopSong" style="-fx-background-color: transparent;" />
-                              <Button fx:id="goForward" mnemonicParsing="false" style="-fx-background-color: transparent;" />
+                              <Button fx:id="goForward" mnemonicParsing="false" onAction="#nextSong" style="-fx-background-color: transparent;" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <ImageView fx:id="volumeImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
-                              <Slider fx:id="progressSlider" blockIncrement="2.0" onDragExited="#setProgress" prefHeight="16.0" prefWidth="85.0" value="30.0" />
+                              <Slider fx:id="slider" blockIncrement="2.0" minWidth="150.0" prefHeight="16.0" prefWidth="122.0" value="30.0" />
                            </children>
                            <opaqueInsets>
                               <Insets />

@@ -10,6 +10,7 @@ import BLL.util.SongPlayer;
 import GUI.model.PlaylistsModel;
 import GUI.model.SongsModel;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -36,6 +37,7 @@ import javafx.stage.Window;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
+import java.awt.event.MouseAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -51,7 +53,7 @@ public class MainController implements Initializable {
     private final SongsModel songsModel;
     private final PlaylistsModel playlistsModel;
     @FXML
-    private Slider progressSlider;
+    private Slider slider;
     @FXML
     private Label lblSongPlaying;
     @FXML
@@ -75,15 +77,14 @@ public class MainController implements Initializable {
     ChangeListener<Duration> changeListener;
     MediaPlayer player;
     public MainController() throws MyTunesManagerException, SongDAOException {
-        SongPlayer songPlayer = SongPlayer.getInstance();
-        player = songPlayer.getPlayer();
+
         /**
          * Piece of code given by renars
          * */
         changeListener = new ChangeListener<Duration>() {
             @Override
             public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
-                progressSlider.setValue(((double) newValue.toSeconds())/ ((double) player.getTotalDuration().toSeconds()));
+                slider.setValue(((double) newValue.toSeconds())/ ((double) player.getTotalDuration().toSeconds()));
             }
         };
         /**
@@ -96,14 +97,14 @@ public class MainController implements Initializable {
     /**
      * Piece of code given graciously by Renars,
      * */
-    public void moveProgressSlider(MouseEvent mouseEvent) {
+  /*  public void moveProgressSlider(MouseEvent mouseEvent) {
         player.currentTimeProperty().removeListener(changeListener);
     }
 
     public void setProgress(MouseEvent mouseEvent) {
         player.seek(player.getTotalDuration().multiply(progressSlider.getValue()));
         player.currentTimeProperty().addListener(changeListener);
-    }
+    }*/
     /**
      * End of piece of code given by Renars
      * */
@@ -116,8 +117,46 @@ public class MainController implements Initializable {
     public void playStopSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
         setLabelSongPlaying();
         songsModel.playStopSong();
-    }
+        SongPlayer songPlayer = SongPlayer.getInstance();
 
+        player = songPlayer.getPlayer();
+        System.out.println(player);
+        Double time = player.getTotalDuration().toSeconds();
+        changeListener = new ChangeListener<Duration>() {
+            @Override
+            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+                slider.setValue(((double) newValue.toSeconds())/ ((double) player.getTotalDuration().toSeconds()));
+            }
+        };
+//        player.currentTimeProperty().addListener((ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) -> {
+//            slider.setValue(newValue.toSeconds());
+//        });
+       /* player.totalDurationProperty().addListener(new ChangeListener<Duration>() {
+            @Override
+            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue,
+                                Duration newValue) {
+                slider.setMax(newValue.toSeconds());
+            }
+        });*/
+        slider.maxProperty().bind(Bindings.createDoubleBinding(
+                () -> player.getTotalDuration().toSeconds(),
+                player.totalDurationProperty()));
+        slider.setOnMouseClicked((MouseEvent mouseEvent) -> {
+           player.seek(Duration.seconds(slider.getValue()));
+            System.out.println(Duration.seconds((slider.getValue())));
+            double value = (mouseEvent.getX()-9) * (slider.getMax() / (slider.getWidth()-19));
+
+            System.out.println("Value"+value);
+            slider.setValue(value);
+
+        });
+
+
+
+    }
+    public void nextSong(ActionEvent actionEvent) {
+
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -406,11 +445,14 @@ public class MainController implements Initializable {
 
     public void handleChooseSong()
     {
-
-       songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
-       setLabelSongPlaying();
+        songListFromPlayList.getSelectionModel().clearSelection();
+        System.out.println(songListFromPlayList.getSelectionModel().getSelectedIndex());
+        songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
+        setLabelSongPlaying();
     }
     public void handleChooseSongPlayList(MouseEvent mouseEvent) {
+        songsTableView.getSelectionModel().clearSelection();
+        System.out.println(songsTableView.getSelectionModel().getSelectedIndex());
         songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
         setLabelSongPlaying();
     }
@@ -470,4 +512,6 @@ public class MainController implements Initializable {
         stage.setScene(new Scene(root));
         stage.show();
     }
+
+
 }
