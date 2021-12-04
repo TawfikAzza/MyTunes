@@ -134,7 +134,8 @@ public class MainController implements Initializable {
                 slider.setValue(((double) newValue.toSeconds()));
                 if(slider.getValue()+1>=player.getTotalDuration().toSeconds()) {
                     try {
-                        nextSong(new ActionEvent());
+                        if(songListFromPlayList.getSelectionModel().getSelectedIndex()!=-1)
+                            nextSong(new ActionEvent());
                     } catch (SongPlayerException e) {
                         e.printStackTrace();
                     } catch (MyTunesManagerException e) {
@@ -169,23 +170,12 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        newSongButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Parent root;
-                try {
-                    root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"), resources);
-                    Stage stage = new Stage();
-                    stage.setTitle("New/Edit Song");
-                    stage.setScene(new Scene(root));
-                    stage.show();
-                    // Hide this current window (if this is what you want)
-//                    ((Node)(event.getSource())).getScene().getWindow().hide();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+//        newSongButton.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//
+//            }
+//        });
 
 
         deleteButton.setOnAction(event -> {
@@ -520,5 +510,21 @@ public class MainController implements Initializable {
     }
 
 
+    public void newSong(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"));
+        Parent root = loader.load();
+        AlertDialogController alertDialogController = loader.getController();
+        songsTableView.getItems().clear();
+        songsTableView.refresh();
+            // Hide this current window (if this is what you want)
+//                    ((Node)(event.getSource())).getScene().getWindow().hide();
 
+        alertDialogController.setMainController(this);
+        //root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"), resources);
+        Stage stage = new Stage();
+        stage.setTitle("New/Edit Song");
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
 }
