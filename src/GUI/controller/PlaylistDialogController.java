@@ -31,7 +31,6 @@ public class PlaylistDialogController implements Initializable {
     }
     public void setPlayListToBeUpdated(PlayList playList){
         this.playListToBeUpdated=playList;
-        System.out.printf("PlayLisid: %d name:%s",playListToBeUpdated.getIdPlaylist(),playListToBeUpdated.getName());
         nameTextField.setText(playListToBeUpdated.getName());
     }
     @Override

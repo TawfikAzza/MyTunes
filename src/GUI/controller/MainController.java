@@ -61,21 +61,22 @@ public class MainController implements Initializable {
     @FXML
     private ListView<Song> songListFromPlayList;
     private int currentPlayList;
-    //Piece of code given to me by Renars the genius!
+    //Piece of code and idea given to us by Renars the genius!
     ChangeListener<Duration> changeListener;
+    //End piece of code from Renars
     MediaPlayer player;
     public MainController() throws MyTunesManagerException, SongDAOException {
-
         this.songsModel = new SongsModel();
         this.playlistsModel = new PlaylistsModel();
     }
-
-    private void setLabelSongPlaying() {
-        if(songsTableView.getSelectionModel().getSelectedItem()!=null)
-            lblSongPlaying.setText(songsTableView.getSelectionModel().getSelectedItem().getName());
-        else
-            lblSongPlaying.setText(songListFromPlayList.getSelectionModel().getSelectedItem().getName());
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        setupButtons();
+        updateSongTableView();
+        updatePlayListTableView();
+        setupUI();
     }
+
 
     /**
      * The two following methods : moveProgressSlider and setProgress
@@ -93,11 +94,7 @@ public class MainController implements Initializable {
         player.seek(Duration.seconds(slider.getValue()));
         player.currentTimeProperty().addListener(changeListener);
     }
-    public void playStopSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
-        setLabelSongPlaying();
-        songsModel.playStopSong();
-        generateListener();
-    }
+
 
     /**
      * This method generates a Listener on the slider which will serve several purposes,
@@ -108,7 +105,6 @@ public class MainController implements Initializable {
      * part of a PlayList, advance to the next one.
      * **/
     private void generateListener() {
-
         SongPlayer songPlayer = SongPlayer.getInstance();
         if(changeListener!=null)
             player.currentTimeProperty().removeListener(changeListener);
@@ -135,6 +131,17 @@ public class MainController implements Initializable {
         player.currentTimeProperty().addListener(changeListener);
     }
 
+    /**
+     * The next three method playStopSong, previousSong as well as nextSong are in charge of
+     * managing the action of the mouse on the three controls that governs the playback as well as
+     * the feeding of the media to the Media player.
+     * The method are straightforward and use the SongsModel as foundation
+     * */
+    public void playStopSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
+        setLabelSongPlaying();
+        songsModel.playStopSong();
+        generateListener();
+    }
     public void previousSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
         if(songListFromPlayList.getSelectionModel().getSelectedIndex()>0) {
             songListFromPlayList.getSelectionModel().select(songListFromPlayList.getSelectionModel().getSelectedIndex()-1);
@@ -142,7 +149,6 @@ public class MainController implements Initializable {
             playStopSong(actionEvent);
         }
     }
-
     public void nextSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
         if(songListFromPlayList.getSelectionModel().getSelectedIndex()<songListFromPlayList.getItems().size()-1) {
             songListFromPlayList.getSelectionModel().select(songListFromPlayList.getSelectionModel().getSelectedIndex()+1);
@@ -151,14 +157,17 @@ public class MainController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-        setupButtons();
-        updateSongTableView();
-        updatePlayListTableView();
-        setupUI();
-
+    /***
+     * The next 5 methods are in charge of the UI management, they set up the right values of the label,
+     * refresh the differents lists and tableViews as well as setup up the differents images contained inside the
+     * MainWindow
+     * Their name are explicit and the content is as well.
+     * */
+    private void setLabelSongPlaying() {
+        if(songsTableView.getSelectionModel().getSelectedItem()!=null)
+            lblSongPlaying.setText(songsTableView.getSelectionModel().getSelectedItem().getName());
+        else
+            lblSongPlaying.setText(songListFromPlayList.getSelectionModel().getSelectedItem().getName());
     }
     private void setupButtons() {
         deleteButton.setOnAction(event -> {
@@ -208,7 +217,7 @@ public class MainController implements Initializable {
                 //I then remove the song which will be replaced by the song selected from the ListView
                 songListFromPlayList.getItems().remove(indexToMoveTo);
                 //I remove the now selected Song from the List as it has a new Index now, I have to take the previous selected
-                //index "IndexChosen" -1 to pinpoint the new Index of the selected song after the deletion f the targetted for removal song
+                //index "IndexChosen" -1 to pinpoint the new Index of the selected song after the deletion if the targetted for removal song
                 //in the list
                 songListFromPlayList.getItems().remove(indexChosen - 1);
                 //All I have to do now is populate the ListView whith the song at the index I want
@@ -261,7 +270,6 @@ public class MainController implements Initializable {
                     e.printStackTrace();
                 }
             }
-            //.println("Playlist:" + playList.getIdPlaylist() + " name: " + playList.getName());
 
             try {
                 playlistsModel.updatePlayList(playList, songListFromPlayList.getItems());
@@ -293,7 +301,6 @@ public class MainController implements Initializable {
         volumeImage.setImage(image);
         volumeImage.setFitWidth(20);
 
-        //System.out.println(getClass().getResource("../../../../").getPath());
         ImageView goBackImage = new ImageView(getClass().getResource("/back.png").toExternalForm());
         goBackImage.setFitHeight(30);
         goBackImage.setFitWidth(30);
@@ -330,7 +337,6 @@ public class MainController implements Initializable {
         upButton.setGraphic(upImage);
     }
     public void updatePlayListTableView() {
-
         try {
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             songsColumn.setCellValueFactory(new PropertyValueFactory<>("sizeListString"));
@@ -361,63 +367,15 @@ public class MainController implements Initializable {
         }
 
     }
-    public void testP(ActionEvent actionEvent) {
-        System.out.println("Before");
-        System.out.println();
-        //System.out.println(getClass().getResource("../../../"));
-        Media media = new Media(getClass().getResource("/finalBoss.mp3").toString());
-        // media.getSource();
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        System.out.println("Duration:" + mediaPlayer.totalDurationProperty());
-        //Mediaplayer mediaPlayer = new MediaPlayer(media);
-        //mediaPlayer.setAutoPlay(true);
 
-       /* mediaPlayer.setOnReady(new Runnable() {
-
-            @Override
-            public void run() {
-
-                System.out.println("Duration: "+media.getDuration().toSeconds());
-
-                // display media's metadata
-                for (Map.Entry<String, Object> entry : media.getMetadata().entrySet()){
-                    System.out.println(entry.getKey() + ": " + entry.getValue());
-                }
-
-                // play if you want
-                mediaPlayer.play();
-            }
-        });*/
-        mediaPlayer.setOnReady(() -> {
-            System.out.println(media.getDuration().toMinutes());
-            mediaPlayer.play();
-        });
-    }
-
-    public void enterFile(ActionEvent actionEvent) throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
-        Window stage = new Stage();
-        File file = fileChooser.showOpenDialog(stage);
-        System.out.println(file);
-        System.out.println(getClass().getResource("/").getHost());
-        Path src = Paths.get(file.getAbsolutePath());
-        Path dest = Paths.get("C:/Users/EASV/Desktop/SCO/MyTunes/resources/" + file.getName().toString());
-        //
-        // Path dest = Paths.get(Objects.requireNonNull(getClass().getResource("/")).getPath()+file.getName().toString());
-        //Path dest = Paths.get("/"+file.getName().toString());
-        System.out.println("src:" + src + "  dest:" + dest);
-        Files.copy(src, dest);
-    }
-
-    public void isClosed(ActionEvent event) {
-        if (closeButton.getScene().getWindow() != null) {
-            Stage stage = (Stage) closeButton.getScene().getWindow();
-            // do what you have to do
-            stage.close();
-        }
-    }
-
+    /***
+     * The next 7 methods governs the action taken by the app according to the choices of the user,
+     * be it clicking on a particular list/TableView, or clicking on a particular button to edit, delete or
+     * update an entity.
+     * Note that some of the button interactions are defined in the setupButton method
+     * but some actions do necessitate the passing of the MainController object reference, and this is
+     * not possible when using lambda expression, well, at least we didn't figure out how...
+     * */
     public void handleChooseSong()
     {
         songListFromPlayList.getSelectionModel().clearSelection();
@@ -452,7 +410,6 @@ public class MainController implements Initializable {
 
     public void editSong(ActionEvent actionEvent) {
         try {
-
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"));
                 Parent root = loader.load();
@@ -495,13 +452,7 @@ public class MainController implements Initializable {
         loader.setLocation(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"));
         Parent root = loader.load();
         AlertDialogController alertDialogController = loader.getController();
-       // songsTableView.getItems().clear();
-       // songsTableView.refresh();
-            // Hide this current window (if this is what you want)
-//                    ((Node)(event.getSource())).getScene().getWindow().hide();
-
         alertDialogController.setMainController(this);
-        //root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"), resources);
         Stage stage = new Stage();
         stage.setTitle("New/Edit Song");
         stage.setScene(new Scene(root));
