@@ -54,6 +54,8 @@ public class SongPlayer {
             return;
         }
         //System.out.println(player);
+
+        //assert player != null;
         player.play();
     }
 

@@ -83,17 +83,17 @@ public class MainController implements Initializable {
         /**
          * Piece of code given by renars
          * */
-        changeListener = new ChangeListener<Duration>() {
-            @Override
-            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
-                    slider.setValue(((double) newValue.toSeconds()));
-               // System.out.println("Total value: "+player.getTotalDuration().toSeconds());
-                System.out.println(slider.getValue());
-                    if(slider.getValue()==player.getTotalDuration().toSeconds()) {
-
-                    }
-            }
-        };
+//        changeListener = new ChangeListener<Duration>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+//                    slider.setValue(((double) newValue.toSeconds()));
+//               // System.out.println("Total value: "+player.getTotalDuration().toSeconds());
+//                System.out.println(slider.getValue());
+//                    if(slider.getValue()==player.getTotalDuration().toSeconds()) {
+//
+//                    }
+//            }
+//        };
 
         /**
          * End piece of code given by Renars
@@ -119,41 +119,51 @@ public class MainController implements Initializable {
     public void playStopSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
         setLabelSongPlaying();
         songsModel.playStopSong();
+        generateListener();
+    }
+    private void generateListener() {
         SongPlayer songPlayer = SongPlayer.getInstance();
+        if(changeListener!=null)
+            player.currentTimeProperty().removeListener(changeListener);
         player = songPlayer.getPlayer();
+        player.setOnReady(()-> slider.maxProperty().set(player.getTotalDuration().toSeconds()));
         slider.maxProperty().set(player.getTotalDuration().toSeconds());
-        player.currentTimeProperty().removeListener(changeListener);
         changeListener = new ChangeListener<Duration>() {
             @Override
             public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
                 slider.setValue(((double) newValue.toSeconds()));
-                // System.out.println("Total value: "+player.getTotalDuration().toSeconds());
-                System.out.println(slider.getValue());
-                if(slider.getValue()==player.getTotalDuration().toSeconds()) {
-
+                if(slider.getValue()+1>=player.getTotalDuration().toSeconds()) {
+                    try {
+                        nextSong(new ActionEvent());
+                    } catch (SongPlayerException e) {
+                        e.printStackTrace();
+                    } catch (MyTunesManagerException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         };
         player.currentTimeProperty().addListener(changeListener);
-        System.out.println(changeListener);
-        Double time = player.getTotalDuration().toSeconds();
     }
     public void previousSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
         if(songListFromPlayList.getSelectionModel().getSelectedIndex()>0) {
             songListFromPlayList.getSelectionModel().select(songListFromPlayList.getSelectionModel().getSelectedIndex()-1);
             songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
-            songsModel.playStopSong();
+            //songsModel.playStopSong();
+            playStopSong(actionEvent);
         }
     }
     public void nextSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
-        player.currentTimeProperty().removeListener(changeListener);
-        player.currentTimeProperty().addListener(changeListener);
+
         System.out.println(changeListener);
         if(songListFromPlayList.getSelectionModel().getSelectedIndex()<songListFromPlayList.getItems().size()-1) {
             songListFromPlayList.getSelectionModel().select(songListFromPlayList.getSelectionModel().getSelectedIndex()+1);
             songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
-            songsModel.playStopSong();
+            //songsModel.playStopSong();
+            playStopSong(actionEvent);
+            generateListener();
         }
+
     }
 
     @Override
