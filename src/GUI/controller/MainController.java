@@ -120,7 +120,7 @@ public class MainController implements Initializable {
         SongPlayer songPlayer = SongPlayer.getInstance();
 
         player = songPlayer.getPlayer();
-        System.out.println(player);
+        //System.out.println(player);
         Double time = player.getTotalDuration().toSeconds();
         changeListener = new ChangeListener<Duration>() {
             @Override
@@ -143,10 +143,10 @@ public class MainController implements Initializable {
                 player.totalDurationProperty()));
         slider.setOnMouseClicked((MouseEvent mouseEvent) -> {
            player.seek(Duration.seconds(slider.getValue()));
-            System.out.println(Duration.seconds((slider.getValue())));
+           // System.out.println(Duration.seconds((slider.getValue())));
             double value = (mouseEvent.getX()-9) * (slider.getMax() / (slider.getWidth()-19));
 
-            System.out.println("Value"+value);
+           // System.out.println("Value"+value);
             slider.setValue(value);
 
         });
@@ -223,9 +223,7 @@ public class MainController implements Initializable {
             if (songsTableView.getSelectionModel().getSelectedItem() != null) {
                 songListFromPlayList.getItems().add(songsTableView.getSelectionModel().getSelectedItem());
                 songListFromPlayList.refresh();
-                for (Song song : songListFromPlayList.getItems()) {
-                    System.out.println(song);
-                }
+
             }
         });
 
@@ -293,10 +291,8 @@ public class MainController implements Initializable {
                     e.printStackTrace();
                 }
             }
-            System.out.println("Playlist:" + playList.getIdPlaylist() + " name: " + playList.getName());
-            for (Song song : songListFromPlayList.getItems()) {
-                System.out.println(song);
-            }
+            //.println("Playlist:" + playList.getIdPlaylist() + " name: " + playList.getName());
+
             try {
                 playlistsModel.updatePlayList(playList, songListFromPlayList.getItems());
                 updatePlayListTableView();
@@ -458,13 +454,11 @@ public class MainController implements Initializable {
     public void handleChooseSong()
     {
         songListFromPlayList.getSelectionModel().clearSelection();
-        System.out.println(songListFromPlayList.getSelectionModel().getSelectedIndex());
         songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
         setLabelSongPlaying();
     }
     public void handleChooseSongPlayList(MouseEvent mouseEvent) {
         songsTableView.getSelectionModel().clearSelection();
-        System.out.println(songsTableView.getSelectionModel().getSelectedIndex());
         songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
         setLabelSongPlaying();
     }
