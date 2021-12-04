@@ -207,4 +207,9 @@ public class MyTunesManager implements MyTunesFacade{
     {
         return songPlayer.getCurrentSong();
     }
+
+    @Override
+    public void updatePlayListName(PlayList playList) throws Exception {
+        idalMyTunesFacade.updatePlayListName(playList);
+    }
 }

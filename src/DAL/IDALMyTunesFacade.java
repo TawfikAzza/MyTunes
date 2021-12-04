@@ -88,7 +88,7 @@ public interface IDALMyTunesFacade {
      * Update a playlist in the database
      * */
     void updatePlayList(PlayList playList) throws Exception;
-
+    public void updatePlayListName(PlayList playList) throws Exception;
     /**
      * Delete a playlist from the database
      * */

@@ -6,12 +6,14 @@ import BLL.exception.MyTunesManagerException;
 import BLL.exception.PlayListDAOException;
 import BLL.exception.SongDAOException;
 import BLL.exception.SongPlayerException;
+import BLL.util.SongPlayer;
 import GUI.model.PlaylistsModel;
 import GUI.model.SongsModel;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -32,6 +34,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +50,8 @@ import java.util.stream.Collectors;
 public class MainController implements Initializable {
     private final SongsModel songsModel;
     private final PlaylistsModel playlistsModel;
+    @FXML
+    private Slider progressSlider;
     @FXML
     private Label lblSongPlaying;
     @FXML
@@ -66,10 +71,42 @@ public class MainController implements Initializable {
     @FXML
     private ListView<Song> songListFromPlayList;
     private int currentPlayList;
+    //Piece of code given to me by Renars the genius!
+    ChangeListener<Duration> changeListener;
+    MediaPlayer player;
     public MainController() throws MyTunesManagerException, SongDAOException {
+        SongPlayer songPlayer = SongPlayer.getInstance();
+        player = songPlayer.getPlayer();
+        /**
+         * Piece of code given by renars
+         * */
+        changeListener = new ChangeListener<Duration>() {
+            @Override
+            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+                progressSlider.setValue(((double) newValue.toSeconds())/ ((double) player.getTotalDuration().toSeconds()));
+            }
+        };
+        /**
+         * End piece of code given by Renars
+         * */
         this.songsModel = new SongsModel();
         this.playlistsModel = new PlaylistsModel();
     }
+
+    /**
+     * Piece of code given graciously by Renars,
+     * */
+    public void moveProgressSlider(MouseEvent mouseEvent) {
+        player.currentTimeProperty().removeListener(changeListener);
+    }
+
+    public void setProgress(MouseEvent mouseEvent) {
+        player.seek(player.getTotalDuration().multiply(progressSlider.getValue()));
+        player.currentTimeProperty().addListener(changeListener);
+    }
+    /**
+     * End of piece of code given by Renars
+     * */
     private void setLabelSongPlaying() {
         if(songsTableView.getSelectionModel().getSelectedItem()!=null)
             lblSongPlaying.setText(songsTableView.getSelectionModel().getSelectedItem().getName());
@@ -226,6 +263,7 @@ public class MainController implements Initializable {
                     playlistsModel.deletePlayList(playlistsTableView.getSelectionModel().getSelectedItem());
                     playlistsTableView.getItems().remove(playlistsTableView.getSelectionModel().getSelectedIndex());
                     updatePlayListTableView();
+                    songListFromPlayList.getItems().clear();
                 } catch (PlayListDAOException e) {
                     e.printStackTrace();
                 }
@@ -293,14 +331,8 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
     }
-    public void refreshTable() {
-        songsTableView.getItems().clear();
-    }
+
     public void updateSongTableView() {
-
-
-       // songsTableView.getColumns().remove(0,songsColumn.getTableView().getItems().size());
-
         try {
             titleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("name"));
             artistColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("author"));
@@ -388,10 +420,12 @@ public class MainController implements Initializable {
         songListFromPlayList.setItems(playlistsModel.getPlayListSelected(playlistsTableView.getSelectionModel().getSelectedItem()));
     }
     @FXML
-    private void isNewPlayListPressed(ActionEvent event) throws IOException {
+    private void isNewPlayListPressed(ActionEvent event) throws IOException, PlayListDAOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/view/PlaylistDialogView.fxml"));
         Parent root = loader.load();
         PlaylistDialogController playlistDialogController = loader.getController();
+        playlistDialogController.setMainController(this);
+        playlistDialogController.setPlayListToBeUpdated(playlistsModel.getPlayList(currentPlayList));
         Stage stage = new Stage();
         stage.setTitle("New/Edit Playlist");
         stage.setScene(new Scene(root));
@@ -423,4 +457,17 @@ public class MainController implements Initializable {
                 e.printStackTrace();
             }
         }
+
+    public void editPlayListName(ActionEvent actionEvent) throws PlayListDAOException, IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/view/PlaylistDialogView.fxml"));
+        Parent root = loader.load();
+        PlaylistDialogController playlistDialogController = loader.getController();
+        playlistDialogController.setMainController(this);
+        playlistDialogController.setPlayListToBeUpdated(playlistsModel.getPlayList(currentPlayList));
+        playlistDialogController.setOperationType("modification");
+        Stage stage = new Stage();
+        stage.setTitle("New/Edit Playlist");
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
 }

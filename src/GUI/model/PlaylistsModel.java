@@ -61,4 +61,8 @@ public class PlaylistsModel {
     public PlayList getPlayList(int playListId) throws PlayListDAOException {
         return myTunesFacade.getPlayList(playListId);
     }
+
+    public void updatePlayListName(PlayList playList) throws Exception {
+        myTunesFacade.updatePlayListName(playList);
+    }
 }

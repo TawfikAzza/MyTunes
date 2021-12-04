@@ -41,6 +41,9 @@ public class SongPlayer {
 
 
     */
+    public MediaPlayer getPlayer() {
+        return player;
+    }
     public void playStopSong() {
         if (currentSong == null)
         {

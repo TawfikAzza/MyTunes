@@ -75,7 +75,7 @@ public class AlertDialogController implements Initializable {
             Song song = new Song(idSongModified,titleTextField.getText(), author, (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem(), file, timeTextField.getText());
             songsModel.updateSong(song);
             if (saveButton.getScene().getWindow() != null){
-                mainController.refreshTable();
+
                 mainController.updateSongTableView();
 
                 Stage stage = (Stage) saveButton.getScene().getWindow();

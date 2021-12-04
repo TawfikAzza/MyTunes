@@ -158,7 +158,17 @@ public class PlayListDAO implements IPlayListDataAccess {
         return playListCreated;
 
     }
+    @Override
+    public void updatePlayListName(PlayList playList) throws Exception {
+        try (Connection con = cm.getConnection()) {
+            String sqlCOmmandUpdatePlayList = "UPDATE PLAYLIST SET name=? WHERE id=?;";
+            PreparedStatement pstmstUpdatePlayList = con.prepareStatement((sqlCOmmandUpdatePlayList));
+            pstmstUpdatePlayList.setString(1,playList.getName());
+            pstmstUpdatePlayList.setInt(2,playList.getIdPlaylist());
+            pstmstUpdatePlayList.executeUpdate();
 
+        }
+    }
     @Override
     public void updatePlayList(PlayList playList) throws Exception {
         try (Connection con = cm.getConnection()) {

@@ -32,4 +32,6 @@ public interface MyTunesFacade {
     public void playStopSong() throws SongPlayerException;
     public void setCurrentSong(Song song);
     public Song getCurrentSong();
+
+    void updatePlayListName(PlayList playList) throws Exception;
 }

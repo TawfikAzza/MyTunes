@@ -10,7 +10,7 @@ public interface IPlayListDataAccess {
      * See Also (PlayList Object to know what is returned)
      * */
     PlayList getPlayList(int idPlayList) throws Exception;
-
+    public void updatePlayListName(PlayList playList) throws Exception;
     List<PlayList> getALlPlayLists() throws Exception;
     PlayList createPlayList(PlayList playList) throws Exception;
     void updatePlayList(PlayList playList) throws Exception;
