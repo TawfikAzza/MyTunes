@@ -87,6 +87,11 @@ public class MainController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
                     slider.setValue(((double) newValue.toSeconds()));
+               // System.out.println("Total value: "+player.getTotalDuration().toSeconds());
+                System.out.println(slider.getValue());
+                    if(slider.getValue()==player.getTotalDuration().toSeconds()) {
+
+                    }
             }
         };
 
@@ -117,7 +122,20 @@ public class MainController implements Initializable {
         SongPlayer songPlayer = SongPlayer.getInstance();
         player = songPlayer.getPlayer();
         slider.maxProperty().set(player.getTotalDuration().toSeconds());
+        player.currentTimeProperty().removeListener(changeListener);
+        changeListener = new ChangeListener<Duration>() {
+            @Override
+            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+                slider.setValue(((double) newValue.toSeconds()));
+                // System.out.println("Total value: "+player.getTotalDuration().toSeconds());
+                System.out.println(slider.getValue());
+                if(slider.getValue()==player.getTotalDuration().toSeconds()) {
+
+                }
+            }
+        };
         player.currentTimeProperty().addListener(changeListener);
+        System.out.println(changeListener);
         Double time = player.getTotalDuration().toSeconds();
     }
     public void previousSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
@@ -128,6 +146,9 @@ public class MainController implements Initializable {
         }
     }
     public void nextSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
+        player.currentTimeProperty().removeListener(changeListener);
+        player.currentTimeProperty().addListener(changeListener);
+        System.out.println(changeListener);
         if(songListFromPlayList.getSelectionModel().getSelectedIndex()<songListFromPlayList.getItems().size()-1) {
             songListFromPlayList.getSelectionModel().select(songListFromPlayList.getSelectionModel().getSelectedIndex()+1);
             songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());

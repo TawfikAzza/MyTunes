@@ -53,7 +53,7 @@ public class SongPlayer {
             player.pause();
             return;
         }
-        System.out.println(player);
+        //System.out.println(player);
         player.play();
     }
 
