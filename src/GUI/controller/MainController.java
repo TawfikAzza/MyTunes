@@ -9,20 +9,13 @@ import BLL.exception.SongPlayerException;
 import BLL.util.SongPlayer;
 import GUI.model.PlaylistsModel;
 import GUI.model.SongsModel;
-import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -36,18 +29,13 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-
-import java.awt.event.MouseAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
     private final SongsModel songsModel;
@@ -76,28 +64,8 @@ public class MainController implements Initializable {
     //Piece of code given to me by Renars the genius!
     ChangeListener<Duration> changeListener;
     MediaPlayer player;
-    private double valueSongPlayer;
-    private boolean sliderTouched=false;
     public MainController() throws MyTunesManagerException, SongDAOException {
 
-        /**
-         * Piece of code given by renars
-         * */
-//        changeListener = new ChangeListener<Duration>() {
-//            @Override
-//            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
-//                    slider.setValue(((double) newValue.toSeconds()));
-//               // System.out.println("Total value: "+player.getTotalDuration().toSeconds());
-//                System.out.println(slider.getValue());
-//                    if(slider.getValue()==player.getTotalDuration().toSeconds()) {
-//
-//                    }
-//            }
-//        };
-
-        /**
-         * End piece of code given by Renars
-         * */
         this.songsModel = new SongsModel();
         this.playlistsModel = new PlaylistsModel();
     }
@@ -108,6 +76,15 @@ public class MainController implements Initializable {
         else
             lblSongPlaying.setText(songListFromPlayList.getSelectionModel().getSelectedItem().getName());
     }
+
+    /**
+     * The two following methods : moveProgressSlider and setProgress
+     * are in charge of the gestion of the slider when the user interact directly with it.
+     * the first one is triggered when the mouse is pressed on the slider it removes the listener no longer necessary
+     * and when the user release the mouse button, setProgress is called
+     * which will recreate the listener and set the offset of the timestamp of the media
+     * to the new value of the slider chosen.
+     * */
     public void moveProgressSlider(MouseEvent mouseEvent) {
         player.currentTimeProperty().removeListener(changeListener);
     }
@@ -121,12 +98,25 @@ public class MainController implements Initializable {
         songsModel.playStopSong();
         generateListener();
     }
+
+    /**
+     * This method generates a Listener on the slider which will serve several purposes,
+     * The first is to allows the moving of the progress slider according to the time the song has been played
+     * The second is to allow the user to change the value of the slider and change the progress of the song play
+     * according to the position of the song selected by him/her.
+     * Finally the third is to be able to keep track of the moment the song if finished playing and if the song is
+     * part of a PlayList, advance to the next one.
+     * **/
     private void generateListener() {
+
         SongPlayer songPlayer = SongPlayer.getInstance();
         if(changeListener!=null)
             player.currentTimeProperty().removeListener(changeListener);
         player = songPlayer.getPlayer();
         player.setOnReady(()-> slider.maxProperty().set(player.getTotalDuration().toSeconds()));
+        //Have to do it twice as the maxProperty.set method doesn't seems to initialize the slider at all when inside the
+        //lambda of setOnReady() it forces out the value of player.getTotalDuration().toSeconds() though as if I don't do that
+        //the value stays at NaN, so the setOnReady method of the player is necessary there.
         slider.maxProperty().set(player.getTotalDuration().toSeconds());
         changeListener = new ChangeListener<Duration>() {
             @Override
@@ -136,9 +126,7 @@ public class MainController implements Initializable {
                     try {
                         if(songListFromPlayList.getSelectionModel().getSelectedIndex()!=-1)
                             nextSong(new ActionEvent());
-                    } catch (SongPlayerException e) {
-                        e.printStackTrace();
-                    } catch (MyTunesManagerException e) {
+                    } catch (SongPlayerException | MyTunesManagerException e) {
                         e.printStackTrace();
                     }
                 }
@@ -146,38 +134,33 @@ public class MainController implements Initializable {
         };
         player.currentTimeProperty().addListener(changeListener);
     }
+
     public void previousSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
         if(songListFromPlayList.getSelectionModel().getSelectedIndex()>0) {
             songListFromPlayList.getSelectionModel().select(songListFromPlayList.getSelectionModel().getSelectedIndex()-1);
             songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
-            //songsModel.playStopSong();
             playStopSong(actionEvent);
         }
     }
-    public void nextSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
 
-        System.out.println(changeListener);
+    public void nextSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
         if(songListFromPlayList.getSelectionModel().getSelectedIndex()<songListFromPlayList.getItems().size()-1) {
             songListFromPlayList.getSelectionModel().select(songListFromPlayList.getSelectionModel().getSelectedIndex()+1);
             songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
-            //songsModel.playStopSong();
             playStopSong(actionEvent);
-            generateListener();
         }
-
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-//        newSongButton.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//
-//            }
-//        });
+        setupButtons();
+        updateSongTableView();
+        updatePlayListTableView();
+        setupUI();
 
-
+    }
+    private void setupButtons() {
         deleteButton.setOnAction(event -> {
             try {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Delete " + songsTableView.getSelectionModel().getSelectedItem() + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
@@ -186,9 +169,10 @@ public class MainController implements Initializable {
 
                 if (alert.getResult() == ButtonType.YES) {
                     songsModel.deleteSong(songsTableView.getSelectionModel().getSelectedItem());
-//                        songsTableView.refresh();
+                    songsTableView.getItems().remove(songsTableView.getSelectionModel().getSelectedIndex());
+                    songsTableView.getSelectionModel().clearSelection();
                 }
-               // updateSongTableView();
+
             } catch (SongDAOException e) {
                 e.printStackTrace();
             }
@@ -205,7 +189,6 @@ public class MainController implements Initializable {
 
         });
 
-//        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
         leftButton.setOnAction(event -> {
             if (songsTableView.getSelectionModel().getSelectedItem() != null) {
                 songListFromPlayList.getItems().add(songsTableView.getSelectionModel().getSelectedItem());
@@ -303,11 +286,6 @@ public class MainController implements Initializable {
                 }
             }
         });
-
-        updateSongTableView();
-        updatePlayListTableView();
-        setupUI();
-
     }
     private void setupUI() {
 
@@ -367,6 +345,8 @@ public class MainController implements Initializable {
     }
 
     public void updateSongTableView() {
+        songsTableView.getItems().clear();
+        songsTableView.refresh();
         try {
             titleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("name"));
             artistColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("author"));
@@ -515,8 +495,8 @@ public class MainController implements Initializable {
         loader.setLocation(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"));
         Parent root = loader.load();
         AlertDialogController alertDialogController = loader.getController();
-        songsTableView.getItems().clear();
-        songsTableView.refresh();
+       // songsTableView.getItems().clear();
+       // songsTableView.refresh();
             // Hide this current window (if this is what you want)
 //                    ((Node)(event.getSource())).getScene().getWindow().hide();
 
