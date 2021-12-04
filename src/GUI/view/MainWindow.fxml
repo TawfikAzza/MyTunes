@@ -26,7 +26,7 @@
                      <children>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="goBack" mnemonicParsing="false" style="-fx-background-color: transparent;" />
+                              <Button fx:id="goBack" mnemonicParsing="false" onAction="#previousSong" style="-fx-background-color: transparent;" />
                               <Button fx:id="play" mnemonicParsing="false" onAction="#playStopSong" style="-fx-background-color: transparent;" />
                               <Button fx:id="goForward" mnemonicParsing="false" onAction="#nextSong" style="-fx-background-color: transparent;" />
                            </children>

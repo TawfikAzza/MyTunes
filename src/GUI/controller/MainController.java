@@ -154,9 +154,21 @@ public class MainController implements Initializable {
 
 
     }
-    public void nextSong(ActionEvent actionEvent) {
-
+    public void previousSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
+        if(songListFromPlayList.getSelectionModel().getSelectedIndex()>0) {
+            songListFromPlayList.getSelectionModel().select(songListFromPlayList.getSelectionModel().getSelectedIndex()-1);
+            songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+            songsModel.playStopSong();
+        }
     }
+    public void nextSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
+        if(songListFromPlayList.getSelectionModel().getSelectedIndex()<songListFromPlayList.getItems().size()-1) {
+            songListFromPlayList.getSelectionModel().select(songListFromPlayList.getSelectionModel().getSelectedIndex()+1);
+            songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+            songsModel.playStopSong();
+        }
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -458,8 +470,11 @@ public class MainController implements Initializable {
     }
 
     public void handleDisplayPlayList(MouseEvent mouseEvent) throws PlayListDAOException {
+        songsTableView.getSelectionModel().clearSelection();
         currentPlayList=playlistsTableView.getSelectionModel().getSelectedItem().getIdPlaylist();
         songListFromPlayList.setItems(playlistsModel.getPlayListSelected(playlistsTableView.getSelectionModel().getSelectedItem()));
+        songListFromPlayList.getSelectionModel().select(0);
+        songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
     }
     @FXML
     private void isNewPlayListPressed(ActionEvent event) throws IOException, PlayListDAOException {
@@ -512,6 +527,7 @@ public class MainController implements Initializable {
         stage.setScene(new Scene(root));
         stage.show();
     }
+
 
 
 }
