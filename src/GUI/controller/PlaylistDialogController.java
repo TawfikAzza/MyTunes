@@ -31,7 +31,7 @@ public class PlaylistDialogController implements Initializable {
     }
     public void setPlayListToBeUpdated(PlayList playList){
         this.playListToBeUpdated=playList;
-        nameTextField.setText(playListToBeUpdated.getName());
+        nameTextField.setText(playListToBeUpdated.getName().trim());
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,10 +45,10 @@ public class PlaylistDialogController implements Initializable {
 
     public void isSavedPressed(ActionEvent event) throws PlayListDAOException, Exception {
         if(operationType.equals("creation")) {
-            playlistsModel.createNewPlaylist(nameTextField.getText());
+            playlistsModel.createNewPlaylist(nameTextField.getText().trim());
 
         } else {
-            playListToBeUpdated.setName(nameTextField.getText());
+            playListToBeUpdated.setName(nameTextField.getText().trim());
             playlistsModel.updatePlayListName(playListToBeUpdated);
         }
         mainController.updatePlayListTableView();

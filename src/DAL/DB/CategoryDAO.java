@@ -64,17 +64,35 @@ public class CategoryDAO implements ICategorySongDataAccess {
     public CategorySong createCategorySong(CategorySong category) throws Exception{
         CategorySong categoryCreated = null;
         try (Connection con = cm.getConnection()) {
-            String sqlcommandInsert = "INSERT INTO CATEGORY VALUES (?);";
-            PreparedStatement pstmtInsert = con.prepareStatement(sqlcommandInsert, Statement.RETURN_GENERATED_KEYS);
-            pstmtInsert.setString(1, category.getName());
-            pstmtInsert.executeQuery();
-            ResultSet rs = pstmtInsert.getGeneratedKeys();
-            while(rs.next()) {
-                categoryCreated = new CategorySong(rs.getInt(1),category.getName());
+            //I check if a category with the same name already exists in the database,
+            //if it does, I return the category already existing, if not, I create a new category
+            // with this name and return the category created
+            //No need to pass the name in lower case for a thorough check as sql Server seems to return the value as
+            //intented disregarding the state of the CASE used.
+            String sqlCheckSelect = "SELECT * FROM CATEGORY WHERE name = ?";
+            PreparedStatement pstCheckAuthor = con.prepareStatement(sqlCheckSelect);
+            pstCheckAuthor.setString(1,category.getName());
+            ResultSet rsCheck = pstCheckAuthor.executeQuery();
+            if(!rsCheck.isBeforeFirst()) {
+                String sqlcommandInsert = "INSERT INTO CATEGORY VALUES (?);";
+                PreparedStatement pstmtInsert = con.prepareStatement(sqlcommandInsert, Statement.RETURN_GENERATED_KEYS);
+                pstmtInsert.setString(1, category.getName());
+                pstmtInsert.executeQuery();
+                ResultSet rs = pstmtInsert.getGeneratedKeys();
+                while (rs.next()) {
+                    categoryCreated = new CategorySong(rs.getInt(1), category.getName());
+                }
+            } else {
+                while(rsCheck.next()) {
+                    categoryCreated= new CategorySong(
+                            rsCheck.getInt("id"),
+                            rsCheck.getString("name")
+                    );
+                }
             }
-         }
 
         return categoryCreated;
+        }
     }
 
     @Override

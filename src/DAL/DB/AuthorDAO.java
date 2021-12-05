@@ -82,7 +82,10 @@ public class AuthorDAO implements IAuthorDataAccess {
         Author authorCreated=null;
         try (Connection con = cm.getConnection()) {
             //I check if an author with the same name already exists in the databse,
-            //if it does, I return the author already existing, if not, I create a new author with this name and return the author created
+            //if it does, I return the author already existing, if not, I create a new author
+            //with this name and return the author created
+            //No need to pass the name in lower case for a thorough check as sql Server seems to return the value as
+            //intented disregarding the state of the CASE used.
             String sqlCheckSelect = "SELECT * FROM AUTHOR WHERE name = ?";
             PreparedStatement pstCheckAuthor = con.prepareStatement(sqlCheckSelect);
             pstCheckAuthor.setString(1,authorName);

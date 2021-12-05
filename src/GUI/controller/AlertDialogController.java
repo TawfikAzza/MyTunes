@@ -58,8 +58,8 @@ public class AlertDialogController implements Initializable {
         if(operationType.equals("creation")){
             Song songCreated = null;
             File file = new File(fileTextField.getText());
-            Author author = authorModel.createNewAuthor(artistTextField.getText());
-            Song song = new Song(0,titleTextField.getText(), author, (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem(), file, timeTextField.getText());
+            Author author = authorModel.createNewAuthor(artistTextField.getText().trim());
+            Song song = new Song(0,titleTextField.getText().trim(), author, (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem(), file, timeTextField.getText().trim());
             songCreated = songsModel.addSong(song);
             if (song != null){
                 if (saveButton.getScene().getWindow() != null){
@@ -71,8 +71,8 @@ public class AlertDialogController implements Initializable {
         } else {
             System.out.println("modif");
             File file = new File(fileTextField.getText());
-            Author author = authorModel.createNewAuthor(artistTextField.getText());
-            Song song = new Song(idSongModified,titleTextField.getText(), author, (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem(), file, timeTextField.getText());
+            Author author = authorModel.createNewAuthor(artistTextField.getText().trim());
+            Song song = new Song(idSongModified,titleTextField.getText().trim(), author, (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem(), file, timeTextField.getText().trim());
             songsModel.updateSong(song);
             if (saveButton.getScene().getWindow() != null){
                 mainController.updateSongTableView();
