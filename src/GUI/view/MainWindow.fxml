@@ -20,7 +20,7 @@
    <children>
       <VBox layoutX="-8.0" layoutY="1.0" prefHeight="600.0" prefWidth="877.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="660.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="163.0" prefWidth="1005.0">
                <children>
                   <VBox prefHeight="79.0" prefWidth="128.0">
                      <children>
@@ -33,8 +33,11 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <ImageView fx:id="volumeImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
-                              <Slider fx:id="slider" blockIncrement="0.01" minWidth="150.0" onMousePressed="#moveProgressSlider" onMouseReleased="#setProgress" prefHeight="16.0" prefWidth="122.0" />
+                              <ImageView fx:id="durationImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
+                              <Slider fx:id="slider" blockIncrement="0.01" minWidth="150.0" onMousePressed="#moveProgressSlider" onMouseReleased="#setProgress" prefHeight="16.0" prefWidth="122.0">
+                                 <padding>
+                                    <Insets left="2.0" />
+                                 </padding></Slider>
                            </children>
                            <opaqueInsets>
                               <Insets />
@@ -44,8 +47,21 @@
                            </VBox.margin>
                         </HBox>
                      </children>
+                     <HBox.margin>
+                        <Insets right="15.0" />
+                     </HBox.margin>
                   </VBox>
-                  <Region prefHeight="200.0" prefWidth="200.0" />
+                  <VBox>
+                     <children>
+                        <ImageView fx:id="volumeImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
+                        <BorderPane prefHeight="200.0">
+                           <center>
+                              <Slider fx:id="volumeSlider" orientation="VERTICAL" BorderPane.alignment="CENTER" />
+                           </center>
+                        </BorderPane>
+                     </children>
+                  </VBox>
+                  <Region prefHeight="200.0" prefWidth="180.0" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <Label fx:id="lblSongPlaying" text="var">
@@ -55,7 +71,7 @@
                         <Label text="... is playing" />
                      </children>
                   </HBox>
-                  <Region prefHeight="200.0" prefWidth="200.0" />
+                  <Region prefHeight="200.0" prefWidth="180.0" />
                   <HBox alignment="CENTER" prefHeight="63.0" prefWidth="283.0">
                      <children>
                         <Label text="Filter:">
@@ -65,8 +81,8 @@
                            <HBox.margin>
                               <Insets right="20.0" />
                            </HBox.margin></Label>
-                        <TextField fx:id="searchBar" />
-                        <Button fx:id="searchButton" mnemonicParsing="false" style="-fx-background-color: transparent;">
+                        <TextField fx:id="searchBar" onKeyPressed="#isKeyPressed" />
+                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#isSearchButtonPressed" style="-fx-background-color: transparent;">
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin></Button>

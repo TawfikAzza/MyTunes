@@ -12,6 +12,8 @@ import GUI.model.SongsModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
@@ -30,15 +33,18 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
+    private boolean isClicked = false;
     private final SongsModel songsModel;
     private final PlaylistsModel playlistsModel;
     @FXML
@@ -48,9 +54,9 @@ public class MainController implements Initializable {
     @FXML
     private Label lblSongPlaying;
     @FXML
-    private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton, closeButton, editSongButton, deleteButton,deleteFromPlayListButton, newPlayListButton, updatePlayListButton,deletePlayList;
+    private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton, closeButton, editSongButton, deleteButton, deleteFromPlayListButton, newPlayListButton, updatePlayListButton, deletePlayList;
     @FXML
-    private ImageView volumeImage;
+    private ImageView volumeImage, durationImage;
     @FXML
     private TextField searchBar;
     @FXML
@@ -68,16 +74,22 @@ public class MainController implements Initializable {
     ChangeListener<Duration> changeListener;
     //End piece of code from Renars
     MediaPlayer player;
+
     public MainController() throws MyTunesManagerException, SongDAOException {
         this.songsModel = new SongsModel();
         this.playlistsModel = new PlaylistsModel();
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupButtons();
         updateSongTableView();
         updatePlayListTableView();
-        setupUI();
+        try {
+            setupUI();
+        } catch (SongDAOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -89,7 +101,7 @@ public class MainController implements Initializable {
      * and when the user release the mouse button, setProgress is called
      * which will recreate the listener and set the offset of the timestamp of the media
      * to the new value of the slider chosen.
-     * */
+     */
     public void moveProgressSlider(MouseEvent mouseEvent) {
         player.currentTimeProperty().removeListener(changeListener);
     }
@@ -107,14 +119,14 @@ public class MainController implements Initializable {
      * according to the position of the song selected by him/her.
      * Finally the third is to be able to keep track of the moment the song if finished playing and if the song is
      * part of a PlayList, advance to the next one.
-     * **/
+     **/
     private void generateListener() {
 
         SongPlayer songPlayer = SongPlayer.getInstance();
-        if(changeListener!=null)
+        if (changeListener != null)
             player.currentTimeProperty().removeListener(changeListener);
         player = songPlayer.getPlayer();
-        player.setOnReady(()-> slider.maxProperty().set(player.getTotalDuration().toSeconds()));
+        player.setOnReady(() -> slider.maxProperty().set(player.getTotalDuration().toSeconds()));
         //Have to do it twice as the maxProperty.set method doesn't seems to initialize the slider at all when inside the
         //lambda of setOnReady() it forces out the value of player.getTotalDuration().toSeconds() though as if I don't do that
         //the value stays at NaN, so the setOnReady method of the player is necessary there.
@@ -123,9 +135,9 @@ public class MainController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
                 slider.setValue(((double) newValue.toSeconds()));
-                if(slider.getValue()+1>=player.getTotalDuration().toSeconds()) {
+                if (slider.getValue() + 1 >= player.getTotalDuration().toSeconds()) {
                     try {
-                        if(songListFromPlayList.getSelectionModel().getSelectedIndex()!=-1)
+                        if (songListFromPlayList.getSelectionModel().getSelectedIndex() != -1)
                             nextSong(new ActionEvent());
                     } catch (SongPlayerException | MyTunesManagerException e) {
                         e.printStackTrace();
@@ -141,26 +153,39 @@ public class MainController implements Initializable {
      * managing the action of the mouse on the three controls that governs the playback as well as
      * the feeding of the media to the Media player.
      * The method are straightforward and use the SongsModel as foundation
-     * */
+     */
     public void playStopSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
-
+        toggleImage();
+        if (isClicked) {
+            ImageView playImage = new ImageView(getClass().getResource("/play.png").toExternalForm());
+            playImage.setFitHeight(40);
+            playImage.setFitWidth(40);
+            play.setGraphic(playImage);
+        } else {
+            ImageView pauseImage = new ImageView(getClass().getResource("/pause.png").toExternalForm());
+            pauseImage.setFitHeight(40);
+            pauseImage.setFitWidth(40);
+            play.setGraphic(pauseImage);
+        }
         setLabelSongPlaying();
         songsModel.playStopSong();
-        player=SongPlayer.getInstance().getPlayer();
-        if(player==null)
+        player = SongPlayer.getInstance().getPlayer();
+        if (player == null)
             return;
         generateListener();
     }
+
     public void previousSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
-        if(songListFromPlayList.getSelectionModel().getSelectedIndex()>0) {
-            songListFromPlayList.getSelectionModel().select(songListFromPlayList.getSelectionModel().getSelectedIndex()-1);
+        if (songListFromPlayList.getSelectionModel().getSelectedIndex() > 0) {
+            songListFromPlayList.getSelectionModel().select(songListFromPlayList.getSelectionModel().getSelectedIndex() - 1);
             songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
             playStopSong(actionEvent);
         }
     }
+
     public void nextSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
-        if(songListFromPlayList.getSelectionModel().getSelectedIndex()<songListFromPlayList.getItems().size()-1) {
-            songListFromPlayList.getSelectionModel().select(songListFromPlayList.getSelectionModel().getSelectedIndex()+1);
+        if (songListFromPlayList.getSelectionModel().getSelectedIndex() < songListFromPlayList.getItems().size() - 1) {
+            songListFromPlayList.getSelectionModel().select(songListFromPlayList.getSelectionModel().getSelectedIndex() + 1);
             songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
             playStopSong(actionEvent);
         }
@@ -173,15 +198,16 @@ public class MainController implements Initializable {
      * Their name are explicit and the content is as well.
      * */
     private void setLabelSongPlaying() {
-        if(songsTableView.getSelectionModel().getSelectedIndex()!=-1)
+        if (songsTableView.getSelectionModel().getSelectedIndex() != -1)
             lblSongPlaying.setText(songsTableView.getSelectionModel().getSelectedItem().getName());
-        if(songListFromPlayList.getSelectionModel().getSelectedIndex()!=-1)
+        if (songListFromPlayList.getSelectionModel().getSelectedIndex() != -1)
             lblSongPlaying.setText(songListFromPlayList.getSelectionModel().getSelectedItem().getName());
     }
+
     private void setupButtons() {
         deleteButton.setOnAction(event -> {
             try {
-                if(songsTableView.getSelectionModel().getSelectedIndex()!=-1) {
+                if (songsTableView.getSelectionModel().getSelectedIndex() != -1) {
                     Alert alert = new Alert(Alert.AlertType.WARNING, "Delete " + songsTableView.getSelectionModel().getSelectedItem() + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
                     alert.setHeaderText("You are about to delete a song");
                     alert.showAndWait();
@@ -275,8 +301,8 @@ public class MainController implements Initializable {
         });
 
         updatePlayListButton.setOnAction(event -> {
-            PlayList playList=null;
-            if(playlistsTableView.getSelectionModel().getSelectedItem()!=null){
+            PlayList playList = null;
+            if (playlistsTableView.getSelectionModel().getSelectedItem() != null) {
                 playList = playlistsTableView.getSelectionModel().getSelectedItem();
             } else {
                 try {
@@ -295,7 +321,7 @@ public class MainController implements Initializable {
         });
 
         deletePlayList.setOnAction(event -> {
-            if(playlistsTableView.getSelectionModel().getSelectedIndex()!=-1){
+            if (playlistsTableView.getSelectionModel().getSelectedIndex() != -1) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Delete " + playlistsTableView.getSelectionModel().getSelectedItem().getName() + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
                 alert.setHeaderText("You are about to delete a Playlist");
                 alert.showAndWait();
@@ -316,11 +342,35 @@ public class MainController implements Initializable {
             }
         });
     }
-    private void setupUI() {
 
-        Image image = new Image("/volume.png");
-        volumeImage.setImage(image);
+    private void setupUI() throws SongDAOException {
+        FilteredList<Song> filteredList = new FilteredList<>(songsModel.getAllSongs(), a -> true);
+        searchBar.textProperty().addListener(((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(song -> {
+                if (newValue == null || newValue.isEmpty()){
+                    return true;
+                }
+                String lowerCase = newValue.toLowerCase();
+                if (song.getName().toLowerCase().contains(lowerCase)){
+                    return true;
+                }
+                return song.getAuthor().getName().toLowerCase().contains(lowerCase);
+            });
+        }));
+
+        SortedList<Song> sortedList = new SortedList<>(filteredList);
+        sortedList.comparatorProperty().bind(songsTableView.comparatorProperty());
+
+        songsTableView.setItems(sortedList);
+
+
+        Image volumeImageView = new Image("/volume.png");
+        volumeImage.setImage(volumeImageView);
         volumeImage.setFitWidth(20);
+
+        Image durationImageView = new Image("/duration.png");
+        durationImage.setImage(durationImageView);
+        durationImage.setFitWidth(20);
 
         ImageView goBackImage = new ImageView(getClass().getResource("/back.png").toExternalForm());
         goBackImage.setFitHeight(30);
@@ -357,6 +407,7 @@ public class MainController implements Initializable {
         upImage.setFitHeight(20);
         upButton.setGraphic(upImage);
     }
+
     public void updatePlayListTableView() {
         try {
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -397,27 +448,28 @@ public class MainController implements Initializable {
      * but some actions do necessitate the passing of the MainController object reference, and this is
      * not possible when using lambda expression, well, at least we didn't figure out how...
      * */
-    public void handleChooseSong()
-    {
+    public void handleChooseSong() {
         songListFromPlayList.getSelectionModel().clearSelection();
         songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
         setLabelSongPlaying();
     }
+
     public void handleChooseSongPlayList(MouseEvent mouseEvent) {
         songsTableView.getSelectionModel().clearSelection();
-        if(songListFromPlayList.getSelectionModel().getSelectedIndex()!=-1) {
+        if (songListFromPlayList.getSelectionModel().getSelectedIndex() != -1) {
             songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
-          //  setLabelSongPlaying();
+            //  setLabelSongPlaying();
         }
     }
 
     public void handleDisplayPlayList(MouseEvent mouseEvent) throws PlayListDAOException {
         songsTableView.getSelectionModel().clearSelection();
-        currentPlayList=playlistsTableView.getSelectionModel().getSelectedItem().getIdPlaylist();
+        currentPlayList = playlistsTableView.getSelectionModel().getSelectedItem().getIdPlaylist();
         songListFromPlayList.setItems(playlistsModel.getPlayListSelected(playlistsTableView.getSelectionModel().getSelectedItem()));
         songListFromPlayList.getSelectionModel().select(0);
         songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
     }
+
     @FXML
     private void newPlayListName(ActionEvent event) throws IOException, PlayListDAOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/view/PlaylistDialogView.fxml"));
@@ -433,34 +485,34 @@ public class MainController implements Initializable {
 
     public void editSong(ActionEvent actionEvent) {
         try {
-                if(songsTableView.getSelectionModel().getSelectedIndex()!=-1) {
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"));
-                    Parent root = loader.load();
-                    AlertDialogController alertDialogController = loader.getController();
-                    alertDialogController.setValue(songsTableView.getSelectionModel().getSelectedItem());
+            if (songsTableView.getSelectionModel().getSelectedIndex() != -1) {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"));
+                Parent root = loader.load();
+                AlertDialogController alertDialogController = loader.getController();
+                alertDialogController.setValue(songsTableView.getSelectionModel().getSelectedItem());
 
-                    alertDialogController.setMainController(this);
-                    alertDialogController.setOperationType("modification");
-                    //root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"), resources);
-                    Stage stage = new Stage();
-                    stage.setTitle("New/Edit Song");
-                    stage.setScene(new Scene(root));
-                    stage.show();
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Confirm", ButtonType.OK);
-                    alert.setHeaderText("Please select a Song");
-                    alert.showAndWait();
-                }
-                // Hide this current window (if this is what you want)
-    //                    ((Node)(event.getSource())).getScene().getWindow().hide();
-            } catch (IOException e) {
-                e.printStackTrace();
+                alertDialogController.setMainController(this);
+                alertDialogController.setOperationType("modification");
+                //root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"), resources);
+                Stage stage = new Stage();
+                stage.setTitle("New/Edit Song");
+                stage.setScene(new Scene(root));
+                stage.show();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Confirm", ButtonType.OK);
+                alert.setHeaderText("Please select a Song");
+                alert.showAndWait();
             }
+            // Hide this current window (if this is what you want)
+            //                    ((Node)(event.getSource())).getScene().getWindow().hide();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
     public void editPlayListName(ActionEvent actionEvent) throws PlayListDAOException, IOException {
-        if(currentPlayList!=-1) {
+        if (currentPlayList != -1) {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/view/PlaylistDialogView.fxml"));
             Parent root = loader.load();
             PlaylistDialogController playlistDialogController = loader.getController();
@@ -489,5 +541,28 @@ public class MainController implements Initializable {
         stage.setTitle("New/Edit Song");
         stage.setScene(new Scene(root));
         stage.show();
+    }
+
+    private void toggleImage() {
+        isClicked = !isClicked;
+
+    }
+
+    public void isKeyPressed(KeyEvent keyEvent) {
+
+        ImageView deleteImage = new ImageView(getClass().getResource("/delete.png").toExternalForm());
+        deleteImage.setFitHeight(25);
+        deleteImage.setFitWidth(25);
+        searchButton.setGraphic(deleteImage);
+    }
+
+    public void isSearchButtonPressed(ActionEvent event) {
+        searchBar.setText("");
+
+        ImageView searchImage = new ImageView(getClass().getResource("/search.png").toExternalForm());
+        searchImage.setFitHeight(25);
+        searchImage.setFitWidth(25);
+        searchButton.setGraphic(searchImage);
+
     }
 }
