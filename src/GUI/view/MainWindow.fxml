@@ -56,7 +56,7 @@
                         <ImageView fx:id="volumeImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
                         <BorderPane prefHeight="200.0">
                            <center>
-                              <Slider fx:id="volumeSlider" onMouseReleased="#setSoundVolume" orientation="VERTICAL" BorderPane.alignment="CENTER" />
+                              <Slider fx:id="volumeSlider" blockIncrement="1.0" onMouseDragged="#setSoundVolume" orientation="VERTICAL" value="30.0" BorderPane.alignment="CENTER" />
                            </center>
                         </BorderPane>
                      </children>

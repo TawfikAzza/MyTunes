@@ -11,7 +11,7 @@ To play a song, we need to set a song either from a playlist or a list of songs,
  */
 
 public class SongPlayer {
-    private final static float MAX_VOLUME = 100;
+    private final static float MAX_VOLUME = 200;
     private static SongPlayer single_instance=null;
     private MediaPlayer player=null;
     private Song currentSong;
@@ -29,7 +29,9 @@ public class SongPlayer {
      */
     public SongPlayer()
     {
+
         volume = MAX_VOLUME/2;
+        System.out.println("In songPlayer constructor: "+volume);
     }
 
     /*
@@ -52,6 +54,7 @@ public class SongPlayer {
         }
 
         if (player != null) {
+            player.setVolume(getVolume());
             player.play();
         }
     }

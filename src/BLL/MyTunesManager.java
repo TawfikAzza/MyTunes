@@ -210,7 +210,7 @@ public class MyTunesManager implements MyTunesFacade{
 
     @Override
     public void setVolume(int soundVolume) {
-
+        songPlayer.setVolume(soundVolume);
     }
 
     @Override

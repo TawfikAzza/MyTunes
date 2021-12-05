@@ -69,4 +69,7 @@ public class SongsModel {
         myTunesFacade.deleteSong(song);
     }
 
+    public void setVolume(double value) {
+        myTunesFacade.setVolume((int) value);
+    }
 }

@@ -50,7 +50,7 @@ public class MainController implements Initializable {
     @FXML
     private AnchorPane topPane;
     @FXML
-    private Slider slider;
+    private Slider slider,volumeSlider;
     @FXML
     private Label lblSongPlaying;
     @FXML
@@ -155,25 +155,15 @@ public class MainController implements Initializable {
      * The method are straightforward and use the SongsModel as foundation
      */
     public void playStopSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
-        toggleImage();
-        if (isClicked) {
-            ImageView playImage = new ImageView(getClass().getResource("/play.png").toExternalForm());
-            playImage.setFitHeight(40);
-            playImage.setFitWidth(40);
-            play.setGraphic(playImage);
-        } else {
-            ImageView pauseImage = new ImageView(getClass().getResource("/pause.png").toExternalForm());
-            pauseImage.setFitHeight(40);
-            pauseImage.setFitWidth(40);
-            play.setGraphic(pauseImage);
-        }
         setLabelSongPlaying();
         songsModel.playStopSong();
         player = SongPlayer.getInstance().getPlayer();
         if (player == null)
             return;
         generateListener();
-    }
+        player.setVolume(volumeSlider.getValue());
+        setupPlayButton();
+     }
 
     public void previousSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
         if (songListFromPlayList.getSelectionModel().getSelectedIndex() > 0) {
@@ -203,7 +193,21 @@ public class MainController implements Initializable {
         if (songListFromPlayList.getSelectionModel().getSelectedIndex() != -1)
             lblSongPlaying.setText(songListFromPlayList.getSelectionModel().getSelectedItem().getName());
     }
+    private void setupPlayButton() {
+        if(player!= null && player.getStatus() == MediaPlayer.Status.PLAYING) {
+            ImageView playImage = new ImageView(getClass().getResource("/play.png").toExternalForm());
+            playImage.setFitHeight(40);
+            playImage.setFitWidth(40);
+            play.setGraphic(playImage);
+        }
 
+        if (player != null && (player.getStatus() == MediaPlayer.Status.PAUSED || player.getStatus() == MediaPlayer.Status.READY)) {
+            ImageView pauseImage = new ImageView(getClass().getResource("/pause.png").toExternalForm());
+            pauseImage.setFitHeight(40);
+            pauseImage.setFitWidth(40);
+            play.setGraphic(pauseImage);
+        }
+    }
     private void setupButtons() {
         deleteButton.setOnAction(event -> {
             try {
@@ -371,8 +375,7 @@ public class MainController implements Initializable {
         });
 
 
-    SortedList<Song> sortedList = new SortedList<>(filteredList);
-       // sortedList.comparatorProperty().bind(songsTableView.comparatorProperty());
+        SortedList<Song> sortedList = new SortedList<>(filteredList);
         songsTableView.getItems().clear();
         songsTableView.getItems().addAll(sortedList);
     }
@@ -465,7 +468,9 @@ public class MainController implements Initializable {
         if(songsTableView.getSelectionModel().getSelectedIndex()!=-1){
         songListFromPlayList.getSelectionModel().clearSelection();
         songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
-        setLabelSongPlaying();}
+        setLabelSongPlaying();
+        setupPlayButton();
+        }
     }
 
     public void handleChooseSongPlayList(MouseEvent mouseEvent) {
@@ -473,6 +478,7 @@ public class MainController implements Initializable {
         if (songListFromPlayList.getSelectionModel().getSelectedIndex() != -1) {
             songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
             //  setLabelSongPlaying();
+            setupPlayButton();
         }
     }
 
@@ -559,11 +565,6 @@ public class MainController implements Initializable {
         stage.show();
     }
 
-    private void toggleImage() {
-        isClicked = !isClicked;
-
-    }
-
     public void isKeyPressed(KeyEvent keyEvent) throws SongDAOException {
 
         ImageView deleteImage = new ImageView(getClass().getResource("/delete.png").toExternalForm());
@@ -584,10 +585,10 @@ public class MainController implements Initializable {
     }
 
     public void setSoundVolume(MouseEvent mouseEvent) {
-
+        if(player!=null) {
+            songsModel.setVolume(volumeSlider.getValue());
+        }
+        volumeSlider.setValue(volumeSlider.getValue());
     }
 
-    public void filterSearch(ActionEvent actionEvent) throws SongDAOException {
-        //filteredSetup();
-    }
 }
