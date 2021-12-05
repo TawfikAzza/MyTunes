@@ -63,7 +63,7 @@ public class MainController implements Initializable {
     private TableColumn<PlayList, String> nameColumn, timePlaylistColumn, songsColumn;
     @FXML
     private ListView<Song> songListFromPlayList;
-    private int currentPlayList;
+    private int currentPlayList = -1;
     //Piece of code and idea given to us by Renars the genius!
     ChangeListener<Duration> changeListener;
     //End piece of code from Renars
@@ -109,6 +109,7 @@ public class MainController implements Initializable {
      * part of a PlayList, advance to the next one.
      * **/
     private void generateListener() {
+
         SongPlayer songPlayer = SongPlayer.getInstance();
         if(changeListener!=null)
             player.currentTimeProperty().removeListener(changeListener);
@@ -142,8 +143,12 @@ public class MainController implements Initializable {
      * The method are straightforward and use the SongsModel as foundation
      * */
     public void playStopSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
+
         setLabelSongPlaying();
         songsModel.playStopSong();
+        player=SongPlayer.getInstance().getPlayer();
+        if(player==null)
+            return;
         generateListener();
     }
     public void previousSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
@@ -168,22 +173,28 @@ public class MainController implements Initializable {
      * Their name are explicit and the content is as well.
      * */
     private void setLabelSongPlaying() {
-        if(songsTableView.getSelectionModel().getSelectedItem()!=null)
+        if(songsTableView.getSelectionModel().getSelectedIndex()!=-1)
             lblSongPlaying.setText(songsTableView.getSelectionModel().getSelectedItem().getName());
-        else
+        if(songListFromPlayList.getSelectionModel().getSelectedIndex()!=-1)
             lblSongPlaying.setText(songListFromPlayList.getSelectionModel().getSelectedItem().getName());
     }
     private void setupButtons() {
         deleteButton.setOnAction(event -> {
             try {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Delete " + songsTableView.getSelectionModel().getSelectedItem() + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
-                alert.setHeaderText("You are about to delete a song");
-                alert.showAndWait();
+                if(songsTableView.getSelectionModel().getSelectedIndex()!=-1) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Delete " + songsTableView.getSelectionModel().getSelectedItem() + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+                    alert.setHeaderText("You are about to delete a song");
+                    alert.showAndWait();
 
-                if (alert.getResult() == ButtonType.YES) {
-                    songsModel.deleteSong(songsTableView.getSelectionModel().getSelectedItem());
-                    songsTableView.getItems().remove(songsTableView.getSelectionModel().getSelectedIndex());
-                    songsTableView.getSelectionModel().clearSelection();
+                    if (alert.getResult() == ButtonType.YES) {
+                        songsModel.deleteSong(songsTableView.getSelectionModel().getSelectedItem());
+                        songsTableView.getItems().remove(songsTableView.getSelectionModel().getSelectedIndex());
+                        songsTableView.getSelectionModel().clearSelection();
+                    }
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Confirm", ButtonType.OK);
+                    alert.setHeaderText("Please select a Song");
+                    alert.showAndWait();
                 }
 
             } catch (SongDAOException e) {
@@ -284,18 +295,24 @@ public class MainController implements Initializable {
         });
 
         deletePlayList.setOnAction(event -> {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Delete " + playlistsTableView.getSelectionModel().getSelectedItem().getName() + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
-            alert.setHeaderText("You are about to delete a Playlist");
-            alert.showAndWait();
-            if (alert.getResult() == ButtonType.YES) {
-                try {
-                    playlistsModel.deletePlayList(playlistsTableView.getSelectionModel().getSelectedItem());
-                    playlistsTableView.getItems().remove(playlistsTableView.getSelectionModel().getSelectedIndex());
-                    updatePlayListTableView();
-                    songListFromPlayList.getItems().clear();
-                } catch (PlayListDAOException e) {
-                    e.printStackTrace();
+            if(playlistsTableView.getSelectionModel().getSelectedIndex()!=-1){
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Delete " + playlistsTableView.getSelectionModel().getSelectedItem().getName() + " ?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+                alert.setHeaderText("You are about to delete a Playlist");
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.YES) {
+                    try {
+                        playlistsModel.deletePlayList(playlistsTableView.getSelectionModel().getSelectedItem());
+                        playlistsTableView.getItems().remove(playlistsTableView.getSelectionModel().getSelectedIndex());
+                        updatePlayListTableView();
+                        songListFromPlayList.getItems().clear();
+                    } catch (PlayListDAOException e) {
+                        e.printStackTrace();
+                    }
                 }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Confirm", ButtonType.OK);
+                alert.setHeaderText("Please select a PlayList");
+                alert.showAndWait();
             }
         });
     }
@@ -388,8 +405,10 @@ public class MainController implements Initializable {
     }
     public void handleChooseSongPlayList(MouseEvent mouseEvent) {
         songsTableView.getSelectionModel().clearSelection();
-        songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
-        setLabelSongPlaying();
+        if(songListFromPlayList.getSelectionModel().getSelectedIndex()!=-1) {
+            songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+          //  setLabelSongPlaying();
+        }
     }
 
     public void handleDisplayPlayList(MouseEvent mouseEvent) throws PlayListDAOException {
@@ -400,7 +419,7 @@ public class MainController implements Initializable {
         songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
     }
     @FXML
-    private void isNewPlayListPressed(ActionEvent event) throws IOException, PlayListDAOException {
+    private void newPlayListName(ActionEvent event) throws IOException, PlayListDAOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/view/PlaylistDialogView.fxml"));
         Parent root = loader.load();
         PlaylistDialogController playlistDialogController = loader.getController();
@@ -414,19 +433,25 @@ public class MainController implements Initializable {
 
     public void editSong(ActionEvent actionEvent) {
         try {
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"));
-                Parent root = loader.load();
-                AlertDialogController alertDialogController = loader.getController();
-                alertDialogController.setValue(songsTableView.getSelectionModel().getSelectedItem());
+                if(songsTableView.getSelectionModel().getSelectedIndex()!=-1) {
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"));
+                    Parent root = loader.load();
+                    AlertDialogController alertDialogController = loader.getController();
+                    alertDialogController.setValue(songsTableView.getSelectionModel().getSelectedItem());
 
-                alertDialogController.setMainController(this);
-                alertDialogController.setOperationType("modification");
-                //root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"), resources);
-                Stage stage = new Stage();
-                stage.setTitle("New/Edit Song");
-                stage.setScene(new Scene(root));
-                stage.show();
+                    alertDialogController.setMainController(this);
+                    alertDialogController.setOperationType("modification");
+                    //root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"), resources);
+                    Stage stage = new Stage();
+                    stage.setTitle("New/Edit Song");
+                    stage.setScene(new Scene(root));
+                    stage.show();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Confirm", ButtonType.OK);
+                    alert.setHeaderText("Please select a Song");
+                    alert.showAndWait();
+                }
                 // Hide this current window (if this is what you want)
     //                    ((Node)(event.getSource())).getScene().getWindow().hide();
             } catch (IOException e) {
@@ -435,16 +460,22 @@ public class MainController implements Initializable {
         }
 
     public void editPlayListName(ActionEvent actionEvent) throws PlayListDAOException, IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/view/PlaylistDialogView.fxml"));
-        Parent root = loader.load();
-        PlaylistDialogController playlistDialogController = loader.getController();
-        playlistDialogController.setMainController(this);
-        playlistDialogController.setPlayListToBeUpdated(playlistsModel.getPlayList(currentPlayList));
-        playlistDialogController.setOperationType("modification");
-        Stage stage = new Stage();
-        stage.setTitle("New/Edit Playlist");
-        stage.setScene(new Scene(root));
-        stage.show();
+        if(currentPlayList!=-1) {
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/view/PlaylistDialogView.fxml"));
+            Parent root = loader.load();
+            PlaylistDialogController playlistDialogController = loader.getController();
+            playlistDialogController.setMainController(this);
+            playlistDialogController.setPlayListToBeUpdated(playlistsModel.getPlayList(currentPlayList));
+            playlistDialogController.setOperationType("modification");
+            Stage stage = new Stage();
+            stage.setTitle("New/Edit Playlist");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Confirm", ButtonType.OK);
+            alert.setHeaderText("Please select a PlayList");
+            alert.showAndWait();
+        }
     }
 
 

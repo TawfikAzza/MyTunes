@@ -51,7 +51,9 @@ public class SongPlayer {
             return;
         }
 
-        player.play();
+        if (player != null) {
+            player.play();
+        }
     }
 
     public void setCurrentSong(Song song)
