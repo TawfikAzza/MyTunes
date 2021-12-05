@@ -69,14 +69,14 @@ public class AlertDialogController implements Initializable {
                 }
             }
         } else {
-            System.out.println("modif");
             File file = new File(fileTextField.getText());
             Author author = authorModel.createNewAuthor(artistTextField.getText().trim());
             Song song = new Song(idSongModified,titleTextField.getText().trim(), author, (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem(), file, timeTextField.getText().trim());
             songsModel.updateSong(song);
             if (saveButton.getScene().getWindow() != null){
+               // mainController.isSearchButtonPressed(new ActionEvent());
                 mainController.updateSongTableView();
-                Stage stage = (Stage) saveButton.getScene().getWindow();
+                Stage stage = (Stage)saveButton.getScene().getWindow();
                 stage.close();
             }
         }

@@ -209,6 +209,11 @@ public class MyTunesManager implements MyTunesFacade{
     }
 
     @Override
+    public void setVolume(int soundVolume) {
+
+    }
+
+    @Override
     public void updatePlayListName(PlayList playList) throws Exception {
         idalMyTunesFacade.updatePlayListName(playList);
     }

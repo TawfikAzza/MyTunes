@@ -342,9 +342,8 @@ public class MainController implements Initializable {
             }
         });
     }
-
-    private void setupUI() throws SongDAOException {
-        FilteredList<Song> filteredList = new FilteredList<>(songsModel.getAllSongs(), a -> true);
+    private void filteredSetup() throws SongDAOException {
+        /*FilteredList<Song> filteredList = new FilteredList<>(songsModel.getAllSongs(), a -> true);
         searchBar.textProperty().addListener(((observable, oldValue, newValue) -> {
             filteredList.setPredicate(song -> {
                 if (newValue == null || newValue.isEmpty()){
@@ -360,11 +359,25 @@ public class MainController implements Initializable {
 
         SortedList<Song> sortedList = new SortedList<>(filteredList);
         sortedList.comparatorProperty().bind(songsTableView.comparatorProperty());
-
         songsTableView.setItems(sortedList);
+        //searchBar.textProperty().removeListener();*/
+        FilteredList<Song> filteredList = new FilteredList<>(songsModel.getAllSongs(), a -> true);
+        filteredList.setPredicate(song -> {
+            String lowerCase = searchBar.getText().toLowerCase();
+            if (song.getName().toLowerCase().contains(lowerCase)){
+                return true;
+            }
+            return song.getAuthor().getName().toLowerCase().contains(lowerCase);
+        });
 
 
-        Image volumeImageView = new Image("/volume.png");
+    SortedList<Song> sortedList = new SortedList<>(filteredList);
+       // sortedList.comparatorProperty().bind(songsTableView.comparatorProperty());
+        songsTableView.getItems().clear();
+        songsTableView.getItems().addAll(sortedList);
+    }
+    private void setupUI() throws SongDAOException {
+       Image volumeImageView = new Image("/volume.png");
         volumeImage.setImage(volumeImageView);
         volumeImage.setFitWidth(20);
 
@@ -432,7 +445,7 @@ public class MainController implements Initializable {
             //timeColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getIntDuration()/60+":"+String.format("%02d", data.getValue().getIntDuration()%60))));
             timeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getStringDuration()));
 
-            songsTableView.getItems().addAll(songsModel.getAllSongs());
+            songsTableView.getItems().setAll(songsModel.getAllSongs());
 
         } catch (SongDAOException e) {
             e.printStackTrace();
@@ -449,9 +462,10 @@ public class MainController implements Initializable {
      * not possible when using lambda expression, well, at least we didn't figure out how...
      * */
     public void handleChooseSong() {
+        if(songsTableView.getSelectionModel().getSelectedIndex()!=-1){
         songListFromPlayList.getSelectionModel().clearSelection();
         songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
-        setLabelSongPlaying();
+        setLabelSongPlaying();}
     }
 
     public void handleChooseSongPlayList(MouseEvent mouseEvent) {
@@ -463,11 +477,13 @@ public class MainController implements Initializable {
     }
 
     public void handleDisplayPlayList(MouseEvent mouseEvent) throws PlayListDAOException {
-        songsTableView.getSelectionModel().clearSelection();
-        currentPlayList = playlistsTableView.getSelectionModel().getSelectedItem().getIdPlaylist();
-        songListFromPlayList.setItems(playlistsModel.getPlayListSelected(playlistsTableView.getSelectionModel().getSelectedItem()));
-        songListFromPlayList.getSelectionModel().select(0);
-        songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+        if(playlistsTableView.getSelectionModel().getSelectedIndex()!=-1) {
+            songsTableView.getSelectionModel().clearSelection();
+            currentPlayList = playlistsTableView.getSelectionModel().getSelectedItem().getIdPlaylist();
+            songListFromPlayList.setItems(playlistsModel.getPlayListSelected(playlistsTableView.getSelectionModel().getSelectedItem()));
+            songListFromPlayList.getSelectionModel().select(0);
+            songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+        }
     }
 
     @FXML
@@ -548,12 +564,13 @@ public class MainController implements Initializable {
 
     }
 
-    public void isKeyPressed(KeyEvent keyEvent) {
+    public void isKeyPressed(KeyEvent keyEvent) throws SongDAOException {
 
         ImageView deleteImage = new ImageView(getClass().getResource("/delete.png").toExternalForm());
         deleteImage.setFitHeight(25);
         deleteImage.setFitWidth(25);
         searchButton.setGraphic(deleteImage);
+        filteredSetup();
     }
 
     public void isSearchButtonPressed(ActionEvent event) {
@@ -564,5 +581,13 @@ public class MainController implements Initializable {
         searchImage.setFitWidth(25);
         searchButton.setGraphic(searchImage);
 
+    }
+
+    public void setSoundVolume(MouseEvent mouseEvent) {
+
+    }
+
+    public void filterSearch(ActionEvent actionEvent) throws SongDAOException {
+        //filteredSetup();
     }
 }
