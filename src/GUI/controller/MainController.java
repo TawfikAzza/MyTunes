@@ -581,6 +581,7 @@ public class MainController implements Initializable {
         searchImage.setFitHeight(25);
         searchImage.setFitWidth(25);
         searchButton.setGraphic(searchImage);
+        updateSongTableView();
 
     }
 
