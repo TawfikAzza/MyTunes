@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -20,6 +21,8 @@ public class PlaylistDialogController implements Initializable {
     private Button cancelButton, saveButton;
     @FXML
     private TextField nameTextField;
+    @FXML
+    private Label lblSystemMsg;
     private MainController mainController;
     private PlayList playListToBeUpdated;
     private String operationType="creation";
@@ -31,7 +34,7 @@ public class PlaylistDialogController implements Initializable {
     }
     public void setPlayListToBeUpdated(PlayList playList){
         this.playListToBeUpdated=playList;
-        nameTextField.setText(playListToBeUpdated.getName().trim());
+        nameTextField.setText(playListToBeUpdated.getName());
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -41,19 +44,23 @@ public class PlaylistDialogController implements Initializable {
         this.operationType = aString;
     }
     public void isCancelPressed(ActionEvent event) {
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
     }
 
     public void isSavedPressed(ActionEvent event) throws PlayListDAOException, Exception {
-        if(operationType.equals("creation")) {
-            playlistsModel.createNewPlaylist(nameTextField.getText().trim());
-
+        if(nameTextField.getText()==null || nameTextField.getText()=="") {
+            lblSystemMsg.setText("Please enter a playlist name.");
         } else {
-            playListToBeUpdated.setName(nameTextField.getText().trim());
-            playlistsModel.updatePlayListName(playListToBeUpdated);
+            if (operationType.equals("creation")) {
+                playlistsModel.createNewPlaylist(nameTextField.getText().trim());
+            } else {
+                playListToBeUpdated.setName(nameTextField.getText().trim());
+                playlistsModel.updatePlayListName(playListToBeUpdated);
+            }
+            mainController.updatePlayListTableView();
+            Stage stage = (Stage) saveButton.getScene().getWindow();
+            stage.close();
         }
-        mainController.updatePlayListTableView();
-        Stage stage = (Stage) saveButton.getScene().getWindow();
-        stage.close();
-
     }
 }
