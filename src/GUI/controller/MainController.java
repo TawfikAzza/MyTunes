@@ -22,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
@@ -40,6 +41,8 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
     private final SongsModel songsModel;
     private final PlaylistsModel playlistsModel;
+    @FXML
+    private AnchorPane topPane;
     @FXML
     private Slider slider;
     @FXML
@@ -75,6 +78,7 @@ public class MainController implements Initializable {
         updateSongTableView();
         updatePlayListTableView();
         setupUI();
+
     }
 
 
@@ -415,9 +419,6 @@ public class MainController implements Initializable {
                 Parent root = loader.load();
                 AlertDialogController alertDialogController = loader.getController();
                 alertDialogController.setValue(songsTableView.getSelectionModel().getSelectedItem());
-                songsTableView.getItems().clear();
-                songsTableView.refresh();
-
 
                 alertDialogController.setMainController(this);
                 alertDialogController.setOperationType("modification");
