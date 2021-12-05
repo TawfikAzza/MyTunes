@@ -29,9 +29,7 @@ public class SongPlayer {
      */
     public SongPlayer()
     {
-
         volume = MAX_VOLUME/2;
-        System.out.println("In songPlayer constructor: "+volume);
     }
 
     /*
@@ -54,7 +52,6 @@ public class SongPlayer {
         }
 
         if (player != null) {
-            player.setVolume(getVolume());
             player.play();
         }
     }

@@ -162,6 +162,7 @@ public class MainController implements Initializable {
             return;
         generateListener();
         player.setVolume(volumeSlider.getValue());
+        player.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
         setupPlayButton();
      }
 
@@ -587,9 +588,8 @@ public class MainController implements Initializable {
 
     public void setSoundVolume(MouseEvent mouseEvent) {
         if(player!=null) {
-            songsModel.setVolume(volumeSlider.getValue());
+            player.setOnReady(()-> player.setVolume(volumeSlider.getValue()));
         }
-        volumeSlider.setValue(volumeSlider.getValue());
     }
 
 }
