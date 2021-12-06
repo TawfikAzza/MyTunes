@@ -16,15 +16,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class AlertDialogController implements Initializable {
+
 
     SongsModel songsModel;
     AuthorModel authorModel;
@@ -36,6 +39,8 @@ public class AlertDialogController implements Initializable {
     private Button cancelButton, saveButton;
     @FXML
     private ComboBox comboBoxCategory;
+    @FXML
+    private Label lblSysMsg;
     private String operationType="creation";
     private int idSongModified;
     public void setMainController(MainController mainController) {
@@ -60,37 +65,41 @@ public class AlertDialogController implements Initializable {
 
     public void isSaved(ActionEvent event) throws AuthorDAOException, Exception, SongDAOException, CategorySongDAOException {
         if(operationType.equals("creation")){
-            Song songCreated = null;
-            CategorySong categoryCreated= null;
-            File file = new File(fileTextField.getText());
-            Author author = authorModel.createNewAuthor(artistTextField.getText().trim());
-            if(lblNewCategory.getText()!="" && comboBoxCategory.getSelectionModel().getSelectedItem()==null) {
-                categoryCreated = categoryModel.createNewCategory(lblNewCategory.getText());
-            } else {
-                categoryCreated = (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem();
+            if(checkInputs()) {
+                Song songCreated = null;
+                CategorySong categoryCreated= null;
+                File file = new File(fileTextField.getText());
+                Author author = authorModel.createNewAuthor(artistTextField.getText().trim());
+                if(lblNewCategory.getText()!="" && comboBoxCategory.getSelectionModel().getSelectedItem()==null) {
+                    categoryCreated = categoryModel.createNewCategory(lblNewCategory.getText());
+                } else {
+                    categoryCreated = (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem();
+                }
+                Song song = new Song(0,titleTextField.getText().trim(), author,categoryCreated , file, timeTextField.getText().trim());
+
+                songCreated = songsModel.addSong(song);
+                if (song != null){
+                    if (saveButton.getScene().getWindow() != null){
+                        mainController.updateSongTableView();
+                        Stage stage = (Stage) saveButton.getScene().getWindow();
+                        stage.close();
+                    }
+                }
             }
-            Song song = new Song(0,titleTextField.getText().trim(), author,categoryCreated , file, timeTextField.getText().trim());
-            songCreated = songsModel.addSong(song);
-            if (song != null){
-                if (saveButton.getScene().getWindow() != null){
+        } else {
+            if (checkInputs()) {
+                File file = new File(fileTextField.getText());
+                Author author = authorModel.createNewAuthor(artistTextField.getText().trim());
+                Song song = new Song(idSongModified, titleTextField.getText().trim(), author, (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem(), file, timeTextField.getText().trim());
+                songsModel.updateSong(song);
+                if (saveButton.getScene().getWindow() != null) {
+                    // mainController.isSearchButtonPressed(new ActionEvent());
                     mainController.updateSongTableView();
                     Stage stage = (Stage) saveButton.getScene().getWindow();
                     stage.close();
                 }
             }
-        } else {
-            File file = new File(fileTextField.getText());
-            Author author = authorModel.createNewAuthor(artistTextField.getText().trim());
-            Song song = new Song(idSongModified,titleTextField.getText().trim(), author, (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem(), file, timeTextField.getText().trim());
-            songsModel.updateSong(song);
-            if (saveButton.getScene().getWindow() != null){
-               // mainController.isSearchButtonPressed(new ActionEvent());
-                mainController.updateSongTableView();
-                Stage stage = (Stage)saveButton.getScene().getWindow();
-                stage.close();
-            }
         }
-
 
     }
     public void setOperationType(String aString) {
@@ -124,5 +133,30 @@ public class AlertDialogController implements Initializable {
         lblNewCategory.setVisible(true);
         comboBoxCategory.getSelectionModel().select(null);
         comboBoxCategory.setVisible(false);
+    }
+    private boolean checkInputs() {
+        String msg = "";
+        boolean flagInputs = false;
+        if(titleTextField.getText().equals("")) {
+            msg+="- Title is missing \n";
+        }
+        if(artistTextField.getText().equals("")) {
+            msg+="- Artist name is missing \n";
+        }
+        if(comboBoxCategory.getSelectionModel().getSelectedItem() == null && lblNewCategory.getText().equals("")) {
+            msg+="- Category is missing \n";
+        }
+        if(timeTextField.getText().equals("")) {
+            msg+="- Length of the song is missing \n";
+        }
+        if(fileTextField.getText().equals("")){
+            msg+="- File is missing \n";
+        }
+        if(msg.equals("")){
+            flagInputs=true;
+        } else {
+            lblSysMsg.setText(msg);
+        }
+        return flagInputs;
     }
 }

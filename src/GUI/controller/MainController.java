@@ -26,25 +26,15 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
-    private boolean isClicked = false;
     private final SongsModel songsModel;
     private final PlaylistsModel playlistsModel;
     @FXML
@@ -75,7 +65,7 @@ public class MainController implements Initializable {
     //End piece of code from Renars
     MediaPlayer player;
 
-    public MainController() throws MyTunesManagerException, SongDAOException {
+    public MainController() throws MyTunesManagerException {
         this.songsModel = new SongsModel();
         this.playlistsModel = new PlaylistsModel();
     }
