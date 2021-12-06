@@ -158,7 +158,6 @@ public class MainController implements Initializable {
      * The method are straightforward and use the SongsModel as foundation
      */
     public void playStopSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
-        setLabelSongPlaying();
         songsModel.playStopSong();
         player = SongPlayer.getInstance().getPlayer();
         if (player == null)
@@ -470,19 +469,31 @@ public class MainController implements Initializable {
      * */
     public void handleChooseSong() {
         if(songsTableView.getSelectionModel().getSelectedIndex()!=-1){
-        songListFromPlayList.getSelectionModel().clearSelection();
-        songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
-        setLabelSongPlaying();
-        setupPlayButton();
+            try {
+                songListFromPlayList.getSelectionModel().clearSelection();
+                songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
+            } catch (SongPlayerException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                alert.show();
+                return;
+            }
+            setLabelSongPlaying();
+            setupPlayButton();
         }
     }
 
-    public void handleChooseSongPlayList(MouseEvent mouseEvent) {
-        songsTableView.getSelectionModel().clearSelection();
+    public void handleChooseSongPlayList(MouseEvent mouseEvent) throws SongPlayerException {
         if (songListFromPlayList.getSelectionModel().getSelectedIndex() != -1) {
+            try {
             songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
-            //  setLabelSongPlaying();
+            } catch (SongPlayerException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                alert.show();
+                return;
+            }
+            setLabelSongPlaying();
             setupPlayButton();
+            songsTableView.getSelectionModel().clearSelection();
         }
     }
 
@@ -492,7 +503,15 @@ public class MainController implements Initializable {
             currentPlayList = playlistsTableView.getSelectionModel().getSelectedItem().getIdPlaylist();
             songListFromPlayList.setItems(playlistsModel.getPlayListSelected(playlistsTableView.getSelectionModel().getSelectedItem()));
             songListFromPlayList.getSelectionModel().select(0);
-            songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+            try {
+                songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+            } catch (SongPlayerException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                alert.show();
+                return;
+            }
+            setLabelSongPlaying();
+            setupPlayButton();
         }
     }
 

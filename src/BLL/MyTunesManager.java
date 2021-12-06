@@ -198,8 +198,7 @@ public class MyTunesManager implements MyTunesFacade{
         songPlayer.playStopSong();
     }
 
-    public void setCurrentSong(Song song)
-    {
+    public void setCurrentSong(Song song) throws SongPlayerException {
         songPlayer.setCurrentSong(song);
     }
 

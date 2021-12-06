@@ -38,8 +38,7 @@ public class SongsModel {
         myTunesFacade.playStopSong();
     }
 
-    public void setCurrentSong(Song song)
-    {
+    public void setCurrentSong(Song song) throws SongPlayerException {
         myTunesFacade.setCurrentSong(song);
     }
 

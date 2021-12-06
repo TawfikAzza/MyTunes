@@ -2,7 +2,10 @@ package BLL.util;
 
 
 import BE.Song;
+import BLL.exception.SongException;
+import BLL.exception.SongPlayerException;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
@@ -52,21 +55,24 @@ public class SongPlayer {
             player.pause();
             return;
         }
-
         if (player != null) {
             player.play();
         }
     }
 
-    public void setCurrentSong(Song song)
-    {
+    public void setCurrentSong(Song song) throws SongPlayerException {
         if(player != null && player.getStatus() == MediaPlayer.Status.PLAYING) {
             player.stop();
         }
-        this.currentSong = song;
-        final Media media = new Media(toValidPath(currentSong.getStringSongFile()));
-        this.player = new MediaPlayer(media);
-        //playStopSong();
+        try
+        {
+            this.currentSong = song;
+            final Media media = new Media(toValidPath(currentSong.getStringSongFile()));
+            this.player = new MediaPlayer(media);
+        } catch (MediaException e)
+        {
+            throw new SongPlayerException("Cannot find associated song file or the file is corrupted!", e);
+        }
     }
 
     public Song getCurrentSong() {
