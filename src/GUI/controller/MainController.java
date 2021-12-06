@@ -349,38 +349,18 @@ public class MainController implements Initializable {
             }
         });
     }
-    private void filteredSetup() throws SongDAOException {
-        /*FilteredList<Song> filteredList = new FilteredList<>(songsModel.getAllSongs(), a -> true);
-        searchBar.textProperty().addListener(((observable, oldValue, newValue) -> {
-            filteredList.setPredicate(song -> {
-                if (newValue == null || newValue.isEmpty()){
-                    return true;
-                }
-                String lowerCase = newValue.toLowerCase();
-                if (song.getName().toLowerCase().contains(lowerCase)){
-                    return true;
-                }
-                return song.getAuthor().getName().toLowerCase().contains(lowerCase);
-            });
-        }));
-
-        SortedList<Song> sortedList = new SortedList<>(filteredList);
-        sortedList.comparatorProperty().bind(songsTableView.comparatorProperty());
-        songsTableView.setItems(sortedList);
-        //searchBar.textProperty().removeListener();*/
-        FilteredList<Song> filteredList = new FilteredList<>(songsModel.getAllSongs(), a -> true);
-        filteredList.setPredicate(song -> {
-            String lowerCase = searchBar.getText().toLowerCase();
-            if (song.getName().toLowerCase().contains(lowerCase)){
+    private void filterSearch() throws SongDAOException {
+        FilteredList<Song> listOfSongs = new FilteredList<>(songsModel.getAllSongs(), a -> true);
+        listOfSongs.setPredicate(songSearched -> {
+            String inputSearch = searchBar.getText().toLowerCase();
+            if (songSearched.getName().toLowerCase().contains(inputSearch)){
                 return true;
             }
-            return song.getAuthor().getName().toLowerCase().contains(lowerCase);
+            return songSearched.getAuthor().getName().toLowerCase().contains(inputSearch);
         });
-
-
-        SortedList<Song> sortedList = new SortedList<>(filteredList);
+        SortedList<Song> listOfSongSorted = new SortedList<>(listOfSongs);
         songsTableView.getItems().clear();
-        songsTableView.getItems().addAll(sortedList);
+        songsTableView.getItems().addAll(listOfSongSorted);
     }
     private void setupUI() throws SongDAOException {
        Image volumeImageView = new Image("/volume.png");
@@ -594,7 +574,7 @@ public class MainController implements Initializable {
         deleteImage.setFitHeight(25);
         deleteImage.setFitWidth(25);
         searchButton.setGraphic(deleteImage);
-        filteredSetup();
+        filterSearch();
     }
 
     public void isSearchButtonPressed(ActionEvent event) {
