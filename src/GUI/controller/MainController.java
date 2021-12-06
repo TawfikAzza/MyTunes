@@ -263,6 +263,9 @@ public class MainController implements Initializable {
         });
 
         upButton.setOnAction(event -> {
+            if(songListFromPlayList.getSelectionModel().getSelectedItem()==null) {
+                return;
+            }
             if (songListFromPlayList.getSelectionModel().getSelectedIndex() != 0) {
                 int indexChosen = songListFromPlayList.getSelectionModel().getSelectedIndex();
                 int indexToMoveTo = songListFromPlayList.getSelectionModel().getSelectedIndex() - 1;
@@ -282,10 +285,14 @@ public class MainController implements Initializable {
                 //After havng moved the songs in the listView, I replace the cursor on the right object in the ListView
                 //This way if the user click multiple times on the up Arrow, it will consecutively move the song first selected up
                 songListFromPlayList.getSelectionModel().select(indexToMoveTo);
+                updatePlayListButton.setVisible(true);
             }
 
         });
         downButton.setOnAction(event -> {
+            if(songListFromPlayList.getSelectionModel().getSelectedItem()== null) {
+                return;
+            }
             if (songListFromPlayList.getSelectionModel().getSelectedIndex() > -1 && songListFromPlayList.getSelectionModel().getSelectedIndex() != songListFromPlayList.getItems().size() - 1) {
                 int indexChosen = songListFromPlayList.getSelectionModel().getSelectedIndex();
                 //IndexToMoveTo is the Index at which the selected song will be moved at
@@ -306,6 +313,7 @@ public class MainController implements Initializable {
                 //After havng moved the songs in the listView, I replace the cursor on the right object in the ListView
                 //This way if the user click multiple times on the downArrow, it will consecutively move the song first selected down
                 songListFromPlayList.getSelectionModel().select(indexToMoveTo);
+                updatePlayListButton.setVisible(true);
             }
 
         });
