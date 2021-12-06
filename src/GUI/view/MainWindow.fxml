@@ -20,6 +20,14 @@
    <children>
       <VBox layoutX="-8.0" layoutY="1.0" prefHeight="600.0" prefWidth="877.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
+            <Label fx:id="lblTextSongTrack">
+               <VBox.margin>
+                  <Insets left="500.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
             <HBox alignment="CENTER_LEFT" prefHeight="163.0" prefWidth="1005.0">
                <children>
                   <VBox prefHeight="79.0" prefWidth="128.0">

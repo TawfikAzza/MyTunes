@@ -38,11 +38,16 @@
                         <Insets />
                      </HBox.margin>
                   </ComboBox>
-                  <Button mnemonicParsing="false" text="More">
+                  <Button mnemonicParsing="false" onAction="#newCategory" text="More">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
                   </Button>
+                  <TextField fx:id="lblNewCategory" prefHeight="26.0" prefWidth="54.0" promptText="Enter a Category" visible="false">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </TextField>
                </children>
             </HBox>
             <BorderPane GridPane.columnIndex="1" GridPane.rowIndex="5">

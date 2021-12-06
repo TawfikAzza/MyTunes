@@ -8,6 +8,7 @@ import BLL.exception.CategorySongDAOException;
 import BLL.exception.MyTunesManagerException;
 import BLL.exception.SongDAOException;
 import GUI.model.AuthorModel;
+import GUI.model.CategoryModel;
 import GUI.model.SongsModel;
 import com.sun.tools.javac.Main;
 import javafx.event.ActionEvent;
@@ -27,9 +28,10 @@ public class AlertDialogController implements Initializable {
 
     SongsModel songsModel;
     AuthorModel authorModel;
+    CategoryModel categoryModel;
     MainController mainController;
     @FXML
-    private TextField fileTextField, timeTextField, artistTextField, titleTextField;
+    private TextField fileTextField, timeTextField, artistTextField, titleTextField, lblNewCategory;
     @FXML
     private Button cancelButton, saveButton;
     @FXML
@@ -42,6 +44,8 @@ public class AlertDialogController implements Initializable {
     public AlertDialogController() throws MyTunesManagerException {
         songsModel = new SongsModel();
         authorModel = new AuthorModel();
+        categoryModel = new CategoryModel();
+
     }
 
     @Override
@@ -54,12 +58,18 @@ public class AlertDialogController implements Initializable {
 
     }
 
-    public void isSaved(ActionEvent event) throws AuthorDAOException, Exception, SongDAOException {
+    public void isSaved(ActionEvent event) throws AuthorDAOException, Exception, SongDAOException, CategorySongDAOException {
         if(operationType.equals("creation")){
             Song songCreated = null;
+            CategorySong categoryCreated= null;
             File file = new File(fileTextField.getText());
             Author author = authorModel.createNewAuthor(artistTextField.getText().trim());
-            Song song = new Song(0,titleTextField.getText().trim(), author, (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem(), file, timeTextField.getText().trim());
+            if(lblNewCategory.getText()!="" && comboBoxCategory.getSelectionModel().getSelectedItem()==null) {
+                categoryCreated = categoryModel.createNewCategory(lblNewCategory.getText());
+            } else {
+                categoryCreated = (CategorySong) comboBoxCategory.getSelectionModel().getSelectedItem();
+            }
+            Song song = new Song(0,titleTextField.getText().trim(), author,categoryCreated , file, timeTextField.getText().trim());
             songCreated = songsModel.addSong(song);
             if (song != null){
                 if (saveButton.getScene().getWindow() != null){
@@ -108,5 +118,11 @@ public class AlertDialogController implements Initializable {
         artistTextField.setText(song.getAuthor().getName());
         titleTextField.setText(song.getName());
         comboBoxCategory.getSelectionModel().select(song.getCategory());
+    }
+
+    public void newCategory(ActionEvent actionEvent) {
+        lblNewCategory.setVisible(true);
+        comboBoxCategory.getSelectionModel().select(null);
+        comboBoxCategory.setVisible(false);
     }
 }

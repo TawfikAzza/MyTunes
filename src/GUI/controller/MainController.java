@@ -52,7 +52,7 @@ public class MainController implements Initializable {
     @FXML
     private Slider slider,volumeSlider;
     @FXML
-    private Label lblSongPlaying;
+    private Label lblSongPlaying,lblTextSongTrack;
     @FXML
     private Button goBack, goForward, play, leftButton, searchButton, upButton, downButton, newSongButton, closeButton, editSongButton, deleteButton, deleteFromPlayListButton, newPlayListButton, updatePlayListButton, deletePlayList;
     @FXML
@@ -135,7 +135,10 @@ public class MainController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
                 slider.setValue(((double) newValue.toSeconds()));
+                lblTextSongTrack.setText(String.format("%02d:%02d / %02d:%02d",(int)(player.getCurrentTime().toSeconds()/60),(int)player.getCurrentTime().toSeconds()%60
+                                                                              ,(int)player.getTotalDuration().toSeconds()/60,(int)player.getTotalDuration().toSeconds()%60));
                 if (slider.getValue() + 1 >= player.getTotalDuration().toSeconds()) {
+
                     try {
                         if (songListFromPlayList.getSelectionModel().getSelectedIndex() != -1)
                             nextSong(new ActionEvent());

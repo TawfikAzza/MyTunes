@@ -74,11 +74,13 @@ public class CategoryDAO implements ICategorySongDataAccess {
             pstCheckAuthor.setString(1,category.getName());
             ResultSet rsCheck = pstCheckAuthor.executeQuery();
             if(!rsCheck.isBeforeFirst()) {
+
                 String sqlcommandInsert = "INSERT INTO CATEGORY VALUES (?);";
                 PreparedStatement pstmtInsert = con.prepareStatement(sqlcommandInsert, Statement.RETURN_GENERATED_KEYS);
                 pstmtInsert.setString(1, category.getName());
-                pstmtInsert.executeQuery();
+                pstmtInsert.execute();
                 ResultSet rs = pstmtInsert.getGeneratedKeys();
+
                 while (rs.next()) {
                     categoryCreated = new CategorySong(rs.getInt(1), category.getName());
                 }
