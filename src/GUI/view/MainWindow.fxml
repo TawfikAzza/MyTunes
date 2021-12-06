@@ -20,15 +20,7 @@
    <children>
       <VBox layoutX="-8.0" layoutY="1.0" prefHeight="600.0" prefWidth="877.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label fx:id="lblTextSongTrack">
-               <VBox.margin>
-                  <Insets left="500.0" />
-               </VBox.margin>
-               <font>
-                  <Font name="System Bold" size="19.0" />
-               </font>
-            </Label>
-            <HBox alignment="CENTER_LEFT" prefHeight="163.0" prefWidth="1005.0">
+            <HBox alignment="CENTER_LEFT" spacing="20.0">
                <children>
                   <VBox prefHeight="79.0" prefWidth="128.0">
                      <children>
@@ -69,18 +61,33 @@
                         </BorderPane>
                      </children>
                   </VBox>
-                  <Region prefHeight="200.0" prefWidth="180.0" />
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Label fx:id="lblSongPlaying" text="var">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font></Label>
-                        <Label text="... is playing" />
-                     </children>
-                  </HBox>
-                  <Region prefHeight="200.0" prefWidth="180.0" />
-                  <HBox alignment="CENTER" prefHeight="63.0" prefWidth="283.0">
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <VBox maxWidth="200.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label fx:id="lblTextSongTrack" alignment="CENTER">
+                                 <VBox.margin>
+                                    <Insets left="500.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="19.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <Label fx:id="lblSongPlaying" text="Nothing">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text=" ...is playing" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </center>
+                  </BorderPane>
+                  <HBox alignment="CENTER">
                      <children>
                         <Label text="Filter:">
                            <font>
@@ -119,12 +126,13 @@
                               <Insets top="15.0" />
                            </VBox.margin>
                         </TableView>
-                        <HBox prefWidth="200.0">
+                        <HBox alignment="CENTER" prefWidth="200.0" spacing="20.0">
                            <children>
-                              <Button fx:id="newPlayListButton" mnemonicParsing="false" onAction="#newPlayListName" text="New" textOverrun="CLIP" />
-                              <Region prefHeight="20.0" prefWidth="25.0" />
+                              <Button fx:id="newPlayListButton" ellipsisString="" mnemonicParsing="false" onAction="#newPlayListName" text="New">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin></Button>
                               <Button fx:id="editPlayListButton" mnemonicParsing="false" onAction="#editPlayListName" text="Edit Name" />
-                              <Region prefHeight="20.0" prefWidth="25.0" />
                               <Button fx:id="updatePlayListButton" mnemonicParsing="false" text="Update" />
                               <Button fx:id="deletePlayList" mnemonicParsing="false" text="Delete" />
                            </children>
