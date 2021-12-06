@@ -22,57 +22,88 @@
          <children>
             <HBox alignment="CENTER_LEFT" spacing="20.0">
                <children>
-                  <VBox prefHeight="79.0" prefWidth="128.0">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                  <BorderPane prefHeight="115.0" prefWidth="1005.0">
+                     <left>
+                        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Button fx:id="goBack" mnemonicParsing="false" onAction="#previousSong" style="-fx-background-color: transparent;" />
-                              <Button fx:id="play" mnemonicParsing="false" onAction="#playStopSong" style="-fx-background-color: transparent;" />
-                              <Button fx:id="goForward" mnemonicParsing="false" onAction="#nextSong" style="-fx-background-color: transparent;" />
+                              <VBox prefHeight="79.0" prefWidth="128.0">
+                                 <children>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Button fx:id="goBack" mnemonicParsing="false" onAction="#previousSong" style="-fx-background-color: transparent;" />
+                                          <Button fx:id="play" mnemonicParsing="false" onAction="#playStopSong" style="-fx-background-color: transparent;" />
+                                          <Button fx:id="goForward" mnemonicParsing="false" onAction="#nextSong" style="-fx-background-color: transparent;" />
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <ImageView fx:id="durationImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
+                                          <Slider fx:id="slider" blockIncrement="0.01" minWidth="150.0" onMousePressed="#moveProgressSlider" onMouseReleased="#setProgress" prefHeight="16.0" prefWidth="122.0">
+                                             <padding>
+                                                <Insets left="2.0" />
+                                             </padding>
+                                          </Slider>
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </HBox>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets right="15.0" />
+                                 </HBox.margin>
+                              </VBox>
+                              <VBox>
+                                 <children>
+                                    <ImageView fx:id="volumeImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
+                                    <BorderPane prefHeight="200.0">
+                                       <center>
+                                          <Slider fx:id="volumeSlider" blockIncrement="0.01" max="1.0" onMouseEntered="#setSoundVolume" orientation="VERTICAL" value="0.3" BorderPane.alignment="CENTER" />
+                                       </center>
+                                    </BorderPane>
+                                 </children>
+                              </VBox>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     </left>
+                     <right>
+                        <HBox alignment="CENTER" prefHeight="132.0" prefWidth="258.0" BorderPane.alignment="CENTER">
                            <children>
-                              <ImageView fx:id="durationImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
-                              <Slider fx:id="slider" blockIncrement="0.01" minWidth="150.0" onMousePressed="#moveProgressSlider" onMouseReleased="#setProgress" prefHeight="16.0" prefWidth="122.0">
-                                 <padding>
-                                    <Insets left="2.0" />
-                                 </padding></Slider>
+                              <Label text="Filter:">
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <TextField fx:id="searchBar" onKeyTyped="#isKeyPressed" />
+                              <Button fx:id="searchButton" mnemonicParsing="false" onAction="#isSearchButtonPressed" style="-fx-background-color: transparent;">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </Button>
                            </children>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
                         </HBox>
-                     </children>
-                     <HBox.margin>
-                        <Insets right="15.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <VBox>
-                     <children>
-                        <ImageView fx:id="volumeImage" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
-                        <BorderPane prefHeight="200.0">
-                           <center>
-                              <Slider fx:id="volumeSlider" blockIncrement="0.01" max="1.0" onMouseEntered="#setSoundVolume" orientation="VERTICAL" value="0.3" BorderPane.alignment="CENTER" />
-                           </center>
-                        </BorderPane>
-                     </children>
-                  </VBox>
-                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     </right>
                      <center>
                         <VBox maxWidth="200.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Label fx:id="lblTextSongTrack" alignment="CENTER">
+                              <BorderPane>
+                                 <center>
+                                    <Label fx:id="lblTextSongTrack" alignment="CENTER" BorderPane.alignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="19.0" />
+                                       </font>
+                                    </Label>
+                                 </center>
                                  <VBox.margin>
-                                    <Insets left="500.0" />
+                                    <Insets top="10.0" />
                                  </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="19.0" />
-                                 </font>
-                              </Label>
+                              </BorderPane>
                               <HBox alignment="CENTER">
                                  <children>
                                     <Label fx:id="lblSongPlaying" text="Nothing">
@@ -82,30 +113,17 @@
                                     </Label>
                                     <Label text=" ...is playing" />
                                  </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets top="20.0" />
+                                 </padding>
                               </HBox>
                            </children>
                         </VBox>
                      </center>
                   </BorderPane>
-                  <HBox alignment="CENTER">
-                     <children>
-                        <Label text="Filter:">
-                           <font>
-                              <Font size="12.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets right="20.0" />
-                           </HBox.margin></Label>
-                        <TextField fx:id="searchBar" onKeyTyped="#isKeyPressed" />
-                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#isSearchButtonPressed" style="-fx-background-color: transparent;">
-                           <HBox.margin>
-                              <Insets left="20.0" />
-                           </HBox.margin></Button>
-                     </children>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </HBox>
                </children>
                <VBox.margin>
                   <Insets left="30.0" right="30.0" top="30.0" />
