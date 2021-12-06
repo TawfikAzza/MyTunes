@@ -125,8 +125,18 @@ public class MainController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
                 slider.setValue(((double) newValue.toSeconds()));
-                lblTextSongTrack.setText(String.format("%02d:%02d / %02d:%02d",(int)(player.getCurrentTime().toSeconds()/60),(int)player.getCurrentTime().toSeconds()%60
-                                                                              ,((int)player.getTotalDuration().toSeconds()/60>60)?String.format("%02d:%02d",(int)player.getTotalDuration().toSeconds()/3600,(int)player.getTotalDuration().toSeconds()/60):(int)player.getTotalDuration().toSeconds()/60,(int)player.getTotalDuration().toSeconds()%60));
+                int hours = (int)player.getTotalDuration().toSeconds()/3600;
+                int minutes = ((int)player.getTotalDuration().toSeconds()%3600)/60;
+                int seconds = (int)player.getTotalDuration().toSeconds()%60;
+                String time="0";
+                if(hours<1) {
+                   time = String.format("%02d:%02d / %02d:%02d",(int)(player.getCurrentTime().toSeconds()/60),(int)player.getCurrentTime().toSeconds()%60
+                            ,minutes,seconds);
+                } else {
+                    time = String.format("%02d:%02d / %02d:%02d:%02d",(int)(player.getCurrentTime().toSeconds()/60),(int)player.getCurrentTime().toSeconds()%60
+                            ,hours ,minutes,seconds);
+                }
+                lblTextSongTrack.setText(time);
                 if (slider.getValue() + 1 >= player.getTotalDuration().toSeconds()) {
 
                     try {
