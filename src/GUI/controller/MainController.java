@@ -128,13 +128,21 @@ public class MainController implements Initializable {
                 int hours = (int)player.getTotalDuration().toSeconds()/3600;
                 int minutes = ((int)player.getTotalDuration().toSeconds()%3600)/60;
                 int seconds = (int)player.getTotalDuration().toSeconds()%60;
+                int hoursSong = (int)(player.getCurrentTime().toSeconds()/3600);
+                int minutesSong = ((int)(player.getCurrentTime().toSeconds()%3600)/60);
+                int secondsSong = (int)(player.getCurrentTime().toSeconds()%60);
                 String time="0";
                 if(hours<1) {
-                   time = String.format("%02d:%02d / %02d:%02d",(int)(player.getCurrentTime().toSeconds()/60),(int)player.getCurrentTime().toSeconds()%60
+                   time = String.format("%02d:%02d / %02d:%02d",minutesSong,secondsSong
                             ,minutes,seconds);
                 } else {
-                    time = String.format("%02d:%02d / %02d:%02d:%02d",(int)(player.getCurrentTime().toSeconds()/60),(int)player.getCurrentTime().toSeconds()%60
-                            ,hours ,minutes,seconds);
+                    if(hoursSong<1) {
+                        time = String.format("%02d:%02d / %02d:%02d:%02d", minutesSong, secondsSong
+                                , hours, minutes, seconds);
+                    } else {
+                        time = String.format("%02d:%02d:%02d / %02d:%02d:%02d", hoursSong, minutesSong,secondsSong
+                                , hours, minutes, seconds);
+                    }
                 }
                 lblTextSongTrack.setText(time);
                 if (slider.getValue() + 1 >= player.getTotalDuration().toSeconds()) {
@@ -250,7 +258,7 @@ public class MainController implements Initializable {
             if (songsTableView.getSelectionModel().getSelectedItem() != null) {
                 songListFromPlayList.getItems().add(songsTableView.getSelectionModel().getSelectedItem());
                 songListFromPlayList.refresh();
-
+                updatePlayListButton.setVisible(true);
             }
         });
 
@@ -325,6 +333,7 @@ public class MainController implements Initializable {
             } catch (PlayListDAOException e) {
                 e.printStackTrace();
             }
+            updatePlayListButton.setVisible(false);
         });
 
         deletePlayList.setOnAction(event -> {
@@ -348,6 +357,7 @@ public class MainController implements Initializable {
                 alert.showAndWait();
             }
         });
+        updatePlayListButton.setVisible(false);
     }
     private void filterSearch() throws SongDAOException {
         FilteredList<Song> listOfSongs = new FilteredList<>(songsModel.getAllSongs(), a -> true);
@@ -484,7 +494,8 @@ public class MainController implements Initializable {
             songListFromPlayList.setItems(playlistsModel.getPlayListSelected(playlistsTableView.getSelectionModel().getSelectedItem()));
             songListFromPlayList.getSelectionModel().select(0);
             try {
-                songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+                if(songListFromPlayList.getSelectionModel().getSelectedItem()!=null)
+                 songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
             } catch (SongPlayerException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
                 alert.show();
