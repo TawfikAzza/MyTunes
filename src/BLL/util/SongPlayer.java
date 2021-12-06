@@ -64,11 +64,8 @@ public class SongPlayer {
             player.stop();
         }
         this.currentSong = song;
-        File testFile = new File(currentSong.getStringSongFile());
-        if(testFile.exists()) {
-            final Media media = new Media(toValidPath(currentSong.getStringSongFile()));
-            this.player = new MediaPlayer(media);
-        }
+        final Media media = new Media(toValidPath(currentSong.getStringSongFile()));
+        this.player = new MediaPlayer(media);
         //playStopSong();
     }
 
