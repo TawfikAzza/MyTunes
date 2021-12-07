@@ -92,7 +92,7 @@
                      <center>
                         <VBox maxWidth="200.0" BorderPane.alignment="CENTER">
                            <children>
-                              <BorderPane>
+                              <BorderPane prefHeight="22.0" prefWidth="200.0">
                                  <center>
                                     <Label fx:id="lblTextSongTrack" alignment="CENTER" BorderPane.alignment="CENTER">
                                        <font>
@@ -104,14 +104,13 @@
                                     <Insets top="10.0" />
                                  </VBox.margin>
                               </BorderPane>
-                              <HBox alignment="CENTER">
+                              <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                                  <children>
-                                    <Label fx:id="lblSongPlaying" text="Nothing">
+                                    <Label fx:id="lblSongPlaying" prefHeight="21.0" prefWidth="165.0">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                     </Label>
-                                    <Label text=" ...is playing" />
                                  </children>
                                  <VBox.margin>
                                     <Insets />
