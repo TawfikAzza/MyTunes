@@ -12,6 +12,7 @@ import GUI.model.SongsModel;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
@@ -104,6 +105,8 @@ public class MainController implements Initializable {
      * part of a PlayList, advance to the next one.
      **/
     private void generateListener() {
+        final int[] textIndex = {0};
+        final int[] indexDisplay = {0};
         SongPlayer songPlayer = SongPlayer.getInstance();
         if (changeListener != null)
             player.currentTimeProperty().removeListener(changeListener);
@@ -116,32 +119,67 @@ public class MainController implements Initializable {
         //lambda of setOnReady() it forces out the value of player.getTotalDuration().toSeconds() though as if I don't do that
         //the value stays at NaN, so the setOnReady method of the player is necessary there.
         slider.maxProperty().set(player.getTotalDuration().toSeconds());
-        changeListener = (observable, oldValue, newValue) -> {
-            slider.setValue((newValue.toSeconds()));
-            int hours = (int)player.getTotalDuration().toSeconds()/3600;
-            int minutes = ((int)player.getTotalDuration().toSeconds()%3600)/60;
-            int seconds = (int)player.getTotalDuration().toSeconds()%60;
-            int hoursSong = (int)(player.getCurrentTime().toSeconds()/3600);
-            int minutesSong = ((int)(player.getCurrentTime().toSeconds()%3600)/60);
-            int secondsSong = (int)(player.getCurrentTime().toSeconds()%60);
-            String time;
-            if(hours<1) {
-               time = String.format("%02d:%02d / %02d:%02d",minutesSong,secondsSong
-                        ,minutes,seconds);
-            } else {
-                if(hoursSong<1) {
-                    time = String.format("%02d:%02d / %02d:%02d:%02d", minutesSong, secondsSong
-                            , hours, minutes, seconds);
-                } else {
-                    time = String.format("%02d:%02d:%02d / %02d:%02d:%02d", hoursSong, minutesSong,secondsSong
-                            , hours, minutes, seconds);
-                }
-            }
-            lblTextSongTrack.setText(time);
-            if (slider.getValue() + 1 >= player.getTotalDuration().toSeconds()) {
+        textToChange = songPlayer.getCurrentSong().getName();
+        //  System.out.println(textToChange);
+        final String[] scrollingText = {""};
+        int textLength = textToChange.length();
+        changeListener = new ChangeListener<Duration>() {
+            @Override
+            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+                slider.setValue(((double) newValue.toSeconds()));
+                int hours = (int)player.getTotalDuration().toSeconds()/3600;
+                int minutes = ((int)player.getTotalDuration().toSeconds()%3600)/60;
+                int seconds = (int)player.getTotalDuration().toSeconds()%60;
+                int hoursSong = (int)(player.getCurrentTime().toSeconds()/3600);
+                int minutesSong = ((int)(player.getCurrentTime().toSeconds()%3600)/60);
+                int secondsSong = (int)(player.getCurrentTime().toSeconds()%60);
 
-                if (songListFromPlayList.getSelectionModel().getSelectedIndex() != -1)
-                    nextSong(new ActionEvent());
+                int index = 0;
+                if(textIndex[0]!=secondsSong%(textLength)) {
+                    textIndex[0] = secondsSong%textLength;
+                    index = textIndex[0];
+                }
+                /**
+                 * This part was somewhat tricky and truthfully, we hesitated to put it in the project, as obviously it can be optimized
+                 * further, however, the amount of effort it took, and the timely help of Nedas convinced us to let it there.
+                 * */
+                if(index!=0) {
+                    scrollingText[0] += ""+textToChange.charAt(index-1);
+                    int finalIndex = index;
+                    int indexBegin = index;
+                    int indexEnd = (textLength-(textLength-indexBegin))%textLength;
+                    String scrollingMessage = textToChange+" ::::::::::::: "+textToChange;
+                    if(indexDisplay[0]==(scrollingMessage.length())) {
+                        indexDisplay[0]=0;
+                    }
+                    String finalScrollingMessage = scrollingMessage+" ::::::::::::: " +scrollingMessage;
+                    Platform.runLater(new Runnable() {
+                        public void run() {
+                            indexDisplay[0]++;
+                            String message = finalScrollingMessage.substring(indexDisplay[0]/2, (finalScrollingMessage.length()+indexDisplay[0])/2);
+                            lblSongPlaying.setText(message);
+                        }});
+                }
+
+                String time="0";
+                if(hours<1) {
+                    time = String.format("%02d:%02d / %02d:%02d",minutesSong,secondsSong
+                            ,minutes,seconds);
+                } else {
+                    if(hoursSong<1) {
+                        time = String.format("%02d:%02d / %02d:%02d:%02d", minutesSong, secondsSong
+                                , hours, minutes, seconds);
+                    } else {
+                        time = String.format("%02d:%02d:%02d / %02d:%02d:%02d", hoursSong, minutesSong,secondsSong
+                                , hours, minutes, seconds);
+                    }
+                }
+                lblTextSongTrack.setText(time);
+                if (slider.getValue() + 1 >= player.getTotalDuration().toSeconds()) {
+
+                    if (songListFromPlayList.getSelectionModel().getSelectedIndex() != -1)
+                        nextSong(new ActionEvent());
+                }
             }
         };
         player.currentTimeProperty().addListener(changeListener);
