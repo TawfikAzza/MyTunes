@@ -468,24 +468,24 @@ public class MainController implements Initializable {
             songListFromPlayList.getSelectionModel().clearSelection();
             try {
                 songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
+                    setLabelSongPlaying();
+                    setupPlayButton();
             } catch (SongPlayerException e) {
                 displayError(e);
             }
-            setLabelSongPlaying();
-            setupPlayButton();
         }
     }
 
     public void handleChooseSongPlayList(MouseEvent mouseEvent) {
         if (songListFromPlayList.getSelectionModel().getSelectedIndex() != -1) {
             try {
-            songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+                songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+                    setLabelSongPlaying();
+                    setupPlayButton();
+                    songsTableView.getSelectionModel().clearSelection();
             } catch (SongPlayerException e) {
                 displayError(e);
             }
-            setLabelSongPlaying();
-            setupPlayButton();
-            songsTableView.getSelectionModel().clearSelection();
         }
     }
 
@@ -495,19 +495,19 @@ public class MainController implements Initializable {
             currentPlayList = playlistsTableView.getSelectionModel().getSelectedItem().getIdPlaylist();
             try {
                 songListFromPlayList.setItems(playlistsModel.getPlayListSelected(playlistsTableView.getSelectionModel().getSelectedItem()));
+                    songListFromPlayList.getSelectionModel().select(0);
+                    if(songListFromPlayList.getSelectionModel().getSelectedItem()!=null) {
+                        try {
+                            songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+                            setLabelSongPlaying();
+                            setupPlayButton();
+                        } catch (SongPlayerException e) {
+                            displayError(e);
+                        }
+                    }
             } catch (PlayListDAOException e) {
                 displayError(e);
             }
-            songListFromPlayList.getSelectionModel().select(0);
-            if(songListFromPlayList.getSelectionModel().getSelectedItem()!=null) {
-                try {
-                    songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
-                } catch (SongPlayerException e) {
-                    displayError(e);
-                }
-            }
-            setLabelSongPlaying();
-            setupPlayButton();
         }
     }
 
