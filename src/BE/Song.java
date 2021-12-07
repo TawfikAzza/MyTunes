@@ -138,7 +138,7 @@ public class Song {
      * If the target folder doesn't exist, it will create it.
      * */
     public void setSongFile(File file) throws Exception {
-        songFile = file;
+       songFile = file;
     }
 
     public String getStringSongFile() {

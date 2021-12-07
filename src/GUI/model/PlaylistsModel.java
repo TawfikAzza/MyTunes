@@ -10,6 +10,7 @@ import BLL.exception.SongDAOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +43,7 @@ public class PlaylistsModel {
         myTunesFacade.createPlayList(new PlayList(name, songList));
     }
 
-    public void updatePlayList(PlayList playList, ObservableList<Song> items) throws PlayListDAOException {
+    public void updatePlayList(PlayList playList, ObservableList<Song> items) throws PlayListDAOException, MalformedURLException {
         HashMap<Integer,Song> playListSongs = new HashMap<>();
         int rankSong=1;
         for (Song song:items) {

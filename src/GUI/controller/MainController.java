@@ -26,17 +26,23 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     private final SongsModel songsModel;
     private final PlaylistsModel playlistsModel;
+
+    @FXML
+    private AnchorPane topPane;
     @FXML
     private Slider slider,volumeSlider;
     @FXML
@@ -382,7 +388,7 @@ public class MainController implements Initializable {
             try {
                 playlistsModel.updatePlayList(playList, songListFromPlayList.getItems());
                 updatePlayListTableView();
-            } catch (PlayListDAOException e) {
+            } catch (PlayListDAOException | MalformedURLException e) {
                 e.printStackTrace();
             }
             updatePlayListButton.setVisible(false);
@@ -472,11 +478,15 @@ public class MainController implements Initializable {
         upImage.setFitWidth(20);
         upImage.setFitHeight(20);
         upButton.setGraphic(upImage);
+
+        topPane.setStyle("-fx-background-image: url('/backGroungPng.png');");
     }
 
     public void updatePlayListTableView() {
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             songsColumn.setCellValueFactory(new PropertyValueFactory<>("sizeListString"));
+           // nameColumn.setStyle("-fx-background-color: black ;");
+           // nameColumn.setStyle("-fx-text-fill: ladder(background, white 49%, black 50%);");
             //songsColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().values().stream().count())));
             //songsColumn.setCellValueFactory(data -> String.valueOf(data.getValue().getListSong().values().stream().collect(Collectors.toCollection(ObservableValue<String>::new))));
             // timePlaylistColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()/60)+":"+String.format("%02d", data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()%60)));
@@ -515,7 +525,7 @@ public class MainController implements Initializable {
         if(songsTableView.getSelectionModel().getSelectedIndex()!=-1){
             songListFromPlayList.getSelectionModel().clearSelection();
             try {
-                songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
+                    songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
                     setLabelSongPlaying();
                     setupPlayButton();
             } catch (SongPlayerException e) {

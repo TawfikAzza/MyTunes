@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="topPane" prefHeight="600.0" prefWidth="1065.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.controller.MainController">
+<AnchorPane fx:id="topPane" prefHeight="600.0" prefWidth="1065.0" style="-fx-background-image: ../../../resources/backGroundAnchor.jpg;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.controller.MainController">
    <children>
       <VBox layoutX="-8.0" layoutY="1.0" prefHeight="600.0" prefWidth="877.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -80,7 +80,7 @@
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Label>
-                              <TextField fx:id="searchBar" onKeyTyped="#isKeyPressed" />
+                              <TextField fx:id="searchBar" onKeyTyped="#isKeyPressed" style="-fx-background-radius: 20;" />
                               <Button fx:id="searchButton" mnemonicParsing="false" onAction="#isSearchButtonPressed" style="-fx-background-color: transparent;">
                                  <HBox.margin>
                                     <Insets left="20.0" />
@@ -133,7 +133,7 @@
                   <VBox prefHeight="489.0" prefWidth="292.0">
                      <children>
                         <Label text="Playlists" />
-                        <TableView fx:id="playlistsTableView" onMouseClicked="#handleDisplayPlayList" prefHeight="430.0" prefWidth="277.0">
+                        <TableView fx:id="playlistsTableView" onMouseClicked="#handleDisplayPlayList" prefHeight="430.0" prefWidth="277.0" style="-fx-background-radius: 10;">
                           <columns>
                             <TableColumn fx:id="nameColumn" prefWidth="96.0" text="Name" />
                             <TableColumn fx:id="songsColumn" prefWidth="96.0" text="Songs" />
@@ -145,13 +145,25 @@
                         </TableView>
                         <HBox alignment="CENTER" prefWidth="200.0" spacing="20.0">
                            <children>
-                              <Button fx:id="newPlayListButton" ellipsisString="" mnemonicParsing="false" onAction="#newPlayListName" text="New">
+                              <Button fx:id="newPlayListButton" ellipsisString="" mnemonicParsing="false" onAction="#newPlayListName" style="-fx-background-radius: 20; -fx-background-color: black;" text="New" textFill="WHITE">
                                  <HBox.margin>
                                     <Insets />
-                                 </HBox.margin></Button>
-                              <Button fx:id="editPlayListButton" mnemonicParsing="false" onAction="#editPlayListName" text="Edit Name" />
-                              <Button fx:id="updatePlayListButton" mnemonicParsing="false" text="Update" />
-                              <Button fx:id="deletePlayList" mnemonicParsing="false" text="Delete" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font></Button>
+                              <Button fx:id="editPlayListButton" mnemonicParsing="false" onAction="#editPlayListName" prefHeight="26.0" prefWidth="73.0" style="-fx-background-radius: 20; -fx-background-color: black;" text="Edit Name" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="11.0" />
+                                 </font></Button>
+                              <Button fx:id="updatePlayListButton" mnemonicParsing="false" style="-fx-background-radius: 20; -fx-background-color: black;" text="Update" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font></Button>
+                              <Button fx:id="deletePlayList" mnemonicParsing="false" style="-fx-background-radius: 20; -fx-background-color: black;" text="Delete" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font></Button>
                            </children>
                            <VBox.margin>
                               <Insets bottom="20.0" top="15.0" />
@@ -163,7 +175,7 @@
                   <VBox prefHeight="512.0" prefWidth="163.0">
                      <children>
                         <Label text="Songs on playlist" />
-                        <ListView fx:id="songListFromPlayList" onMouseClicked="#handleChooseSongPlayList" prefHeight="430.0" prefWidth="163.0">
+                        <ListView fx:id="songListFromPlayList" onMouseClicked="#handleChooseSongPlayList" prefHeight="430.0" prefWidth="163.0" style="-fx-background-radius: 10;">
                            <VBox.margin>
                               <Insets bottom="15.0" top="15.0" />
                            </VBox.margin></ListView>
@@ -172,7 +184,13 @@
                               <Button fx:id="upButton" mnemonicParsing="false" style="-fx-background-color: transparent;" />
                               <Button fx:id="downButton" mnemonicParsing="false" style="-fx-background-color: transparent;" />
                               <Region prefHeight="5.0" prefWidth="30.0" />
-                              <Button fx:id="deleteFromPlayListButton" mnemonicParsing="false" text="Delete" />
+                              <Button fx:id="deleteFromPlayListButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="56.0" style="-fx-background-radius: 20; -fx-background-color: black;" text="Delete" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="-10.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font></Button>
                            </children>
                            <VBox.margin>
                               <Insets bottom="20.0" />
@@ -190,9 +208,9 @@
                   <VBox>
                      <children>
                         <Label text="Songs" />
-                        <TableView fx:id="songsTableView" onMouseClicked="#handleChooseSong" prefHeight="430.0" prefWidth="401.0">
+                        <TableView fx:id="songsTableView" onMouseClicked="#handleChooseSong" prefHeight="430.0" prefWidth="401.0" style="-fx-background-radius: 10;">
                           <columns>
-                            <TableColumn fx:id="titleColumn" prefWidth="100.0" text="Title" />
+                            <TableColumn fx:id="titleColumn" prefWidth="100.0" style="-fx-background-radius: 20;" text="Title" />
                             <TableColumn fx:id="artistColumn" prefWidth="100.0" text="Artist" />
                               <TableColumn fx:id="categoryColumn" prefWidth="100.0" text="Category" />
                               <TableColumn fx:id="timeColumn" prefWidth="100.0" text="Time" />
@@ -203,14 +221,38 @@
                         </TableView>
                         <BorderPane prefWidth="200.0">
                            <right>
-                              <Button fx:id="closeButton" mnemonicParsing="false" text="Close" BorderPane.alignment="CENTER" />
+                              <Button fx:id="closeButton" mnemonicParsing="false" style="-fx-background-radius: 20; -fx-background-color: black;" text="Close" textFill="WHITE" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets right="30.0" />
+                                 </BorderPane.margin>
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font></Button>
                            </right>
                            <left>
-                              <HBox spacing="20.0" BorderPane.alignment="CENTER">
+                              <HBox prefHeight="26.0" prefWidth="286.0" spacing="20.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <Button fx:id="newSongButton" mnemonicParsing="false" onAction="#newSong" text="New" />
-                                    <Button fx:id="editSongButton" mnemonicParsing="false" onAction="#editSong" text="Edit" />
-                                    <Button fx:id="deleteButton" mnemonicParsing="false" text="Delete" />
+                                    <Button fx:id="newSongButton" mnemonicParsing="false" onAction="#newSong" style="-fx-background-radius: 20; -fx-background-color: black;" text="New" textFill="WHITE">
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Button>
+                                    <Button fx:id="editSongButton" mnemonicParsing="false" onAction="#editSong" style="-fx-background-radius: 20; -fx-background-color: black;" text="Edit" textFill="WHITE">
+                                       <HBox.margin>
+                                          <Insets left="30.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Button>
+                                    <Button fx:id="deleteButton" mnemonicParsing="false" style="-fx-background-radius: 20; -fx-background-color: black;" text="Delete" textFill="WHITE">
+                                       <HBox.margin>
+                                          <Insets left="30.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></Button>
                                  </children>
                               </HBox>
                            </left>

@@ -33,7 +33,8 @@ public class DAOTest {
        // createPlayList();
        // updatePlayList();
        // deletePlayList();
-        getSong();
+        //getSong();
+        testSongLength();
     }
 
     public static void getSong() throws Exception {
@@ -145,7 +146,9 @@ public class DAOTest {
 
     }
     public static void testSongLength() {
-        Media song = new Media("C:\\Users\\EASV\\Desktop\\SCO\\MyTunes\\resources\\finalBoss.mp3");
-        System.out.println("Song length: "+song.getDuration().toMinutes());
+        File song = new File("C:/Users/EASV/Desktop/SCO/MyTunes/resources/finalBoss.mp3");
+        System.out.println(song.toURI());
+
+       // System.out.println("Song length: "+song.getDuration().toMinutes());
     }
 }
