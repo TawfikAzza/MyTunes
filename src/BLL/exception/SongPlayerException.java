@@ -4,7 +4,7 @@ public class SongPlayerException extends Throwable{
     private String message;
     public SongPlayerException(String message, Exception e) {
         this.message = message;
-        System.out.println(e);
+        e.printStackTrace();
     }
 
     @Override

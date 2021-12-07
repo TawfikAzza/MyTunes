@@ -11,7 +11,6 @@ import GUI.model.PlaylistsModel;
 import GUI.model.SongsModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
@@ -25,7 +24,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
@@ -37,8 +35,6 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
     private final SongsModel songsModel;
     private final PlaylistsModel playlistsModel;
-    @FXML
-    private AnchorPane topPane;
     @FXML
     private Slider slider,volumeSlider;
     @FXML
@@ -75,11 +71,7 @@ public class MainController implements Initializable {
         setupButtons();
         updateSongTableView();
         updatePlayListTableView();
-        try {
-            setupUI();
-        } catch (SongDAOException e) {
-            e.printStackTrace();
-        }
+        setupUI();
 
     }
 
@@ -111,7 +103,6 @@ public class MainController implements Initializable {
      * part of a PlayList, advance to the next one.
      **/
     private void generateListener() {
-
         SongPlayer songPlayer = SongPlayer.getInstance();
         if (changeListener != null)
             player.currentTimeProperty().removeListener(changeListener);
@@ -121,39 +112,32 @@ public class MainController implements Initializable {
         //lambda of setOnReady() it forces out the value of player.getTotalDuration().toSeconds() though as if I don't do that
         //the value stays at NaN, so the setOnReady method of the player is necessary there.
         slider.maxProperty().set(player.getTotalDuration().toSeconds());
-        changeListener = new ChangeListener<Duration>() {
-            @Override
-            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
-                slider.setValue(((double) newValue.toSeconds()));
-                int hours = (int)player.getTotalDuration().toSeconds()/3600;
-                int minutes = ((int)player.getTotalDuration().toSeconds()%3600)/60;
-                int seconds = (int)player.getTotalDuration().toSeconds()%60;
-                int hoursSong = (int)(player.getCurrentTime().toSeconds()/3600);
-                int minutesSong = ((int)(player.getCurrentTime().toSeconds()%3600)/60);
-                int secondsSong = (int)(player.getCurrentTime().toSeconds()%60);
-                String time="0";
-                if(hours<1) {
-                   time = String.format("%02d:%02d / %02d:%02d",minutesSong,secondsSong
-                            ,minutes,seconds);
+        changeListener = (observable, oldValue, newValue) -> {
+            slider.setValue((newValue.toSeconds()));
+            int hours = (int)player.getTotalDuration().toSeconds()/3600;
+            int minutes = ((int)player.getTotalDuration().toSeconds()%3600)/60;
+            int seconds = (int)player.getTotalDuration().toSeconds()%60;
+            int hoursSong = (int)(player.getCurrentTime().toSeconds()/3600);
+            int minutesSong = ((int)(player.getCurrentTime().toSeconds()%3600)/60);
+            int secondsSong = (int)(player.getCurrentTime().toSeconds()%60);
+            String time;
+            if(hours<1) {
+               time = String.format("%02d:%02d / %02d:%02d",minutesSong,secondsSong
+                        ,minutes,seconds);
+            } else {
+                if(hoursSong<1) {
+                    time = String.format("%02d:%02d / %02d:%02d:%02d", minutesSong, secondsSong
+                            , hours, minutes, seconds);
                 } else {
-                    if(hoursSong<1) {
-                        time = String.format("%02d:%02d / %02d:%02d:%02d", minutesSong, secondsSong
-                                , hours, minutes, seconds);
-                    } else {
-                        time = String.format("%02d:%02d:%02d / %02d:%02d:%02d", hoursSong, minutesSong,secondsSong
-                                , hours, minutes, seconds);
-                    }
+                    time = String.format("%02d:%02d:%02d / %02d:%02d:%02d", hoursSong, minutesSong,secondsSong
+                            , hours, minutes, seconds);
                 }
-                lblTextSongTrack.setText(time);
-                if (slider.getValue() + 1 >= player.getTotalDuration().toSeconds()) {
+            }
+            lblTextSongTrack.setText(time);
+            if (slider.getValue() + 1 >= player.getTotalDuration().toSeconds()) {
 
-                    try {
-                        if (songListFromPlayList.getSelectionModel().getSelectedIndex() != -1)
-                            nextSong(new ActionEvent());
-                    } catch (SongPlayerException | MyTunesManagerException e) {
-                        e.printStackTrace();
-                    }
-                }
+                if (songListFromPlayList.getSelectionModel().getSelectedIndex() != -1)
+                    nextSong(new ActionEvent());
             }
         };
         player.currentTimeProperty().addListener(changeListener);
@@ -165,8 +149,12 @@ public class MainController implements Initializable {
      * the feeding of the media to the Media player.
      * The method are straightforward and use the SongsModel as foundation
      */
-    public void playStopSong(ActionEvent event) throws SongPlayerException, MyTunesManagerException {
-        songsModel.playStopSong();
+    public void playStopSong(ActionEvent event) {
+        try {
+            songsModel.playStopSong();
+        } catch (MyTunesManagerException | SongPlayerException e) {
+            displayError(e);
+        }
         player = SongPlayer.getInstance().getPlayer();
         if (player == null)
             return;
@@ -176,18 +164,26 @@ public class MainController implements Initializable {
         setupPlayButton();
      }
 
-    public void previousSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
+    public void previousSong(ActionEvent actionEvent) {
         if (songListFromPlayList.getSelectionModel().getSelectedIndex() > 0) {
             songListFromPlayList.getSelectionModel().select(songListFromPlayList.getSelectionModel().getSelectedIndex() - 1);
-            songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+            try {
+                songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+            } catch (SongPlayerException e) {
+                displayError(e);
+            }
             playStopSong(actionEvent);
         }
     }
 
-    public void nextSong(ActionEvent actionEvent) throws SongPlayerException, MyTunesManagerException {
+    public void nextSong(ActionEvent actionEvent) {
         if (songListFromPlayList.getSelectionModel().getSelectedIndex() < songListFromPlayList.getItems().size() - 1) {
             songListFromPlayList.getSelectionModel().select(songListFromPlayList.getSelectionModel().getSelectedIndex() + 1);
-            songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+            try {
+                songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+            } catch (SongPlayerException e) {
+                displayError(e);
+            }
             playStopSong(actionEvent);
         }
     }
@@ -367,8 +363,13 @@ public class MainController implements Initializable {
         });
         updatePlayListButton.setVisible(false);
     }
-    private void filterSearch() throws SongDAOException {
-        FilteredList<Song> listOfSongs = new FilteredList<>(songsModel.getAllSongs(), a -> true);
+    private void filterSearch() {
+        FilteredList<Song> listOfSongs = null;
+        try {
+            listOfSongs = new FilteredList<>(songsModel.getAllSongs(), a -> true);
+        } catch (SongDAOException e) {
+            displayError(e);
+        }
         listOfSongs.setPredicate(songSearched -> {
             String inputSearch = searchBar.getText().toLowerCase();
             if (songSearched.getName().toLowerCase().contains(inputSearch)){
@@ -380,7 +381,7 @@ public class MainController implements Initializable {
         songsTableView.getItems().clear();
         songsTableView.getItems().addAll(listOfSongSorted);
     }
-    private void setupUI() throws SongDAOException {
+    private void setupUI() {
        Image volumeImageView = new Image("/volume.png");
         volumeImage.setImage(volumeImageView);
         volumeImage.setFitWidth(20);
@@ -426,35 +427,32 @@ public class MainController implements Initializable {
     }
 
     public void updatePlayListTableView() {
-        try {
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             songsColumn.setCellValueFactory(new PropertyValueFactory<>("sizeListString"));
             //songsColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().values().stream().count())));
             //songsColumn.setCellValueFactory(data -> String.valueOf(data.getValue().getListSong().values().stream().collect(Collectors.toCollection(ObservableValue<String>::new))));
             // timePlaylistColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()/60)+":"+String.format("%02d", data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()%60)));
             timePlaylistColumn.setCellValueFactory(new PropertyValueFactory<>("totalDuration"));
+        try {
             playlistsTableView.getItems().setAll(playlistsModel.getAllPlayLists());
         } catch (PlayListDAOException e) {
-            e.printStackTrace();
+            displayError(e);
         }
     }
 
     public void updateSongTableView() {
         songsTableView.getItems().clear();
         songsTableView.refresh();
+        titleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("name"));
+        artistColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("author"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("category"));
+        //timeColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getIntDuration()/60+":"+String.format("%02d", data.getValue().getIntDuration()%60))));
+        timeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getStringDuration()));
         try {
-            titleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("name"));
-            artistColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("author"));
-            categoryColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("category"));
-            //timeColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getIntDuration()/60+":"+String.format("%02d", data.getValue().getIntDuration()%60))));
-            timeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getStringDuration()));
-
             songsTableView.getItems().setAll(songsModel.getAllSongs());
-
         } catch (SongDAOException e) {
-            e.printStackTrace();
+            displayError(e);
         }
-
     }
 
     /***
@@ -467,27 +465,23 @@ public class MainController implements Initializable {
      * */
     public void handleChooseSong() {
         if(songsTableView.getSelectionModel().getSelectedIndex()!=-1){
+            songListFromPlayList.getSelectionModel().clearSelection();
             try {
-                songListFromPlayList.getSelectionModel().clearSelection();
                 songsModel.setCurrentSong(songsTableView.getSelectionModel().getSelectedItem());
             } catch (SongPlayerException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
-                alert.show();
-                return;
+                displayError(e);
             }
             setLabelSongPlaying();
             setupPlayButton();
         }
     }
 
-    public void handleChooseSongPlayList(MouseEvent mouseEvent) throws SongPlayerException {
+    public void handleChooseSongPlayList(MouseEvent mouseEvent) {
         if (songListFromPlayList.getSelectionModel().getSelectedIndex() != -1) {
             try {
             songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
             } catch (SongPlayerException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
-                alert.show();
-                return;
+                displayError(e);
             }
             setLabelSongPlaying();
             setupPlayButton();
@@ -495,19 +489,22 @@ public class MainController implements Initializable {
         }
     }
 
-    public void handleDisplayPlayList(MouseEvent mouseEvent) throws PlayListDAOException {
+    public void handleDisplayPlayList(MouseEvent mouseEvent) {
         if(playlistsTableView.getSelectionModel().getSelectedIndex()!=-1) {
             songsTableView.getSelectionModel().clearSelection();
             currentPlayList = playlistsTableView.getSelectionModel().getSelectedItem().getIdPlaylist();
-            songListFromPlayList.setItems(playlistsModel.getPlayListSelected(playlistsTableView.getSelectionModel().getSelectedItem()));
-            songListFromPlayList.getSelectionModel().select(0);
             try {
-                if(songListFromPlayList.getSelectionModel().getSelectedItem()!=null)
-                 songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
-            } catch (SongPlayerException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
-                alert.show();
-                return;
+                songListFromPlayList.setItems(playlistsModel.getPlayListSelected(playlistsTableView.getSelectionModel().getSelectedItem()));
+            } catch (PlayListDAOException e) {
+                displayError(e);
+            }
+            songListFromPlayList.getSelectionModel().select(0);
+            if(songListFromPlayList.getSelectionModel().getSelectedItem()!=null) {
+                try {
+                    songsModel.setCurrentSong(songListFromPlayList.getSelectionModel().getSelectedItem());
+                } catch (SongPlayerException e) {
+                    displayError(e);
+                }
             }
             setLabelSongPlaying();
             setupPlayButton();
@@ -515,12 +512,21 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void newPlayListName(ActionEvent event) throws IOException, PlayListDAOException {
+    private void newPlayListName(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/view/PlaylistDialogView.fxml"));
-        Parent root = loader.load();
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            displayError(e);
+        }
         PlaylistDialogController playlistDialogController = loader.getController();
         playlistDialogController.setMainController(this);
-        playlistDialogController.setPlayListToBeUpdated(playlistsModel.getPlayList(currentPlayList));
+        try {
+            playlistDialogController.setPlayListToBeUpdated(playlistsModel.getPlayList(currentPlayList));
+        } catch (PlayListDAOException e) {
+            displayError(e);
+        }
         Stage stage = new Stage();
         stage.setTitle("New/Edit Playlist");
         stage.setScene(new Scene(root));
@@ -528,11 +534,15 @@ public class MainController implements Initializable {
     }
 
     public void editSong(ActionEvent actionEvent) {
-        try {
             if (songsTableView.getSelectionModel().getSelectedIndex() != -1) {
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"));
-                Parent root = loader.load();
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    displayError(e);
+                }
                 AlertDialogController alertDialogController = loader.getController();
                 alertDialogController.setValue(songsTableView.getSelectionModel().getSelectedItem());
 
@@ -550,18 +560,24 @@ public class MainController implements Initializable {
             }
             // Hide this current window (if this is what you want)
             //                    ((Node)(event.getSource())).getScene().getWindow().hide();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
-    public void editPlayListName(ActionEvent actionEvent) throws PlayListDAOException, IOException {
+    public void editPlayListName(ActionEvent actionEvent) {
         if (currentPlayList != -1) {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("GUI/view/PlaylistDialogView.fxml"));
-            Parent root = loader.load();
+            Parent root = null;
+            try {
+                root = loader.load();
+            } catch (IOException e) {
+                displayError(e);
+            }
             PlaylistDialogController playlistDialogController = loader.getController();
             playlistDialogController.setMainController(this);
-            playlistDialogController.setPlayListToBeUpdated(playlistsModel.getPlayList(currentPlayList));
+            try {
+                playlistDialogController.setPlayListToBeUpdated(playlistsModel.getPlayList(currentPlayList));
+            } catch (PlayListDAOException e) {
+                displayError(e);
+            }
             playlistDialogController.setOperationType("modification");
             Stage stage = new Stage();
             stage.setTitle("New/Edit Playlist");
@@ -575,10 +591,15 @@ public class MainController implements Initializable {
     }
 
 
-    public void newSong(ActionEvent actionEvent) throws IOException {
+    public void newSong(ActionEvent actionEvent) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"));
-        Parent root = loader.load();
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            displayError(e);
+        }
         AlertDialogController alertDialogController = loader.getController();
         alertDialogController.setMainController(this);
         Stage stage = new Stage();
@@ -587,7 +608,7 @@ public class MainController implements Initializable {
         stage.show();
     }
 
-    public void isKeyPressed(KeyEvent keyEvent) throws SongDAOException {
+    public void isKeyPressed(KeyEvent keyEvent) {
 
         ImageView deleteImage = new ImageView(getClass().getResource("/delete.png").toExternalForm());
         deleteImage.setFitHeight(25);
@@ -613,4 +634,11 @@ public class MainController implements Initializable {
         }
     }
 
+    private void displayError(Throwable t)
+    {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Something went wrong...");
+        alert.setHeaderText(t.getMessage());
+        alert.showAndWait();
+    }
 }
