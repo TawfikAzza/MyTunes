@@ -14,6 +14,7 @@ public class Main extends Application {
 
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+        primaryStage.setTitle("MyTunes");
 
         primaryStage.show();
       /*  primaryStage.setTitle("Media");
