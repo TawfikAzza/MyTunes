@@ -1,8 +1,11 @@
 # MyTunes
 Final semester Assignement, join work with Adam (https://github.com/Ladam0203) and Jàn (Jano) (https://github.com/pelonidas)
 Mp3 Manager with relational database;
+
 Script to create the database:
+
 --Database creation
+
 CREATE DATABASE MyTunesTeam1;
 
 -- Tables creation:
