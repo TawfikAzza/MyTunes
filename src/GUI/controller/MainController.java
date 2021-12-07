@@ -9,6 +9,7 @@ import BLL.exception.SongPlayerException;
 import BLL.util.SongPlayer;
 import GUI.model.PlaylistsModel;
 import GUI.model.SongsModel;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.transformation.FilteredList;
@@ -60,7 +61,7 @@ public class MainController implements Initializable {
     ChangeListener<Duration> changeListener;
     //End piece of code from Renars
     MediaPlayer player;
-
+    private String textToChange;
     public MainController() throws MyTunesManagerException {
         this.songsModel = new SongsModel();
         this.playlistsModel = new PlaylistsModel();
@@ -107,7 +108,10 @@ public class MainController implements Initializable {
         if (changeListener != null)
             player.currentTimeProperty().removeListener(changeListener);
         player = songPlayer.getPlayer();
-        player.setOnReady(() -> slider.maxProperty().set(player.getTotalDuration().toSeconds()));
+        player.setOnReady(() ->{
+            slider.maxProperty().set(player.getTotalDuration().toSeconds());
+            textToChange = songPlayer.getCurrentSong().getName();
+        });
         //Have to do it twice as the maxProperty.set method doesn't seems to initialize the slider at all when inside the
         //lambda of setOnReady() it forces out the value of player.getTotalDuration().toSeconds() though as if I don't do that
         //the value stays at NaN, so the setOnReady method of the player is necessary there.
@@ -161,6 +165,7 @@ public class MainController implements Initializable {
         generateListener();
         player.setVolume(volumeSlider.getValue());
         player.volumeProperty().bindBidirectional(volumeSlider.valueProperty());
+        setLabelSongPlaying();
         setupPlayButton();
      }
 
@@ -195,10 +200,14 @@ public class MainController implements Initializable {
      * Their name are explicit and the content is as well.
      * */
     private void setLabelSongPlaying() {
-        if (songsTableView.getSelectionModel().getSelectedIndex() != -1)
+        if (songsTableView.getSelectionModel().getSelectedIndex() != -1) {
             lblSongPlaying.setText(songsTableView.getSelectionModel().getSelectedItem().getName());
-        if (songListFromPlayList.getSelectionModel().getSelectedIndex() != -1)
+
+        }
+        if (songListFromPlayList.getSelectionModel().getSelectedIndex() != -1) {
             lblSongPlaying.setText(songListFromPlayList.getSelectionModel().getSelectedItem().getName());
+
+        }
     }
     private void setupPlayButton() {
         if(player!= null && player.getStatus() == MediaPlayer.Status.PLAYING) {
@@ -317,6 +326,7 @@ public class MainController implements Initializable {
         deleteFromPlayListButton.setOnAction(event -> {
             songListFromPlayList.getItems().remove(songListFromPlayList.getSelectionModel().getSelectedItem());
             updatePlayListTableView();
+            updatePlayListButton.setVisible(true);
         });
 
         updatePlayListButton.setOnAction(event -> {
@@ -473,6 +483,8 @@ public class MainController implements Initializable {
             } catch (SongPlayerException e) {
                 displayError(e);
             }
+            lblSongPlaying.setText("");
+            setupPlayButton();
         }
     }
 
@@ -486,6 +498,9 @@ public class MainController implements Initializable {
             } catch (SongPlayerException e) {
                 displayError(e);
             }
+            lblSongPlaying.setText("");
+            setupPlayButton();
+            songsTableView.getSelectionModel().clearSelection();
         }
     }
 
@@ -508,6 +523,8 @@ public class MainController implements Initializable {
             } catch (PlayListDAOException e) {
                 displayError(e);
             }
+            lblSongPlaying.setText("");
+            setupPlayButton();
         }
     }
 
@@ -548,7 +565,6 @@ public class MainController implements Initializable {
 
                 alertDialogController.setMainController(this);
                 alertDialogController.setOperationType("modification");
-                //root = FXMLLoader.load(getClass().getClassLoader().getResource("GUI/view/AlertDialogView.fxml"), resources);
                 Stage stage = new Stage();
                 stage.setTitle("New/Edit Song");
                 stage.setScene(new Scene(root));
