@@ -27,7 +27,6 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
@@ -479,13 +478,15 @@ public class MainController implements Initializable {
         upImage.setFitHeight(20);
         upButton.setGraphic(upImage);
 
-        topPane.setStyle("-fx-background-image: url('/backGroungPng.png');");
+        //topPane.setStyle("-fx-background-image: url('/backGroundGrey.jpg');");
+        //topPane.getStylesheets().add(getClass().getResource("/css/LightTheme/LightTheme.css").toExternalForm());
+        //System.out.println("try at getting: "+topPane.getStylesheets());
     }
 
     public void updatePlayListTableView() {
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             songsColumn.setCellValueFactory(new PropertyValueFactory<>("sizeListString"));
-           // nameColumn.setStyle("-fx-background-color: black ;");
+           // nameColumn.setStyle("-fx-background-color: grey ;");
            // nameColumn.setStyle("-fx-text-fill: ladder(background, white 49%, black 50%);");
             //songsColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().values().stream().count())));
             //songsColumn.setCellValueFactory(data -> String.valueOf(data.getValue().getListSong().values().stream().collect(Collectors.toCollection(ObservableValue<String>::new))));
