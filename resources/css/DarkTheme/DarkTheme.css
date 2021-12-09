@@ -1,5 +1,5 @@
-.root{
-    -fx-background-image: url('backGroundGrey.jpg');
+.root {
+    -fx-background-image: url('images/backGroundGrey.jpg');
     -fx-background-size: 100% 100%;
 }
 .table-view{
@@ -208,8 +208,87 @@
 }
 
 #volumeImage {
-    -fx-image: url('volume_grey.png');
+    -fx-image: url('images/volume.png');
 }
 #durationImage{
-    -fx-image: url('duration_grey.png');
+    -fx-image: url('images/duration.png');
+}
+.text-field{
+    -fx-background-color: grey;
+}
+.combo-box .list-cell
+{
+    -fx-background: grey;
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text-base-color;
+    -fx-padding: 3 0 2 7;
+    -fx-cell-size: 1.66667em;
+}
+.combo-box-popup .list-view .list-cell:filled:hover
+{
+    -fx-background-color: lightgrey;
+    -fx-text-fill: -fx-text-inner-color;
+}
+.combo-box-base
+{
+    -fx-background-color: grey;
+    -fx-background-radius: 20;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-padding: 0;
+}
+
+#goBack{
+    -fx-background-image: url('images/back.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 30px,30px;
+    -fx-background-position: center;
+
+}
+#goForward{
+    -fx-background-image: url('images/forward.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 30px,30px;
+    -fx-background-position: center;
+}
+#play{
+    -fx-background-image: url('images/play.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 40px,40px;
+    -fx-background-position: center;
+}
+#leftButton{
+    -fx-background-image: url('images/left.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 25px,25px;
+    -fx-background-position: center;
+}
+#searchButton{
+    -fx-background-image: url('images/search.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 25px,25px;
+    -fx-background-position: center;
+}
+#downButton{
+    -fx-background-image: url('images/down.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 20px,20px;
+    -fx-background-position: center;
+}
+#upButton{
+    -fx-background-image: url('images/up.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 20px,20px;
+    -fx-background-position: center;
+}
+#pauseImage{
+    -fx-background-image: url('images/pause.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 40px,40px;
+    -fx-background-position: center;
+}
+#deleteImage{
+    -fx-background-image: url('images/delete.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 25px,25px;
+    -fx-background-position: center;
 }

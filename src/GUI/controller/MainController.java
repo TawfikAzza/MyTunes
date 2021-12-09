@@ -2,6 +2,7 @@ package GUI.controller;
 
 import BE.PlayList;
 import BE.Song;
+import BE.Theme;
 import BLL.exception.MyTunesManagerException;
 import BLL.exception.PlayListDAOException;
 import BLL.exception.SongDAOException;
@@ -9,6 +10,7 @@ import BLL.exception.SongPlayerException;
 import BLL.util.SongPlayer;
 import GUI.model.PlaylistsModel;
 import GUI.model.SongsModel;
+import GUI.model.ThemeModel;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
@@ -39,9 +41,12 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
     private final SongsModel songsModel;
     private final PlaylistsModel playlistsModel;
+    private final ThemeModel themeModel;
 
     @FXML
     private AnchorPane topPane;
+    @FXML
+    private ComboBox<Theme> comboTheme;
     @FXML
     private Slider slider,volumeSlider;
     @FXML
@@ -69,6 +74,7 @@ public class MainController implements Initializable {
     MediaPlayer player;
     private String textToChange;
     public MainController() throws MyTunesManagerException {
+        this.themeModel = new ThemeModel();
         this.songsModel = new SongsModel();
         this.playlistsModel = new PlaylistsModel();
     }
@@ -79,7 +85,6 @@ public class MainController implements Initializable {
         updateSongTableView();
         updatePlayListTableView();
         setupUI();
-
     }
 
 
@@ -254,16 +259,19 @@ public class MainController implements Initializable {
     }
     private void setupPlayButton() {
         if(player!= null && player.getStatus() == MediaPlayer.Status.PLAYING) {
-            ImageView playImage = new ImageView(getClass().getResource("/play.png").toExternalForm());
+          // ImageView playImage = new ImageView(getClass().getResource("/play.png").toExternalForm());
+            ImageView playImage = new ImageView();
             playImage.setFitHeight(40);
             playImage.setFitWidth(40);
             play.setGraphic(playImage);
         }
 
         if (player != null && (player.getStatus() == MediaPlayer.Status.PAUSED || player.getStatus() == MediaPlayer.Status.READY)) {
-            ImageView pauseImage = new ImageView(getClass().getResource("/pause.png").toExternalForm());
+          // ImageView pauseImage = new ImageView(getClass().getResource("/pause.png").toExternalForm());
+            ImageView pauseImage = new ImageView();
             pauseImage.setFitHeight(40);
             pauseImage.setFitWidth(40);
+
             play.setGraphic(pauseImage);
         }
     }
@@ -443,42 +451,51 @@ public class MainController implements Initializable {
         durationImage.setImage(durationImageView);
         durationImage.setFitWidth(20);
 
-        ImageView goBackImage = new ImageView(getClass().getResource("/back.png").toExternalForm());
+        //ImageView goBackImage = new ImageView(getClass().getResource("/back.png").toExternalForm());
+        ImageView goBackImage = new ImageView();
         goBackImage.setFitHeight(30);
         goBackImage.setFitWidth(30);
         goBack.setGraphic(goBackImage);
 
-        ImageView goForwardImage = new ImageView(getClass().getResource("/forward.png").toExternalForm());
+       // ImageView goForwardImage = new ImageView(getClass().getResource("/forward.png").toExternalForm());
+        ImageView goForwardImage = new ImageView();
         goForwardImage.setFitHeight(30);
         goForwardImage.setFitWidth(30);
         goForward.setGraphic(goForwardImage);
 
-        ImageView playImage = new ImageView(getClass().getResource("/play.png").toExternalForm());
+        //ImageView playImage = new ImageView(getClass().getResource("/play.png").toExternalForm());
+        ImageView playImage = new ImageView();
         playImage.setFitHeight(40);
         playImage.setFitWidth(40);
         play.setGraphic(playImage);
 
-        ImageView leftButtonImage = new ImageView(getClass().getResource("/left.png").toExternalForm());
+        //ImageView leftButtonImage = new ImageView(getClass().getResource("/left.png").toExternalForm());
+        ImageView leftButtonImage = new ImageView();
         leftButtonImage.setFitWidth(25);
         leftButtonImage.setFitHeight(25);
         leftButton.setGraphic(leftButtonImage);
 
-        ImageView searchImage = new ImageView(getClass().getResource("/search.png").toExternalForm());
+        //ImageView searchImage = new ImageView(getClass().getResource("/search.png").toExternalForm());
+        ImageView searchImage = new ImageView();
         searchImage.setFitHeight(25);
         searchImage.setFitWidth(25);
         searchButton.setGraphic(searchImage);
 
-        ImageView downImage = new ImageView(getClass().getResource("/down.png").toExternalForm());
+       // ImageView downImage = new ImageView(getClass().getResource("/down.png").toExternalForm());
+        ImageView downImage = new ImageView();
         downImage.setFitHeight(20);
         downImage.setFitWidth(20);
         downButton.setGraphic(downImage);
 
-        ImageView upImage = new ImageView(getClass().getResource("/up.png").toExternalForm());
+        //ImageView upImage = new ImageView(getClass().getResource("/up.png").toExternalForm());
+        ImageView upImage = new ImageView();
         upImage.setFitWidth(20);
         upImage.setFitHeight(20);
         upButton.setGraphic(upImage);
-
+        comboTheme.setItems(themeModel.getListThemes());
         //topPane.setStyle("-fx-background-image: url('/backGroundGrey.jpg');");
+        //topPane.getStylesheets().add(getClass().getResource("/css/DarkTheme/DarkTheme.css").toExternalForm());
+        topPane.getStylesheets().add(getClass().getResource("/css/Default/DefaultTheme.css").toExternalForm());
         //topPane.getStylesheets().add(getClass().getResource("/css/LightTheme/LightTheme.css").toExternalForm());
         //System.out.println("try at getting: "+topPane.getStylesheets());
     }
@@ -675,7 +692,8 @@ public class MainController implements Initializable {
 
     public void isKeyPressed(KeyEvent keyEvent) {
 
-        ImageView deleteImage = new ImageView(getClass().getResource("/delete.png").toExternalForm());
+       // ImageView deleteImage = new ImageView(getClass().getResource("/delete.png").toExternalForm());
+        ImageView deleteImage = new ImageView();
         deleteImage.setFitHeight(25);
         deleteImage.setFitWidth(25);
         searchButton.setGraphic(deleteImage);
@@ -685,7 +703,8 @@ public class MainController implements Initializable {
     public void isSearchButtonPressed(ActionEvent event) {
         searchBar.setText("");
 
-        ImageView searchImage = new ImageView(getClass().getResource("/search.png").toExternalForm());
+        //ImageView searchImage = new ImageView(getClass().getResource("/search.png").toExternalForm());
+        ImageView searchImage = new ImageView();
         searchImage.setFitHeight(25);
         searchImage.setFitWidth(25);
         searchButton.setGraphic(searchImage);
@@ -705,5 +724,13 @@ public class MainController implements Initializable {
         alert.setTitle("Something went wrong...");
         alert.setHeaderText(t.getMessage());
         alert.showAndWait();
+    }
+
+    public void changeTheme(ActionEvent actionEvent) {
+        if(comboTheme.getSelectionModel().getSelectedItem()!=null) {
+            String themeChosen = comboTheme.getSelectionModel().getSelectedItem().getThemePath();
+            topPane.getStylesheets().clear();
+            topPane.getStylesheets().add(themeChosen);
+        }
     }
 }

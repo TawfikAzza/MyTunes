@@ -1,11 +1,11 @@
 .root{
-    -fx-background-image: url('backGrounBluePng.png');
+    -fx-background-image: url('images/backGrounBlue.png');
     -fx-background-size: 100% 100%;
 }
 .table-view{
-    -fx-background-color: lightblue;
+    -fx-background-color: lightskyblue;
     -fx-font-size: 20px;
-    -fx-border-color: derive(darkblue, -60%);
+    -fx-border-color: derive(cornflowerblue, -60%);
 }
 .table-view:focused{
     -fx-background-color: derive(darkblue, 20%);
@@ -16,7 +16,7 @@
     -fx-border-width:2;
 }
 .table-view .column-header-background{
-    -fx-background-color: lightblue;
+    -fx-background-color: lightskyblue;
     -fx-background-radius: 20px;
 }
 .table-view .column-header-background .label{
@@ -34,7 +34,7 @@
     -fx-background-color: transparent;
 }
 .table-view .table-cell{
-    -fx-text-fill: black;
+    -fx-text-fill: blue;
     -fx-font-size:12;
     -fx-alignment:center;
     -fx-border-style:solid inside;
@@ -44,7 +44,7 @@
 
 .table-row-cell{
     -fx-background-color: -fx-primary;
-    -fx-border-color: black;
+    -fx-border-color: lightskyblue;
     -fx-table-cell-border-color: transparent;
 }
 
@@ -61,24 +61,24 @@
     -fx-background-color: derive(white, -10%);
 }
 .table-row-cell:odd{
-    -fx-background-color: lightgrey;
+    -fx-background-color: lightblue;
 }
 .table-row-cell:even:hover{
-    -fx-background-color:grey;
+    -fx-background-color:lightskyblue;
 }
 .table-row-cell:odd:hover{
-    -fx-background-color: grey;
+    -fx-background-color: lightskyblue;
 }
 
 .table-row-cell:even:empty{
-    -fx-background-color: grey;
+    -fx-background-color: lightskyblue;
 }
 .table-row-cell:odd:empty{
-    -fx-background-color: grey;
+    -fx-background-color: lightskyblue;
 }
 
 .table-row-cell:selected {
-    -fx-background-color: black;
+    -fx-background-color: darkblue;
     -fx-text-fill: white;
     -fx-background-insets: 0;
 }
@@ -91,7 +91,7 @@
 }
 
 .button{
-    -fx-background-color: black;
+    -fx-background-color: darkblue;
     -fx-background-radius: 20;
     -fx-text-fill: white;
     -fx-font-size: 12px;
@@ -104,12 +104,12 @@
 }
 
 .list-view{
-    -fx-background-color: grey;
+    -fx-background-color: lightskyblue;
     -fx-font-size: 12px;
-    -fx-border-color: derive(black, -60%);
+    -fx-border-color: derive(darkblue, -60%);
 }
 .list-view:focused{
-    -fx-background-color: derive(grey, 20%);
+    -fx-background-color: derive(blue, 20%);
 }
 .list-row-cell {
     -fx-cell-size: 40px;
@@ -120,7 +120,7 @@
     -fx-background-color: transparent;
 }
 .list-view .table-cell{
-    -fx-text-fill: black;
+    -fx-text-fill: darkblue;
     -fx-font-size:10;
     -fx-alignment:center;
     -fx-border-style:solid inside;
@@ -128,11 +128,11 @@
 }
 
 .list-row-cell:focused, .table-cell:focused{
-    -fx-text-fill: grey;
+    -fx-text-fill: blue;
 }
 .list-row-cell{
     -fx-background-color: -fx-primary;
-    -fx-border-color: black;
+    -fx-border-color: darkblue;
     -fx-table-cell-border-color: transparent;
 }
 
@@ -149,27 +149,27 @@
     -fx-background-color: derive(white, -10%);
 }
 .list-row-cell:odd{
-    -fx-background-color: grey;
+    -fx-background-color: lightskyblue;
 }
 .list-row-cell:even:hover{
-    -fx-background-color:grey;
+    -fx-background-color:blue;
 }
 .list-row-cell:odd:hover{
-    -fx-background-color: grey;
+    -fx-background-color: lightblue;
 }
 
 .list-row-cell:even:empty{
-    -fx-background-color: grey;
+    -fx-background-color: blue;
 }
 .list-row-cell:odd:empty{
-    -fx-background-color: grey;
+    -fx-background-color: blue;
 }
 .list-cell:hover{
-    -fx-background-color: grey;
+    -fx-background-color: lightblue;
 }
 
 .list-cell:selected, .list-cell:selected {
-    -fx-background-color: grey;
+    -fx-background-color: darkblue;
     -fx-text-fill: white;
 }
 .list-cell:empty,
@@ -179,9 +179,9 @@
 
 
 .list-row-cell{
-    -fx-border-color: grey;
-    -fx-list-cell-border-color:black;
-    -fx-background-color: black;
+    -fx-border-color: blue;
+    -fx-list-cell-border-color:darkblue;
+    -fx-background-color: darkblue;
     -fx-text-fill: white;
     -fx-text-weight:strong;
     -fx-border-style:solid inside;
@@ -191,25 +191,106 @@
     -fx-font-size:10;
 }
 .slider{
-    -fx-border-color: grey;
+    -fx-border-color: blue;
     -fx-background-color: transparent;
     -fx-border-width: 0;
 }
 .slider .thumb{
-    -fx-animated: grey;
-    -fx-background-color: grey;
+    -fx-animated: blue;
+    -fx-background-color: blue;
 }
 .slider .track {
-    -fx-background-color: linear-gradient(to left, black,grey);
+    -fx-background-color: linear-gradient(to left, darkblue,blue);
 
     -fx-background-insets: 0 0 -1 0, 0, 1;
     -fx-background-radius: 0.25em, 0.25em, 0.166667em; /* 3 3 2 */
     -fx-padding: 0.25em; /* 3 */
 }
+.text-field{
+    -fx-background-color: blue;
+}
 
+.combo-box .list-cell
+{
+    -fx-background: lightblue;
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text-base-color;
+    -fx-padding: 3 0 2 7;
+    -fx-cell-size: 1.66667em;
+}
+.combo-box-popup .list-view .list-cell:filled:hover
+{
+    -fx-background-color: lightblue;
+    -fx-text-fill: -fx-text-inner-color;
+}
+.combo-box-base
+{
+    -fx-background-color: blue;
+    -fx-background-radius: 20;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-padding: 0;
+}
 #volumeImage {
-    -fx-image: url('volume.png');
+    -fx-image: url('images/volume.png');
 }
 #durationImage{
-    -fx-image: url('duration.png');
+    -fx-image: url('images/duration.png');
 }
+
+#goBack{
+    -fx-background-image: url('images/back.png');
+
+    -fx-background-repeat: stretch;
+    -fx-background-size: 30px,30px;
+    -fx-background-position: center;
+
+}
+#goForward{
+    -fx-background-image: url('images/forward.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 30px,30px;
+    -fx-background-position: center;
+}
+#play{
+    -fx-background-image: url('images/play.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 40px,40px;
+    -fx-background-position: center;
+}
+#leftButton{
+    -fx-background-image: url('images/left.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 25px,25px;
+    -fx-background-position: center;
+}
+#searchButton{
+    -fx-background-image: url('images/search.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 25px,25px;
+    -fx-background-position: center;
+}
+#downButton{
+    -fx-background-image: url('images/down.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 20px,20px;
+    -fx-background-position: center;
+}
+#upButton{
+    -fx-background-image: url('images/up.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 20px,20px;
+    -fx-background-position: center;
+}
+#pauseImage{
+    -fx-background-image: url('images/pause.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 40px,40px;
+    -fx-background-position: center;
+}
+#deleteImage{
+    -fx-background-image: url('images/delete.png');
+    -fx-background-repeat: stretch;
+    -fx-background-size: 25px,25px;
+    -fx-background-position: center;
+}
+
