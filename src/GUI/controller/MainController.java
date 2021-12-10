@@ -36,6 +36,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -268,7 +269,13 @@ public class MainController implements Initializable {
     private void setupPlayButton() {
         if(player!= null && player.getStatus() == MediaPlayer.Status.PLAYING) {
           // ImageView playImage = new ImageView(getClass().getResource("/play.png").toExternalForm());
-            ImageView playImage = new ImageView();
+            ImageView playImage = new ImageView(getClass().getResource("/css/"+comboTheme.getSelectionModel().getSelectedItem().getNameTheme()+"/images/play.png").toExternalForm());
+         //   System.out.println("Text: "+comboTheme.getSelectionModel().getSelectedItem().toString());
+           // System.out.println(comboTheme.getSelectionModel().getSelectedItem().getNameTheme());
+         //   System.out.println("STRINSEARCHED: /css/"+comboTheme.getSelectionModel().getSelectedItem().getNameTheme()+"/play.png");
+           // System.out.println("String: "+getClass().getResource("/css/"+comboTheme.getSelectionModel().getSelectedItem().getNameTheme()+"/images/play.png").toExternalForm());
+
+
             playImage.setFitHeight(40);
             playImage.setFitWidth(40);
             play.setGraphic(playImage);
@@ -276,7 +283,8 @@ public class MainController implements Initializable {
 
         if (player != null && (player.getStatus() == MediaPlayer.Status.PAUSED || player.getStatus() == MediaPlayer.Status.READY)) {
           // ImageView pauseImage = new ImageView(getClass().getResource("/pause.png").toExternalForm());
-            ImageView pauseImage = new ImageView();
+            ImageView pauseImage = new ImageView(getClass().getResource("/css/"+comboTheme.getSelectionModel().getSelectedItem().getNameTheme()+"/images/pause.png").toExternalForm());
+            pauseImage.setStyle(topPane.getStylesheets().get(0));
             pauseImage.setFitHeight(40);
             pauseImage.setFitWidth(40);
 
@@ -504,12 +512,10 @@ public class MainController implements Initializable {
         upImage.setFitHeight(20);
         upButton.setGraphic(upImage);
         comboTheme.setItems(themeModel.getListThemes());
-        //topPane.setStyle("-fx-background-image: url('/backGroundGrey.jpg');");
-        //topPane.getStylesheets().add(getClass().getResource("/css/DarkTheme/DarkTheme.css").toExternalForm());
-        topPane.getStylesheets().add(getClass().getResource("/css/Default/DefaultTheme.css").toExternalForm());
+        comboTheme.getSelectionModel().select(0);
+        topPane.getStylesheets().add(getClass().getResource("/css/DefaultTheme/DefaultTheme.css").toExternalForm());
         System.out.println("Style:" + topPane.getStylesheets());
-        //topPane.getStylesheets().add(getClass().getResource("/css/LightTheme/LightTheme.css").toExternalForm());
-        //System.out.println("try at getting: "+topPane.getStylesheets());
+
     }
 
     public void updatePlayListTableView() {

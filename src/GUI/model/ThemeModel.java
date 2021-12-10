@@ -16,13 +16,13 @@ public class ThemeModel {
         //and with a combination of css and images, it will be possible to change dramatically the look & feel
         //of the Mp3 reader => like a player of old....
         listThemes = new ArrayList<>();
-        Theme darkModel = new Theme("Dark", "/css/DarkTheme/DarkTheme.css");
-        Theme lightModel = new Theme("Light","/css/LightTheme/LightTheme.css");
-        Theme defaultModel = new Theme("Default","/css/Default/DefaultTheme.css");
-
+        Theme darkModel = new Theme("DarkTheme", "/css/DarkTheme/DarkTheme.css");
+        Theme lightModel = new Theme("LightTheme","/css/LightTheme/LightTheme.css");
+        Theme defaultModel = new Theme("DefaultTheme", "/css/DefaultTheme/DefaultTheme.css");
+        listThemes.add(defaultModel);
         listThemes.add(darkModel);
         listThemes.add(lightModel);
-        listThemes.add(defaultModel);
+
     }
 
     public ObservableList<Theme> getListThemes() {
