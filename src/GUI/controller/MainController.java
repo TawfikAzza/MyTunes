@@ -761,6 +761,7 @@ public class MainController implements Initializable {
             String themeChosen = comboTheme.getSelectionModel().getSelectedItem().getThemePath();
             topPane.getStylesheets().clear();
             topPane.getStylesheets().add(themeChosen);
+            setupPlayButton();
         }
     }
 }
