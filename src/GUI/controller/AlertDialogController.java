@@ -11,6 +11,7 @@ import GUI.model.AuthorModel;
 import GUI.model.CategoryModel;
 import GUI.model.SongsModel;
 import com.sun.tools.javac.Main;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -41,11 +43,14 @@ public class AlertDialogController implements Initializable {
     private ComboBox comboBoxCategory;
     @FXML
     private Label lblSysMsg;
+    @FXML
+    private AnchorPane dialogPane;
     private String operationType="creation";
     private int idSongModified;
     public void setMainController(MainController mainController) {
         this.mainController=mainController;
     }
+
     public AlertDialogController() throws MyTunesManagerException {
         songsModel = new SongsModel();
         authorModel = new AuthorModel();
@@ -57,13 +62,15 @@ public class AlertDialogController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         try {
             comboBoxCategory.setItems(songsModel.getAllCategories());
+
         } catch (CategorySongDAOException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void isSaved(ActionEvent event) throws AuthorDAOException, Exception, SongDAOException, CategorySongDAOException {
+    @FXML
+    private void isSaved(ActionEvent event) throws AuthorDAOException, Exception, SongDAOException, CategorySongDAOException {
         if(operationType.equals("creation")){
             if(checkInputs()) {
                 Song songCreated = null;
@@ -105,7 +112,8 @@ public class AlertDialogController implements Initializable {
     public void setOperationType(String aString) {
         operationType = aString;
     }
-    public void isCanceled(ActionEvent event) {
+    @FXML
+    private void isCanceled(ActionEvent event) {
         if (cancelButton.getScene().getWindow() != null) {
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             // do what you have to do
@@ -113,7 +121,8 @@ public class AlertDialogController implements Initializable {
         }
     }
 
-    public void isFileChooserPressed(ActionEvent event) {
+    @FXML
+    private void isFileChooserPressed(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null){
@@ -127,9 +136,11 @@ public class AlertDialogController implements Initializable {
         artistTextField.setText(song.getAuthor().getName());
         titleTextField.setText(song.getName());
         comboBoxCategory.getSelectionModel().select(song.getCategory());
+
     }
 
-    public void newCategory(ActionEvent actionEvent) {
+    @FXML
+    private void newCategory(ActionEvent actionEvent) {
         lblNewCategory.setVisible(true);
         comboBoxCategory.getSelectionModel().select(null);
         comboBoxCategory.setVisible(false);
@@ -158,5 +169,10 @@ public class AlertDialogController implements Initializable {
             lblSysMsg.setText(msg);
         }
         return flagInputs;
+    }
+
+
+    public void setTheme(AnchorPane topPane) {
+        dialogPane.getStylesheets().add(topPane.getStylesheets().get(0));
     }
 }

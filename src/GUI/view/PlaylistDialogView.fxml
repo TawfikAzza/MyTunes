@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="100.0" prefWidth="363.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.controller.PlaylistDialogController">
+<AnchorPane fx:id="dialogPane" prefHeight="100.0" prefWidth="363.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.controller.PlaylistDialogController">
    <children>
       <GridPane hgap="15.0" layoutX="15.0" layoutY="19.0" prefHeight="60.0" prefWidth="323.0">
         <columnConstraints>

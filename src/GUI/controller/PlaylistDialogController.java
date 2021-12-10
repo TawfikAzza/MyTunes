@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -23,6 +24,8 @@ public class PlaylistDialogController implements Initializable {
     private TextField nameTextField;
     @FXML
     private Label lblSystemMsg;
+    @FXML
+    private AnchorPane dialogPane;
     private MainController mainController;
     private PlayList playListToBeUpdated;
     private String operationType="creation";
@@ -62,5 +65,10 @@ public class PlaylistDialogController implements Initializable {
             Stage stage = (Stage) saveButton.getScene().getWindow();
             stage.close();
         }
+    }
+
+    public void setTheme(AnchorPane topPane) {
+        dialogPane.getStylesheets().clear();
+        dialogPane.getStylesheets().add(topPane.getStylesheets().get(0));
     }
 }
