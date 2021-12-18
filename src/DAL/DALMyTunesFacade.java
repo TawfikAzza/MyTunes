@@ -4,8 +4,6 @@ import BE.Author;
 import BE.CategorySong;
 import BE.PlayList;
 import BE.Song;
-import BLL.exception.*;
-import BLL.util.SongPlayer;
 import DAL.DB.AuthorDAO;
 import DAL.DB.CategoryDAO;
 import DAL.DB.PlayListDAO;
@@ -15,7 +13,6 @@ import DAL.interfaces.ICategorySongDataAccess;
 import DAL.interfaces.IPlayListDataAccess;
 import DAL.interfaces.ISongDataAccess;
 
-import java.io.IOException;
 import java.util.List;
 
 public class DALMyTunesFacade implements IDALMyTunesFacade {

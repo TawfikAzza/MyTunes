@@ -7,15 +7,7 @@ import BE.Song;
 import BLL.exception.*;
 import BLL.util.SongPlayer;
 import DAL.DALMyTunesFacade;
-import DAL.DB.AuthorDAO;
-import DAL.DB.CategoryDAO;
-import DAL.DB.PlayListDAO;
-import DAL.DB.SongDAO;
 import DAL.IDALMyTunesFacade;
-import DAL.interfaces.IAuthorDataAccess;
-import DAL.interfaces.ICategorySongDataAccess;
-import DAL.interfaces.IPlayListDataAccess;
-import DAL.interfaces.ISongDataAccess;
 
 import java.util.List;
 

@@ -6,7 +6,6 @@ import BLL.MyTunesFacade;
 import BLL.MyTunesManager;
 import BLL.exception.MyTunesManagerException;
 import BLL.exception.PlayListDAOException;
-import BLL.exception.SongDAOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

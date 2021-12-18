@@ -36,7 +36,6 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -134,7 +133,6 @@ public class MainController implements Initializable {
         //the value stays at NaN, so the setOnReady method of the player is necessary there.
         slider.maxProperty().set(player.getTotalDuration().toSeconds());
         textToChange = songPlayer.getCurrentSong().getName();
-        //  System.out.println(textToChange);
         final String[] scrollingText = {""};
         int textLength = textToChange.length();
         changeListener = new ChangeListener<Duration>() {
@@ -268,13 +266,7 @@ public class MainController implements Initializable {
     @FXML
     private void setupPlayButton() {
         if(player!= null && player.getStatus() == MediaPlayer.Status.PLAYING) {
-          // ImageView playImage = new ImageView(getClass().getResource("/play.png").toExternalForm());
             ImageView playImage = new ImageView(getClass().getResource("/css/"+comboTheme.getSelectionModel().getSelectedItem().getNameTheme()+"/images/play.png").toExternalForm());
-         //   System.out.println("Text: "+comboTheme.getSelectionModel().getSelectedItem().toString());
-           // System.out.println(comboTheme.getSelectionModel().getSelectedItem().getNameTheme());
-         //   System.out.println("STRINSEARCHED: /css/"+comboTheme.getSelectionModel().getSelectedItem().getNameTheme()+"/play.png");
-           // System.out.println("String: "+getClass().getResource("/css/"+comboTheme.getSelectionModel().getSelectedItem().getNameTheme()+"/images/play.png").toExternalForm());
-
 
             playImage.setFitHeight(40);
             playImage.setFitWidth(40);
@@ -282,7 +274,6 @@ public class MainController implements Initializable {
         }
 
         if (player != null && (player.getStatus() == MediaPlayer.Status.PAUSED || player.getStatus() == MediaPlayer.Status.READY)) {
-          // ImageView pauseImage = new ImageView(getClass().getResource("/pause.png").toExternalForm());
             ImageView pauseImage = new ImageView(getClass().getResource("/css/"+comboTheme.getSelectionModel().getSelectedItem().getNameTheme()+"/images/pause.png").toExternalForm());
             pauseImage.setStyle(topPane.getStylesheets().get(0));
             pauseImage.setFitHeight(40);
@@ -470,43 +461,36 @@ public class MainController implements Initializable {
         durationImage.setImage(durationImageView);
         durationImage.setFitWidth(20);
 
-        //ImageView goBackImage = new ImageView(getClass().getResource("/back.png").toExternalForm());
         ImageView goBackImage = new ImageView();
         goBackImage.setFitHeight(30);
         goBackImage.setFitWidth(30);
         goBack.setGraphic(goBackImage);
 
-       // ImageView goForwardImage = new ImageView(getClass().getResource("/forward.png").toExternalForm());
         ImageView goForwardImage = new ImageView();
         goForwardImage.setFitHeight(30);
         goForwardImage.setFitWidth(30);
         goForward.setGraphic(goForwardImage);
 
-        //ImageView playImage = new ImageView(getClass().getResource("/play.png").toExternalForm());
         ImageView playImage = new ImageView();
         playImage.setFitHeight(40);
         playImage.setFitWidth(40);
         play.setGraphic(playImage);
 
-        //ImageView leftButtonImage = new ImageView(getClass().getResource("/left.png").toExternalForm());
         ImageView leftButtonImage = new ImageView();
         leftButtonImage.setFitWidth(25);
         leftButtonImage.setFitHeight(25);
         leftButton.setGraphic(leftButtonImage);
 
-        //ImageView searchImage = new ImageView(getClass().getResource("/search.png").toExternalForm());
         ImageView searchImage = new ImageView();
         searchImage.setFitHeight(25);
         searchImage.setFitWidth(25);
         searchButton.setGraphic(searchImage);
 
-       // ImageView downImage = new ImageView(getClass().getResource("/down.png").toExternalForm());
         ImageView downImage = new ImageView();
         downImage.setFitHeight(20);
         downImage.setFitWidth(20);
         downButton.setGraphic(downImage);
 
-        //ImageView upImage = new ImageView(getClass().getResource("/up.png").toExternalForm());
         ImageView upImage = new ImageView();
         upImage.setFitWidth(20);
         upImage.setFitHeight(20);
@@ -521,11 +505,6 @@ public class MainController implements Initializable {
     public void updatePlayListTableView() {
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
             songsColumn.setCellValueFactory(new PropertyValueFactory<>("sizeListString"));
-           // nameColumn.setStyle("-fx-background-color: grey ;");
-           // nameColumn.setStyle("-fx-text-fill: ladder(background, white 49%, black 50%);");
-            //songsColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().values().stream().count())));
-            //songsColumn.setCellValueFactory(data -> String.valueOf(data.getValue().getListSong().values().stream().collect(Collectors.toCollection(ObservableValue<String>::new))));
-            // timePlaylistColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()/60)+":"+String.format("%02d", data.getValue().getListSong().values().stream().mapToInt(song -> song.getIntDuration()).sum()%60)));
             timePlaylistColumn.setCellValueFactory(new PropertyValueFactory<>("totalDuration"));
         try {
             playlistsTableView.getItems().setAll(playlistsModel.getAllPlayLists());
@@ -540,7 +519,6 @@ public class MainController implements Initializable {
         titleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("name"));
         artistColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("author"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("category"));
-        //timeColumn.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getIntDuration()/60+":"+String.format("%02d", data.getValue().getIntDuration()%60))));
         timeColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getStringDuration()));
         try {
             songsTableView.getItems().setAll(songsModel.getAllSongs());
@@ -719,8 +697,6 @@ public class MainController implements Initializable {
 
     @FXML
     private void isKeyPressed(KeyEvent keyEvent) {
-
-       // ImageView deleteImage = new ImageView(getClass().getResource("/delete.png").toExternalForm());
         ImageView deleteImage = new ImageView();
         deleteImage.setFitHeight(25);
         deleteImage.setFitWidth(25);
@@ -732,7 +708,6 @@ public class MainController implements Initializable {
     private void isSearchButtonPressed(ActionEvent event) {
         searchBar.setText("");
 
-        //ImageView searchImage = new ImageView(getClass().getResource("/search.png").toExternalForm());
         ImageView searchImage = new ImageView();
         searchImage.setFitHeight(25);
         searchImage.setFitWidth(25);

@@ -1,6 +1,5 @@
 package DAL.DB;
 
-import BE.Author;
 import BE.CategorySong;
 import DAL.ConnectionManager;
 import DAL.interfaces.ICategorySongDataAccess;

@@ -1,14 +1,10 @@
 package BLL.util;
 
-
 import BE.Song;
-import BLL.exception.SongException;
 import BLL.exception.SongPlayerException;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
-
-import java.io.File;
 
 
 /*
@@ -38,10 +34,7 @@ public class SongPlayer {
     }
 
     /*
-    Plays the current song, if there is any.
-    TODO: play/pause function
-
-
+    Plays the current song, if there is any. Pause if one is already playing
     */
     public MediaPlayer getPlayer() {
         return player;

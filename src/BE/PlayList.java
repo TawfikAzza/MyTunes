@@ -6,7 +6,6 @@ import java.util.Map;
 public class PlayList {
     private int idPlaylist;
     private String name;
-    //private String sizeListString="test";
     private Integer sizeList=0;
     private String totalDuration;
     private HashMap<Integer,Song> listSong;

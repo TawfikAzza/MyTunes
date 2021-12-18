@@ -10,9 +10,7 @@ import BLL.exception.SongDAOException;
 import BLL.exception.SongPlayerException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableView;
 
-import java.io.IOException;
 import java.util.List;
 
 public class SongsModel {
