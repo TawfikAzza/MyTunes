@@ -88,12 +88,7 @@ public class SongPlayer {
         player.setVolume(volume);
     }
 
-    public float getVolume()
-    {
-        return volume;
-    }
-
-    public String toValidPath(String path)
+    private String toValidPath(String path)
     {
         return path.replace("\\","/").replace(" ", "%20");
     }

@@ -17,19 +17,6 @@ public class Main extends Application {
         primaryStage.setTitle("MyTunes");
 
         primaryStage.show();
-      /*  primaryStage.setTitle("Media");
-        Group root = new Group();
-        Media media = new Media("http://www.youtube.com/watch?v=k0BWlvnBmIE");
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
-
-        MediaView mediaView = new MediaView(mediaPlayer);
-
-        root.getChildren().add(mediaView);
-        Scene scene = SceneBuilder.create().width(500).height(500).root(root)
-                .fill(Color.WHITE).build();
-        primaryStage.setScene(scene);
-        primaryStage.show();*/
 
     }
 
